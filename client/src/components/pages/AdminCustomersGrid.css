@@ -1,0 +1,40 @@
+.admin-customers-grid-wrapper {
+  padding: 20px 24px;
+}
+
+.admin-customers-grid-header {
+  margin-bottom: 20px;
+}
+
+.admin-customers-grid-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.admin-customers-grid-header p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.admin-customers-grid-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-customers-grid-wrapper {
+    padding: 15px;
+  }
+
+  .admin-customers-grid-header h2 {
+    font-size: 18px;
+  }
+
+  .admin-customers-grid-card {
+    padding: 15px;
+  }
+}

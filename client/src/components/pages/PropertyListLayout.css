@@ -1,0 +1,171 @@
+.property-list-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.property-list-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fafafa;
+}
+
+.property-table-wrapper {
+  overflow-x: auto;
+}
+
+.property-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.property-table thead tr {
+  background: #0f172a;
+  color: #f1f5f9;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-table th,
+.property-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.property-table tr {
+  transition: 0.2s ease;
+}
+
+.property-table tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.id-cell {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.title-cell {
+  font-weight: 600;
+}
+
+.price-cell {
+  color: #16a34a;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.center {
+  text-align: center;
+}
+
+.muted {
+  color: #64748b;
+}
+
+.actions-col {
+  min-width: 260px;
+}
+
+.actions-cell {
+  text-align: right;
+}
+
+.actions-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.btn.blue {
+  background: #3b82f6;
+}
+
+.btn.red {
+  background: #ef4444;
+}
+
+.btn.star {
+  background: #f1f5f9;
+}
+
+.btn.star.premium {
+  background: #facc15;
+}
+
+.approval-select {
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+  background: #f8fafc;
+}
+
+/* STATUS PILL */
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+}
+
+/* Approval States */
+.status-pill.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-pill.rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.status-pill.approved {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Property Status */
+.status-pill.for-rent {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.status-pill.sold {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.status-pill.for-sale {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .property-table th,
+  .property-table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .actions-group {
+    gap: 6px;
+  }
+}

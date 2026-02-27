@@ -1,0 +1,147 @@
+.footer-container {
+  background-color: #050a14; /* Dark theme as per image */
+  color: white;
+  padding: 80px 5% 40px;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 1. Top Section Columns */
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 0.7fr 0.7fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.footer-col h4 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.footer-col h4 a {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.about-text {
+  font-size: 14px;
+  color: #c5c5c5;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.contact-details p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-col ul { list-style: none; padding: 0; }
+.footer-col ul li {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.red-icon { color: #548e5d; font-size: 12px; }
+
+/* 2. Divider */
+.footer-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 40px;
+}
+
+/* 3. Middle Gallery Row Alignment */
+.footer-middle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.logo-main-flex { display: flex; align-items: center; gap: 12px; }
+.logo-icon-red { font-size: 40px; color: #548e5d; }
+.logo-titles h2 { font-size: 26px; margin: 0; letter-spacing: 2px; }
+.logo-titles p { font-size: 11px; color: #777; margin: 0; text-transform: uppercase; }
+
+.insta-branding { min-width: 180px; }
+.insta-user-tag { color: #548e5d; font-size: 14px; margin-bottom: 4px; }
+.gallery-title-main { font-size: 22px; margin: 0; font-weight: 600; }
+
+.gallery-flex-row {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.gallery-thumb {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-overlay-plus {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to right, #1e7f5c, #2fbf8f);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: 0.3s; font-size: 20px;
+}
+.gallery-thumb:hover .gallery-overlay-plus { opacity: 1; }
+
+/* 4. Bottom Copyright Section */
+.footer-copyright-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-text { font-size: 14px; color: #666; }
+.social-links-flex { display: flex; gap: 12px; }
+.social-circle {
+  width: 35px; height: 35px;
+  background: #111827;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; cursor: pointer; transition: 0.3s;
+}
+
+/* 5. Fixed Corner Scroll Button */
+.fixed-scroll-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(to right, #1e7f5c, #2fbf8f);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .footer-top { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .footer-middle-row { flex-direction: column; text-align: center; }
+  .gallery-flex-row { justify-content: center; flex-wrap: wrap; }
+}

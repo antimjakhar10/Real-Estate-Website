@@ -1,0 +1,79 @@
+/* ===== Container ===== */
+.admin-login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: "Inter", sans-serif;
+  padding: 20px;
+}
+
+/* ===== Card ===== */
+.admin-login-card {
+  width: 380px;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Title ===== */
+.admin-login-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ===== Fields ===== */
+.admin-login-field {
+  margin-bottom: 20px;
+}
+
+.admin-login-field label {
+  font-size: 14px;
+  color: #374151;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.admin-login-field input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.admin-login-field input:focus {
+  border-color: #111827;
+}
+
+/* ===== Button ===== */
+.admin-login-button {
+  width: 100%;
+  padding: 12px;
+  background: #111827;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.admin-login-button:hover {
+  background: #1e293b;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 576px) {
+  .admin-login-card {
+    width: 100%;
+    padding: 25px;
+  }
+}

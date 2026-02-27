@@ -1,0 +1,102 @@
+.admin-property-grid {
+  width: 100%;
+}
+
+/* Header */
+.grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.grid-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.add-property-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.add-property-btn:hover {
+  background: #16a34a;
+}
+
+/* Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Card */
+.grid-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.grid-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.grid-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.grid-card-body {
+  padding: 16px;
+}
+
+.grid-price {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.grid-title {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.grid-location {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.grid-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .grid-image {
+    height: 180px;
+  }
+}

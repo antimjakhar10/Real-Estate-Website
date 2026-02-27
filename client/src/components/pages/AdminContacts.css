@@ -1,0 +1,53 @@
+.admin-contacts-wrapper {
+  padding: 20px;
+}
+
+.admin-contacts-wrapper h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Table Wrapper for Mobile Scroll */
+.contacts-table-wrapper {
+  overflow-x: auto;
+}
+
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.contacts-table th,
+.contacts-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.contacts-table th {
+  background: #111827;
+  color: white;
+}
+
+.contacts-table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.contacts-table tr:hover {
+  background: #f3f4f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-contacts-wrapper {
+    padding: 15px;
+  }
+
+  .contacts-table th,
+  .contacts-table td {
+    padding: 8px;
+    font-size: 13px;
+  }
+}

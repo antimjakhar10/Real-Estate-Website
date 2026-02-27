@@ -1,0 +1,511 @@
+/* ===== COMMON ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.topbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 50px;
+  font-size: 13px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  color: white;
+  z-index: 20;
+  transition:
+    all 0.3s ease,
+    opacity 0.5s ease;
+}
+.topbar.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+.top-left span {
+  margin-left: 20px;
+}
+.top-right svg {
+  margin-left: 15px;
+  cursor: pointer;
+}
+.language {
+  margin-left: 20px;
+  border-left: 1px solid white;
+  padding-left: 15px;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 15;
+}
+
+.navbar.scrolled {
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo */
+.navbar .logo h2 {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+}
+.navbar .logo p {
+  font-size: 14px;
+  color: #548e5d;
+  font-weight: 500;
+}
+
+
+/* ===== UPDATED DROPDOWN (Matches your Nav Links) ===== */
+
+.dropdown-item {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* Location text ko baaki links jaisa banane ke liye */
+.location-trigger {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;    /* Matches .nav-links li a */
+    font-weight: 600;   /* Matches .nav-links li a */
+    color: white;       /* Default white color */
+    transition: 0.3s ease;
+}
+
+/* Hover effect on 'Location' text */
+.dropdown-item:hover .location-trigger {
+    color: #2fbf8f;     /* Matches your hover color */
+}
+
+.location-trigger i {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown Menu Box */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.9); /* Dark background like your scrolled nav */
+    min-width: 180px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-radius: 4px;
+    padding: 10px 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border-top: 2px solid #2fbf8f; /* Top green line for premium look */
+}
+
+/* Dropdown Links */
+.dropdown-menu li a {
+    display: block;
+    padding: 12px 20px !important;
+    color: white !important;
+    text-decoration: none;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+/* Dropdown Link Hover */
+.dropdown-menu li a:hover {
+    background-color: rgba(47, 191, 143, 0.1);
+    color: #2fbf8f !important;
+    padding-left: 25px !important; /* Chota sa slide effect */
+}
+
+/* Hover Logic */
+.dropdown-item:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+}
+
+.dropdown-item:hover .location-trigger i {
+    transform: rotate(180deg);
+}
+
+
+/* =============================== */
+/* FORCE SHOW NAV LINKS + BUTTONS */
+/* =============================== */
+
+/* Location dropdown trigger */
+.navbar.solid-nav .location-trigger {
+  color: #111 !important;
+  display: inline-block !important;
+  opacity: 1 !important;
+}
+
+/* Location dropdown menu */
+.navbar.solid-nav .dropdown-menu {
+  
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Fix nav buttons container */
+.navbar.solid-nav .nav-buttons {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Fix buttons */
+.navbar.solid-nav .nav-buttons .btn {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: #ffffff;
+  color: #111 !important;
+  border: 1px solid #ddd;
+}
+
+/* Hover effect */
+.navbar.solid-nav .nav-buttons .btn:hover {
+  background: #2fbf8f;
+  color: #fff !important;
+}
+
+
+/* Nav links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  transition: all 0.3s ease;
+}
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+.nav-links li a:hover {
+  color: #2fbf8f;
+}
+
+/* Right buttons */
+.nav-buttons {
+  display: flex;
+  gap: 15px;
+}
+.nav-buttons .btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+.nav-buttons .enquiry {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+.nav-buttons .enquiry:hover {
+  background: white;
+  color: #2fbf8f;
+}
+.nav-buttons .post-property {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+.nav-buttons .post-property:hover {
+  background: white;
+  color: #2fbf8f;
+}
+.nav-buttons .login {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+.nav-buttons .login:hover {
+  background: white;
+  color: #2fbf8f;
+}
+
+
+/* ================================= */
+/* CLEAN RESPONSIVE NAVBAR FIX */
+/* ================================= */
+
+/* Desktop default */
+.mobile-buttons {
+  display: none;
+}
+
+/* Tablet & Mobile */
+@media (max-width: 1024px) {
+
+  /* Hide right side buttons */
+  .nav-buttons {
+    display: none !important;
+  }
+
+  /* Show hamburger */
+  .hamburger {
+    display: flex !important;
+  }
+
+  /* Nav menu fullscreen */
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 40px 20px;
+    height: calc(100vh - 70px);
+    transition: left 0.3s ease;
+  }
+
+  .nav-links.show {
+    left: 0;
+  }
+
+  /* Add buttons inside menu using pseudo block */
+  .nav-links::after {
+    content: "";
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+
+.menu-buttons {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.menu-buttons .btn {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Show only on mobile */
+@media (max-width: 1024px) {
+  .menu-buttons {
+    display: flex;
+  }
+}
+
+
+/* Desktop default */
+.mobile-buttons {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+
+  /* Hide desktop buttons */
+  .nav-buttons {
+    display: none !important;
+  }
+
+  /* Show mobile buttons inside menu */
+  .mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .mobile-buttons .btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  }
+
+  /* Enquiry button */
+  .mobile-buttons .enquiry {
+    background: #2fbf8f;
+    color: #fff;
+  }
+
+  .mobile-buttons .enquiry:hover {
+    background: #25a97b;
+  }
+
+ 
+  /* Post Property */
+.mobile-buttons .post-property {
+  background: #2fbf8f;
+  color: #fff;
+}
+
+.mobile-buttons .post-property:hover {
+  background: #25a97b;
+}
+
+  /* Login */
+  .mobile-buttons .login {
+    background: #111;
+    color: #fff;
+  }
+
+  .mobile-buttons .login:hover {
+    background: #333;
+  }
+}
+
+
+
+
+/* ===== HAMBURGER ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 1001;
+}
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+
+/* ====================== */
+/* SOLID NAVBAR VERSION */
+/* ====================== */
+
+.navbar.solid-nav {
+  background: #ffffff !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.navbar.solid-nav a {
+  color: #111 !important;
+}
+
+.navbar.solid-nav .logo h2,
+.navbar.solid-nav .logo p {
+  color: #111 !important;
+}
+
+.navbar.solid-nav ul li a:hover {
+  color: #2fbf8f !important;
+}
+
+.navbar.solid-nav .dropdown-menu {
+  background: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .nav-buttons {
+    display: none;
+  } /* hide buttons on tablet/mobile, visible in menu */
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    padding: 5px 20px;
+    text-align: center;
+  }
+  .top-left,
+  .top-right {
+    margin: 3px 0;
+  }
+
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 20px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    position: fixed;
+    top: 65px;
+    left: -100%;
+    background: rgba(0, 0, 0, 0.95);
+    gap: 20px;
+    padding: 50px 20px;
+    height: calc(100vh - 65px);
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  .nav-links.show {
+    left: 0;
+  }
+
+  .nav-links li a {
+    color: white;
+    font-size: 20px;
+  }
+
+  /* Add buttons inside menu for mobile/tablet */
+  .nav-links.show::after {
+    content: "";
+  }
+}

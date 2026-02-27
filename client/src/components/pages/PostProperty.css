@@ -1,0 +1,90 @@
+.post-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.post-card {
+  background: white;
+  padding: 40px;
+  width: 800px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.progress {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 3px solid #ddd;
+  font-weight: 500;
+  color: #999;
+}
+
+.progress.active {
+  border-color: #1dbf73;
+  color: #1dbf73;
+}
+
+.form-step input,
+.form-step select,
+.form-step textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.form-step textarea {
+  min-height: 100px;
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.amenity-item {
+  background: #f1f3f5;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.preview-img {
+  width: 200px;
+  margin-top: 15px;
+  border-radius: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.prev-btn,
+.next-btn,
+.submit-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1dbf73;
+  color: white;
+  cursor: pointer;
+}
+
+.prev-btn {
+  background: #888;
+}
