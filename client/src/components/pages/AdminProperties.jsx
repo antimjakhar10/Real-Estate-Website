@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropertyListLayout from "./PropertyListLayout";
 
@@ -31,8 +31,6 @@ const AdminProperties = () => {
     }
   };
 
-  
-
   const handleDelete = async (id) => {
     const token = localStorage.getItem("adminToken");
 
@@ -47,8 +45,8 @@ const AdminProperties = () => {
   };
 
   const handleEdit = (id) => {
-  navigate(`/admin-edit-property/${id}`);
-};
+    navigate(`/admin-edit-property/${id}`);
+  };
 
   const handleTogglePremium = async (id) => {
     try {
@@ -75,30 +73,71 @@ const AdminProperties = () => {
     }
   };
 
- const handleUpdateApproval = async (id, status) => {
-  const token = localStorage.getItem("adminToken");
+  const handleUpdateApproval = async (id, status) => {
+    const token = localStorage.getItem("adminToken");
 
-  const response = await fetch(
-    `http://localhost:5000/api/properties/approve/${id}`, // 👈 CHANGE HERE
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `http://localhost:5000/api/properties/approve/${id}`, // 👈 CHANGE HERE
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
       },
-      body: JSON.stringify({ status }),
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Update failed");
+      return;
     }
-  );
 
-  const data = await response.json();
+    fetchProperties();
+  };
 
-  if (!response.ok) {
-    alert(data.message || "Update failed");
-    return;
-  }
+  const handleExportCSV = () => {
+    if (!properties.length) {
+      alert("No properties to export");
+      return;
+    }
 
-  fetchProperties();
-};
+    const headers = [
+      "ID",
+      "Title",
+      "Location",
+      "Type",
+      "Price",
+      "Area (sqft)",
+      "Approval Status",
+      "Created Date",
+    ];
+
+    const rows = properties.map((p, index) => [
+      `PR-${1000 + index}`,
+      p.title || "",
+      p.location || "",
+      p.type || "",
+      p.price || "",
+      p.sqft || "",
+      p.approvalStatus || "",
+      p.createdAt ? new Date(p.createdAt).toLocaleDateString() : "",
+    ]);
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers, ...rows].map((row) => row.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "properties_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div style={{ padding: "20px 24px" }}>
@@ -118,21 +157,40 @@ const AdminProperties = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => navigate("/admin-add-property")}
-          style={{
-            padding: "10px 18px",
-            background: "#2563eb",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontWeight: "500",
-            cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(37,99,235,0.3)",
-          }}
-        >
-          + Add Property
-        </button>
+        {/* Buttons wrapper */}
+        <div style={{ display: "flex", gap: "12px" }}>
+          <button
+            onClick={handleExportCSV}
+            style={{
+              padding: "10px 18px",
+              background: "#16a34a",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontWeight: "500",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(22,163,74,0.3)",
+            }}
+          >
+            Export CSV
+          </button>
+
+          <button
+            onClick={() => navigate("/admin-add-property")}
+            style={{
+              padding: "10px 18px",
+              background: "#2563eb",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontWeight: "500",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(37,99,235,0.3)",
+            }}
+          >
+            + Add Property
+          </button>
+        </div>
       </div>
 
       {/* Table Card */}

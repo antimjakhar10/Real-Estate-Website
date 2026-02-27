@@ -184,198 +184,237 @@ const AddEditProperty = () => {
     navigate("/admin-properties");
   };
 
- return (
-  <form onSubmit={handleSubmit} className="add-property-form">
-    <h2 className="form-title">Property Add</h2>
+  return (
+    <form onSubmit={handleSubmit} className="add-property-form">
+      <h2 className="form-title">Property Add</h2>
 
-    <div className="form-container">
-      <div className="form-grid">
-        {/* LEFT SIDE */}
-        <div>
-          {/* PROPERTY DETAILS */}
-          <div className="form-card">
-            <h3 className="card-title">Property Details</h3>
+      <div className="form-container">
+        <div className="form-grid">
+          {/* LEFT SIDE */}
+          <div>
+            {/* PROPERTY DETAILS */}
+            <div className="form-card">
+              <h3 className="card-title">Property Details</h3>
 
-            <div className="form-group">
-              <label>Property Title</label>
-              <input name="title" value={form.title} onChange={handleChange} />
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <label>Property Type</label>
-                <select name="type" value={form.type} onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option>Apartment</option>
-                  <option>Villa</option>
-                  <option>House</option>
-                </select>
-              </div>
-
-              <div className="col">
-                <label>Price ($)</label>
-                <input name="price" value={form.price} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <label>Area (sq ft)</label>
-                <input name="sqft" value={form.sqft} onChange={handleChange} />
-              </div>
-
-              <div className="col">
-                <label>Status</label>
-                <select name="status" value={form.status} onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option>For Sale</option>
-                  <option>For Rent</option>
-                </select>
-              </div>
-
-              <div className="col">
-                <label>Bedrooms</label>
-                <input name="bedrooms" value={form.bedrooms} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col">
-                <label>Bathrooms</label>
-                <input name="bathrooms" value={form.bathrooms} onChange={handleChange} />
-              </div>
-
-              <div className="col">
-                <label>Garage</label>
-                <input name="parking" value={form.parking} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label>Description</label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows="4"
-              />
-            </div>
-          </div>
-
-          {/* LOCATION */}
-          <div className="form-card">
-            <h3 className="card-title">Location Details</h3>
-
-            <div className="form-group">
-              <label>Full Address / Location</label>
-              <input
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                placeholder="Enter full property location"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT SIDE */}
-        <div className="form-card">
-          <h3 className="card-title">Upload Image</h3>
-
-          <div
-            className="upload-box"
-            onClick={() => document.getElementById("imageInput").click()}
-          >
-            <input
-              id="imageInput"
-              type="file"
-              hidden
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                setForm({ ...form, image: file });
-                setImagePreview(URL.createObjectURL(file));
-              }}
-            />
-
-            {imagePreview ? (
-              <img src={imagePreview} alt="preview" className="preview-img" />
-            ) : (
-              <>
-                <p className="upload-text">Click to Upload Property Image</p>
-                <p className="upload-subtext">PNG, JPG up to 5MB</p>
-              </>
-            )}
-          </div>
-
-          {/* Facilities */}
-          <h4 className="section-subtitle">Facilities</h4>
-
-          <div className="checkbox-grid">
-            {facilities.map((item, index) => (
-              <label key={index}>
+              <div className="form-group">
+                <label>Property Title</label>
                 <input
-                  type="checkbox"
-                  checked={form.amenities.includes(item)}
-                  onChange={() => toggleFacility(item)}
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
                 />
-                {item}
-              </label>
-            ))}
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <label>Property Type</label>
+                  <select name="type" value={form.type} onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option>Apartment</option>
+                    <option>Villa</option>
+                    <option>House</option>
+                  </select>
+                </div>
+
+                <div className="col">
+                  <label>Price ($)</label>
+                  <input
+                    name="price"
+                    value={form.price}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <label>Area (sq ft)</label>
+                  <input
+                    name="sqft"
+                    value={form.sqft}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="col">
+                  <label>Status</label>
+                  <select
+                    name="status"
+                    value={form.status}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select</option>
+                    <option>For Sale</option>
+                    <option>For Rent</option>
+                  </select>
+                </div>
+
+                <div className="col">
+                  <label>Bedrooms</label>
+                  <input
+                    name="bedrooms"
+                    value={form.bedrooms}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <label>Bathrooms</label>
+                  <input
+                    name="bathrooms"
+                    value={form.bathrooms}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="col">
+                  <label>Garage</label>
+                  <input
+                    name="parking"
+                    value={form.parking}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  rows="4"
+                />
+              </div>
+            </div>
+
+            {/* LOCATION */}
+            <div className="form-card">
+              <h3 className="card-title">Location Details</h3>
+
+              <div className="form-group">
+                <label>Full Address / Location</label>
+                <input
+                  name="location"
+                  value={form.location}
+                  onChange={handleChange}
+                  placeholder="Enter full property location"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="add-row">
-            <input
-              value={newFacility}
-              onChange={(e) => setNewFacility(e.target.value)}
-              placeholder="Enter facility name"
-            />
-            <button type="button" onClick={addFacility}>
-              + Add
-            </button>
-          </div>
+          {/* RIGHT SIDE */}
+          <div className="right-column">
+            <div className="form-card">
+            <h3 className="card-title">Upload Image</h3>
 
-          {/* Nearby */}
-          <div className="nearby-section">
-            <h4 className="section-subtitle">Nearby Locations</h4>
+            <div
+              className="upload-box"
+              onClick={() => document.getElementById("imageInput").click()}
+            >
+              <input
+                id="imageInput"
+                type="file"
+                hidden
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  setForm({ ...form, image: file });
+                  setImagePreview(URL.createObjectURL(file));
+                }}
+              />
+
+              {imagePreview ? (
+                <img src={imagePreview} alt="preview" className="preview-img" />
+              ) : (
+                <>
+                  <p className="upload-text">Click to Upload Property Image</p>
+                  <p className="upload-subtext">PNG, JPG up to 5MB</p>
+                </>
+              )}
+            </div>
+
+            {/* Facilities */}
+            <h4 className="section-subtitle">Facilities</h4>
 
             <div className="checkbox-grid">
-              {nearbyOptions.map((place, index) => (
+              {facilities.map((item, index) => (
                 <label key={index}>
                   <input
                     type="checkbox"
-                    value={place}
-                    checked={form.nearby.includes(place)}
-                    onChange={handleNearbyChange}
+                    checked={form.amenities.includes(item)}
+                    onChange={() => toggleFacility(item)}
                   />
-                  {place}
+                  {item}
                 </label>
               ))}
             </div>
 
             <div className="add-row">
               <input
-                value={newNearby}
-                onChange={(e) => setNewNearby(e.target.value)}
-                placeholder="Enter nearby place"
+                value={newFacility}
+                onChange={(e) => setNewFacility(e.target.value)}
+                placeholder="Enter facility name"
               />
-              <button type="button" onClick={addNearby}>
+              <button type="button" onClick={addFacility}>
                 + Add
               </button>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Submit */}
-      <div className="submit-row">
-        <button type="submit" className="submit-btn">
-          {loading ? "Saving..." : id ? "Update Property" : "Add Property"}
-        </button>
+            {/* Nearby */}
+            <div className="nearby-section">
+              <h4 className="section-subtitle">Nearby Locations</h4>
+
+              <div className="checkbox-grid">
+                {nearbyOptions.map((place, index) => (
+                  <label key={index}>
+                    <input
+                      type="checkbox"
+                      value={place}
+                      checked={form.nearby.includes(place)}
+                      onChange={handleNearbyChange}
+                    />
+                    {place}
+                  </label>
+                ))}
+              </div>
+
+              <div className="add-row">
+                <input
+                  value={newNearby}
+                  onChange={(e) => setNewNearby(e.target.value)}
+                  placeholder="Enter nearby place"
+                />
+                <button type="button" onClick={addNearby}>
+                  + Add
+                </button>
+              </div>
+            </div>
+          </div>
+
+<div className="form-card submit-card">
+  <button type="submit" className="submit-btn full-submit">
+    {loading ? "Saving..." : id ? "Update Property" : "Submit Property"}
+  </button>
+</div>
+
+          </div>
+
+
+
+
+        </div>
+
+
+
+
+
       </div>
-    </div>
-  </form>
-);
+    </form>
+  );
 };
 
 export default AddEditProperty;
