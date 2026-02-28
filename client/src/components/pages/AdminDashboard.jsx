@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
+const navigate = useNavigate();
+
   const [stats, setStats] = useState({
     properties: 0,
     enquiries: 0,
@@ -9,22 +12,53 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    fetchStats();
-  }, []);
+  const token = localStorage.getItem("adminToken");
 
-  const fetchStats = async () => {
-    const propRes = await fetch("http://localhost:5000/api/properties");
+  if (!token) {
+    navigate("/admin-login");
+  } else {
+    fetchStats();
+  }
+}, [navigate]);
+
+ const fetchStats = async () => {
+  const token = localStorage.getItem("adminToken");
+
+  try {
+    const propRes = await fetch(
+      "http://localhost:5000/api/properties/admin/all",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     const props = await propRes.json();
 
-    const enqRes = await fetch("http://localhost:5000/api/enquiry");
+    const enqRes = await fetch(
+      "http://localhost:5000/api/enquiry",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     const enqs = await enqRes.json();
 
     setStats({
-      properties: props.length || 0,
-      enquiries: enqs.length || 0,
-      newEnquiries: enqs.filter((e) => e.status === "New").length,
+      properties: Array.isArray(props) ? props.length : 0,
+      enquiries: Array.isArray(enqs) ? enqs.length : 0,
+      newEnquiries: Array.isArray(enqs)
+        ? enqs.filter((e) => e.status === "New").length
+        : 0,
     });
-  };
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="admin-dashboard">

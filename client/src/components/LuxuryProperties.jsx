@@ -58,12 +58,15 @@ const LuxuryProperties = () => {
                 to={`/property-details/${property._id}`}
                 className="image-wrapper"
               >
-                <motion.img
-                  src={property.image}
-                  alt={property.title}
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
-                />
+                <img
+  src={`http://localhost:5000/uploads/${property.images?.[0] || property.image}`}
+  alt={property.title}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src =
+      "http://localhost:5000/uploads/no-image.jpg";
+  }}
+/>
                 <span className="badge">For Sale</span>
               </Link>
 

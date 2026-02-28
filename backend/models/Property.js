@@ -16,7 +16,7 @@ const propertySchema = new mongoose.Schema({
   elevator: Boolean,
   wifi: Boolean,
   pool: Boolean,
-  image: String,
+  images: [String],
   nearby: [String],
 
   featured: {

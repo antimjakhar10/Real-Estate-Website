@@ -1,4 +1,5 @@
 const { togglePremium } = require("../controllers/propertyController");
+const auth = require("../middleware/auth");
 
 const express = require("express");
 const router = express.Router();
@@ -27,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Routes
-router.post("/", upload.single("image"), createProperty);
+router.post("/", upload.array("images", 10), createProperty);
 
 router.get("/admin/all", getAllPropertiesAdmin);
 
@@ -48,7 +49,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", upload.array("images", 10), async (req, res) => {
   try {
     const Property = require("../models/Property");
 
@@ -62,9 +63,9 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     }
 
     // image update only if new image uploaded
-    if (req.file) {
-      updateData.image = req.file.filename;
-    }
+   if (req.files && req.files.length > 0) {
+  updateData.images = req.files.map(file => file.filename);
+}
 
     await Property.findByIdAndUpdate(req.params.id, updateData);
 

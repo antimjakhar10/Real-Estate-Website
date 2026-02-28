@@ -35,7 +35,7 @@ const AddEditProperty = () => {
     status: "",
     amenities: [],
     nearby: [],
-    image: null,
+    images: [],
   });
 
   const [nearbyOptions, setNearbyOptions] = useState([
@@ -48,7 +48,7 @@ const AddEditProperty = () => {
 
   const [newNearby, setNewNearby] = useState("");
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [facilities, setFacilities] = useState(defaultFacilities);
@@ -67,8 +67,10 @@ const AddEditProperty = () => {
       image: null,
     });
 
-    if (data.image) {
-      setImagePreview(`http://localhost:5000/uploads/${data.image}`);
+    if (data.images && data.images.length > 0) {
+      setImagePreviews(
+        data.images.map((img) => `http://localhost:5000/uploads/${img}`),
+      );
     }
   };
 
@@ -162,12 +164,16 @@ const AddEditProperty = () => {
     const formData = new FormData();
 
     Object.keys(form).forEach((key) => {
-      if (key === "amenities" || key === "nearby") {
-        formData.append(key, JSON.stringify(form[key]));
-      } else {
-        formData.append(key, form[key]);
-      }
+  if (key === "amenities" || key === "nearby") {
+    formData.append(key, JSON.stringify(form[key]));
+  } else if (key === "images") {
+    form.images.forEach((img) => {
+      formData.append("images", img);
     });
+  } else {
+    formData.append(key, form[key]);
+  }
+});
 
     const url = id
       ? `http://localhost:5000/api/properties/${id}`
@@ -213,11 +219,12 @@ const AddEditProperty = () => {
                     <option>Apartment</option>
                     <option>Villa</option>
                     <option>House</option>
+                    <option>Commercial</option>
                   </select>
                 </div>
 
                 <div className="col">
-                  <label>Price ($)</label>
+                  <label>Price (₹)</label>
                   <input
                     name="price"
                     value={form.price}
@@ -309,109 +316,120 @@ const AddEditProperty = () => {
           {/* RIGHT SIDE */}
           <div className="right-column">
             <div className="form-card">
-            <h3 className="card-title">Upload Image</h3>
+              <h3 className="card-title">Upload Image</h3>
 
-            <div
-              className="upload-box"
-              onClick={() => document.getElementById("imageInput").click()}
-            >
-              <input
-                id="imageInput"
-                type="file"
-                hidden
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (!file) return;
-                  setForm({ ...form, image: file });
-                  setImagePreview(URL.createObjectURL(file));
-                }}
-              />
+              <div
+                className="upload-box"
+                onClick={() => document.getElementById("imageInput").click()}
+              >
+                <input
+                  id="imageInput"
+                  type="file"
+                  multiple
+                  hidden
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files);
+                    if (!files.length) return;
 
-              {imagePreview ? (
-                <img src={imagePreview} alt="preview" className="preview-img" />
-              ) : (
-                <>
-                  <p className="upload-text">Click to Upload Property Image</p>
-                  <p className="upload-subtext">PNG, JPG up to 5MB</p>
-                </>
-              )}
-            </div>
+                    setForm({ ...form, images: files });
 
-            {/* Facilities */}
-            <h4 className="section-subtitle">Facilities</h4>
+                    const previews = files.map((file) =>
+                      URL.createObjectURL(file),
+                    );
+                    setImagePreviews(previews);
+                  }}
+                />
 
-            <div className="checkbox-grid">
-              {facilities.map((item, index) => (
-                <label key={index}>
-                  <input
-                    type="checkbox"
-                    checked={form.amenities.includes(item)}
-                    onChange={() => toggleFacility(item)}
-                  />
-                  {item}
-                </label>
-              ))}
-            </div>
+                {imagePreviews.length > 0 ? (
+                  <div className="multi-preview">
+                    {imagePreviews.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt="preview"
+                        className="preview-img"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    <p className="upload-text">
+                      Click to Upload Property Image
+                    </p>
+                    <p className="upload-subtext">PNG, JPG up to 5MB</p>
+                  </>
+                )}
+              </div>
 
-            <div className="add-row">
-              <input
-                value={newFacility}
-                onChange={(e) => setNewFacility(e.target.value)}
-                placeholder="Enter facility name"
-              />
-              <button type="button" onClick={addFacility}>
-                + Add
-              </button>
-            </div>
-
-            {/* Nearby */}
-            <div className="nearby-section">
-              <h4 className="section-subtitle">Nearby Locations</h4>
+              {/* Facilities */}
+              <h4 className="section-subtitle">Facilities</h4>
 
               <div className="checkbox-grid">
-                {nearbyOptions.map((place, index) => (
+                {facilities.map((item, index) => (
                   <label key={index}>
                     <input
                       type="checkbox"
-                      value={place}
-                      checked={form.nearby.includes(place)}
-                      onChange={handleNearbyChange}
+                      checked={form.amenities.includes(item)}
+                      onChange={() => toggleFacility(item)}
                     />
-                    {place}
+                    {item}
                   </label>
                 ))}
               </div>
 
               <div className="add-row">
                 <input
-                  value={newNearby}
-                  onChange={(e) => setNewNearby(e.target.value)}
-                  placeholder="Enter nearby place"
+                  value={newFacility}
+                  onChange={(e) => setNewFacility(e.target.value)}
+                  placeholder="Enter facility name"
                 />
-                <button type="button" onClick={addNearby}>
+                <button type="button" onClick={addFacility}>
                   + Add
                 </button>
               </div>
+
+              {/* Nearby */}
+              <div className="nearby-section">
+                <h4 className="section-subtitle">Nearby Locations</h4>
+
+                <div className="checkbox-grid">
+                  {nearbyOptions.map((place, index) => (
+                    <label key={index}>
+                      <input
+                        type="checkbox"
+                        value={place}
+                        checked={form.nearby.includes(place)}
+                        onChange={handleNearbyChange}
+                      />
+                      {place}
+                    </label>
+                  ))}
+                </div>
+
+                <div className="add-row">
+                  <input
+                    value={newNearby}
+                    onChange={(e) => setNewNearby(e.target.value)}
+                    placeholder="Enter nearby place"
+                  />
+                  <button type="button" onClick={addNearby}>
+                    + Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-card submit-card">
+              <button type="submit" className="submit-btn full-submit">
+                {loading
+                  ? "Saving..."
+                  : id
+                    ? "Update Property"
+                    : "Submit Property"}
+              </button>
             </div>
           </div>
-
-<div className="form-card submit-card">
-  <button type="submit" className="submit-btn full-submit">
-    {loading ? "Saving..." : id ? "Update Property" : "Submit Property"}
-  </button>
-</div>
-
-          </div>
-
-
-
-
         </div>
-
-
-
-
-
       </div>
     </form>
   );

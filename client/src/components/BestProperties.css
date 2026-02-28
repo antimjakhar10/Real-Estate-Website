@@ -85,6 +85,8 @@
 .image-wrapper {
   position: relative;
   height: 220px;
+  overflow: hidden;
+
 }
 
 .image-wrapper img {

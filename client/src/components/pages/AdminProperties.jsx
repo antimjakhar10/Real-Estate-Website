@@ -48,30 +48,34 @@ const AdminProperties = () => {
     navigate(`/admin-edit-property/${id}`);
   };
 
-  const handleTogglePremium = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/properties/toggle-premium/${id}`,
-        {
-          method: "PUT",
+const handleTogglePremium = async (id) => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const response = await fetch(
+      `http://localhost:5000/api/properties/toggle-premium/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.message);
-        return;
       }
+    );
 
-      alert("Premium status updated ✅");
+    const data = await response.json();
 
-      // Reload list
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
+    if (!response.ok) {
+      alert(data.message);
+      return;
     }
-  };
+
+    alert("Premium status updated ✅");
+
+    fetchProperties(); // reload properly
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const handleUpdateApproval = async (id, status) => {
     const token = localStorage.getItem("adminToken");

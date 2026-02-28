@@ -10,7 +10,7 @@ const PropertyDetails = () => {
   // Find property by ID - convert id to number since URL params are strings
   const { id } = useParams();
 
-   const getImageUrl = (image) => {
+  const getImageUrl = (image) => {
     if (!image || image.trim() === "") {
       return "http://localhost:5000/uploads/no-image.jpg";
     }
@@ -32,11 +32,6 @@ const PropertyDetails = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-
-  const imageUrl = propertyData
-  ? getImageUrl(propertyData.image)
-  : null;
-
 
   const [formData, setFormData] = useState({
     name: "",
@@ -63,12 +58,13 @@ const PropertyDetails = () => {
       });
   }, [id]);
 
-
   useEffect(() => {
-    if (imageUrl) {
-      setSelectedImage(imageUrl);
+    if (propertyData?.images?.length > 0) {
+      setSelectedImage(getImageUrl(propertyData.images[0]));
+    } else if (propertyData?.image) {
+      setSelectedImage(getImageUrl(propertyData.image));
     }
-  }, [imageUrl]);
+  }, [propertyData]);
 
   if (loading) {
     return <h2 style={{ textAlign: "center" }}>Loading...</h2>;
@@ -78,29 +74,18 @@ const PropertyDetails = () => {
     return <h2 style={{ textAlign: "center" }}>Property Not Found</h2>;
   }
 
+  const imagesArray =
+    propertyData?.images && propertyData.images.length > 0
+      ? propertyData.images.map((img) => getImageUrl(img))
+      : propertyData?.image
+        ? [getImageUrl(propertyData.image)]
+        : ["http://localhost:5000/uploads/no-image.jpg"];
+
   // Media items using property image
- const mediaItems = [
-  {
-    type: "video",
-    src: "https://www.w3schools.com/html/mov_bbb.mp4", // demo video
-  },
-  {
+  const mediaItems = imagesArray.map((img) => ({
     type: "image",
-    src: imageUrl,
-  },
-  {
-    type: "image",
-    src: "https://images.unsplash.com/photo-1600566752355-35792bedcfea",
-  },
-  {
-    type: "image",
-    src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0",
-  },
-  {
-    type: "image",
-    src: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
-  },
-];
+    src: img,
+  }));
 
   // Use highlights from property data or default
   const highlights =
@@ -251,25 +236,25 @@ const PropertyDetails = () => {
             <div className="pd-view-left">
               {/* Main Image Container */}
               <div className="pd-main-display">
-               {selectedImage && (
-  selectedImage.endsWith(".mp4") ? (
-    <video
-      src={selectedImage}
-      controls
-      className="pd-featured-img"
-    />
-  ) : (
-    <img
-      src={selectedImage}
-      alt="Property"
-      className="pd-featured-img"
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = "http://localhost:5000/uploads/no-image.jpg";
-      }}
-    />
-  )
-)}
+                {selectedImage &&
+                  (selectedImage.endsWith(".mp4") ? (
+                    <video
+                      src={selectedImage}
+                      controls
+                      className="pd-featured-img"
+                    />
+                  ) : (
+                    <img
+                      src={selectedImage}
+                      alt="Property"
+                      className="pd-featured-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "http://localhost:5000/uploads/no-image.jpg";
+                      }}
+                    />
+                  ))}
               </div>
               {/* Thumbnails Row */}
               <div className="pd-thumbnails-row">
@@ -514,164 +499,45 @@ const PropertyDetails = () => {
       </section>
 
       {/* Gallery Section */}
-      <div className="pd-modern-gallery-container">
-        <div className="pd-gallery-title-row">
-          <h2>From Amazing Gallery</h2>
-        </div>
+<div className="pd-modern-gallery-container">
+  <div className="pd-gallery-title-row">
+    <h2>From Amazing Gallery</h2>
+  </div>
 
-        <div className="pd-asymmetric-grid">
-          <div className="pg-tile-new span-2">
-            <img
-              src={
-                propertyData.image
-                  ? imageUrl
-                  : "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"
-              }
-              alt="G4"
-              onClick={() =>
-                setPreviewImage(
-                  propertyData.image
-                    ? imageUrl
-                    : "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
-                )
-              }
-            />
-            <div className="pg-badge">Main View</div>
-          </div>
+  <div className="pd-asymmetric-grid">
+    {/* Main Big Image */}
+    <div className="pg-tile-new span-2">
+      <img
+        src={imagesArray[0]}
+        alt="Main View"
+        onClick={() => setPreviewImage(imagesArray[0])}
+      />
+      <div className="pg-badge">Main View</div>
+    </div>
 
-          <div className="pg-tile-new row-2">
-            <img
-              src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600"
-              alt="G2"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=600",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new active-highlight">
-            <img
-              src="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=400"
-              alt="G3"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=400",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new span-2">
-            <img
-              src={
-                propertyData.image
-                  ? imageUrl
-                  : "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"
-              }
-              alt="G4"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400"
-              alt="G5"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400",
-                )
-              }
-            />
-          </div>
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=400"
-              alt="G6"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=400",
-                )
-              }
-            />
-          </div>
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400"
-              alt="G7"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new row-2">
-            <img
-              src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=600"
-              alt="G8"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=600",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400"
-              alt="G9"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400",
-                )
-              }
-            />
-          </div>
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400"
-              alt="G10"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400",
-                )
-              }
-            />
-          </div>
-
-          <div className="pg-tile-new pg-more-dark">
-            <img
-              src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400"
-              alt="G11"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400",
-                )
-              }
-            />
-          </div>
-          <div className="pg-tile-new">
-            <img
-              src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400"
-              alt="G12"
-              onClick={() =>
-                setPreviewImage(
-                  "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=400",
-                )
-              }
-            />
-          </div>
-        </div>
+    {/* Second Image (agar exist karti hai) */}
+    {imagesArray[1] && (
+      <div className="pg-tile-new">
+        <img
+          src={imagesArray[1]}
+          alt="Second View"
+          onClick={() => setPreviewImage(imagesArray[1])}
+        />
       </div>
+    )}
+
+    {/* Baaki images agar aur bhi hain */}
+    {imagesArray.slice(2).map((img, index) => (
+      <div className="pg-tile-new" key={index}>
+        <img
+          src={img}
+          alt={`Gallery ${index}`}
+          onClick={() => setPreviewImage(img)}
+        />
+      </div>
+    ))}
+  </div>
+</div>
 
       {/* Features & Amenities Section */}
       <div className="pd-amenities-card-wrapper">
@@ -709,7 +575,7 @@ const PropertyDetails = () => {
             <div className="map-info-floating-card">
               <div className="info-card-img">
                 <img
-                  src={imageUrl}
+                  src={imagesArray[0]}
                   alt="Prop"
                   onError={(e) => {
                     e.target.onerror = null;

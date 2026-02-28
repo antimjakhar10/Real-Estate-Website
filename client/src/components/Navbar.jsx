@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import "./Navbar.css";
 
-const Navbar =  ({ variant }) => {
+const Navbar = ({ variant }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -38,10 +38,12 @@ const Navbar =  ({ variant }) => {
       </div>
 
       {/* ===== MAIN NAVBAR ===== */}
-      <nav className={`navbar 
+      <nav
+        className={`navbar 
   ${scrolled ? "scrolled" : ""} 
   ${variant === "solid" ? "solid-nav" : ""}
-`}>
+`}
+      >
         <div className="logo">
           <h2>PILLER</h2>
           <p>Real Estate Solution</p>
@@ -99,9 +101,41 @@ const Navbar =  ({ variant }) => {
             </ul>
           </li>
           <li className="mobile-buttons">
-  <button className="btn enquiry">Enquiry</button>
-  <button className="btn post-property">Post Free Property</button>
-  <button className="btn login">Login</button>
+  <button
+    className="btn enquiry"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/contact");
+    }}
+  >
+    Enquiry
+  </button>
+
+  <button
+    className="btn post-property"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/post-property");
+    }}
+  >
+    Post Free Property
+  </button>
+
+  <button
+    className="btn login"
+    onClick={() => {
+      setMenuOpen(false);
+      const token = localStorage.getItem("adminToken");
+
+      if (token) {
+        navigate("/admin-enquiries");
+      } else {
+        navigate("/admin-login");
+      }
+    }}
+  >
+    Login
+  </button>
 </li>
         </ul>
 
@@ -109,23 +143,23 @@ const Navbar =  ({ variant }) => {
         <div className="nav-buttons">
           <button className="btn enquiry">Enquiry</button>
           <Link to="/post-property">
-  <button className="btn post-property">Post Property</button>
-</Link>
-          
-          <button
-  className="btn login"
-  onClick={() => {
-    const token = localStorage.getItem("adminToken");
+            <button className="btn post-property">Post Property</button>
+          </Link>
 
-    if (token) {
-      navigate("/admin-enquiries"); // already logged in
-    } else {
-      navigate("/admin-login"); // login page
-    }
-  }}
->
-  Login
-</button>
+          <button
+            className="btn login"
+            onClick={() => {
+              const token = localStorage.getItem("adminToken");
+
+              if (token) {
+                navigate("/admin-enquiries"); // already logged in
+              } else {
+                navigate("/admin-login"); // login page
+              }
+            }}
+          >
+            Login
+          </button>
         </div>
       </nav>
     </>

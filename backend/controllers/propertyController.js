@@ -5,22 +5,24 @@ exports.createProperty = async (req, res) => {
     let amenities = [];
 
     if (req.body.amenities) {
-      if (Array.isArray(req.body.amenities)) {
-        amenities = req.body.amenities;
-      } else if (typeof req.body.amenities === "string") {
-        const parsed = JSON.parse(req.body.amenities);
+  if (Array.isArray(req.body.amenities)) {
+    amenities = req.body.amenities;
+  } else {
+    amenities = [req.body.amenities];
+  }
+}
 
-        if (Array.isArray(parsed)) {
-          amenities = parsed;
-        }
-      }
+    let imagePaths = [];
+
+    if (req.files && req.files.length > 0) {
+      imagePaths = req.files.map((file) => file.filename);
     }
 
     const newProperty = new Property({
       title: req.body.title,
       location: req.body.location,
       price: req.body.price,
-      priceValue: req.body.priceValue,
+      priceValue: Number(req.body.price),
       type: req.body.type,
       category: req.body.category,
       bedrooms: req.body.bedrooms,
@@ -34,7 +36,7 @@ exports.createProperty = async (req, res) => {
       description: req.body.description,
       featured: req.body.featured,
       amenities: amenities,
-      image: req.file ? req.file.filename : "",
+      images: imagePaths,
       approvalStatus: "Pending",
       createdBy: "Customer",
     });
@@ -54,16 +56,14 @@ exports.getProperties = async (req, res) => {
     const limit = parseInt(req.query.limit) || 6;
     const skip = (page - 1) * limit;
 
-    const filter = {};
+    const filter = {
+      approvalStatus: "Approved",
+    };
 
-    filter.approvalStatus = "Approved";
-
-    // ✅ Featured filter
     if (req.query.featured === "true") {
       filter.featured = true;
     }
 
-    // ✅ Location filter (case insensitive)
     if (req.query.location) {
       filter.location = {
         $regex: req.query.location,
@@ -71,37 +71,21 @@ exports.getProperties = async (req, res) => {
       };
     }
 
-    // ✅ Type filter
     if (req.query.type) {
       filter.type = req.query.type;
     }
 
-    // ✅ Price range filter
-    if (req.query.range) {
-      filter.priceValue = { $lte: Number(req.query.range) };
+    if (req.query.range && !isNaN(req.query.range)) {
+      filter.price = { $lte: Number(req.query.range) };
     }
 
     const total = await Property.countDocuments(filter);
 
-    // Step 1: Get top 3 premium properties
-    const premiumProperties = await Property.find({
-      ...filter,
-      premium: true,
-    })
-      .sort({ createdAt: -1 })
-      .limit(3);
-
-    // Step 2: Get normal properties
-    const normalProperties = await Property.find({
-      ...filter,
-      premium: { $ne: true },
-    })
-      .sort({ createdAt: -1 })
+    // ✅ SINGLE QUERY (premium first)
+    const properties = await Property.find(filter)
+      .sort({ premium: -1, createdAt: -1 }) // premium on top
       .skip(skip)
       .limit(limit);
-
-    // Step 3: Combine them
-    const properties = [...premiumProperties, ...normalProperties];
 
     res.json({
       total,
@@ -113,10 +97,8 @@ exports.getProperties = async (req, res) => {
     res.status(500).json({ error: "Error Fetching Properties ❌" });
   }
 };
-
 exports.updateProperty = async (req, res) => {
   try {
-
     let amenities = [];
 
     if (req.body.amenities) {
@@ -132,7 +114,7 @@ exports.updateProperty = async (req, res) => {
 
     const updateData = {
       ...rest,
-      amenities
+      amenities,
     };
 
     // Agar new image upload hui ho tabhi update karo
@@ -143,7 +125,6 @@ exports.updateProperty = async (req, res) => {
     await Property.findByIdAndUpdate(req.params.id, updateData);
 
     res.json({ message: "Property Updated Successfully ✅" });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Update Failed ❌" });

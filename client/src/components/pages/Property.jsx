@@ -40,11 +40,9 @@ const Property = () => {
 
   const queryParams = new URLSearchParams(location.search);
 
-  const filters = {
-    type: queryParams.get("type") || "",
-    location: queryParams.get("location") || "",
-    range: queryParams.get("range") || "",
-  };
+  const type = queryParams.get("type") || "";
+  const loc = queryParams.get("location") || "";
+  const range = queryParams.get("range") || "";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -73,49 +71,45 @@ const Property = () => {
     return "₹ " + number.toLocaleString("en-IN");
   };
 
- const getImageUrl = (image) => {
-  if (!image || image.trim() === "") {
-    return "http://localhost:5000/uploads/no-image.jpg";
-  }
+  const getImageUrl = (image) => {
+    if (!image || image.trim() === "") {
+      return "http://localhost:5000/uploads/no-image.jpg";
+    }
 
-  // Agar already full URL hai
-  if (image.startsWith("http")) {
-    return image;
-  }
+    // Agar already full URL hai
+    if (image.startsWith("http")) {
+      return image;
+    }
 
-  // Agar path me uploads/ already hai
-  if (image.includes("uploads/")) {
-    return `http://localhost:5000/${image.replace(/\\/g, "/")}`;
-  }
+    // Agar path me uploads/ already hai
+    if (image.includes("uploads/")) {
+      return `http://localhost:5000/${image.replace(/\\/g, "/")}`;
+    }
 
-  // Default case (sirf filename stored hai)
-  return `http://localhost:5000/uploads/${image}`;
-};
+    // Default case (sirf filename stored hai)
+    return `http://localhost:5000/uploads/${image}`;
+  };
 
   useEffect(() => {
-   fetch(
-  `http://localhost:5000/api/properties?page=${currentPage}&limit=6${
-    locationName
-      ? `&location=${locationName}`
-      : filters.location
-        ? `&location=${filters.location}`
-        : ""
-  }${
-    filters.type ? `&type=${filters.type}` : ""
-  }${
-    filters.range ? `&range=${filters.range}` : ""
-  }`
-)
+    fetch(
+      `http://localhost:5000/api/properties?page=${currentPage}&limit=6${
+        locationName
+          ? `&location=${locationName}`
+          : loc
+            ? `&location=${loc}`
+            : ""
+      }${type ? `&type=${type}` : ""}${range ? `&range=${range}` : ""}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setAllProperties(data.properties);
         setTotalPages(data.totalPages);
       });
-  }, [currentPage, locationName, filters.type, filters.range]);
+  }, [currentPage, locationName, type, range, loc]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [locationName]);
+  }, [type, range, loc]);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/properties?featured=true&limit=4")
@@ -166,14 +160,7 @@ const Property = () => {
     setSubmitting(false);
   };
 
-  const filteredProperties = allProperties;
-
-  // Premium ko upar shift karo (same card use hoga)
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
-    if (a.premium) return -1;
-    if (b.premium) return 1;
-    return 0;
-  });
+  const sortedProperties = allProperties;
 
   return (
     <div className="property-page-main">
@@ -211,54 +198,62 @@ const Property = () => {
 
             {/* Show Remaining Normal Properties */}
             {sortedProperties.map((property) => (
-              <div key={property._id} className="property-card">
-                <div className="property-card-image">
-                  {property.premium && (
-                    <span className="premium-badge">⭐ Premium</span>
-                  )}
-                  <img
-                    src={getImageUrl(property.image)}
-                    alt={property.title}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "http://localhost:5000/uploads/no-image.jpg";
-                    }}
-                  />
-                </div>
-
-                <div className="property-card-content">
-                  <h3>{property.title}</h3>
-                  <p className="location">📍 {property.location}</p>
-
-                  <div className="property-features">
-                    <span>
-                      <Bed size={16} /> {property.bedrooms || 4} Bed
-                    </span>
-                    <span>
-                      <Bath size={16} /> {property.bathrooms || 2} Bath
-                    </span>
-                    <span>
-                      <Maximize size={16} /> {property.sqft || 1500} sqft
-                    </span>
+              <Link
+                key={property._id}
+                to={`/property-details/${property._id}`}
+                className="property-card-link"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <div className="property-card">
+                  <div className="property-card-image">
+                    {property.premium && (
+                      <span className="premium-badge">⭐ Premium</span>
+                    )}
+                    <img
+                      src={
+                        property.images && property.images.length > 0
+                          ? getImageUrl(property.images[0])
+                          : property.image
+                            ? getImageUrl(property.image)
+                            : "http://localhost:5000/uploads/no-image.jpg"
+                      }
+                      alt={property.title}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "http://localhost:5000/uploads/no-image.jpg";
+                      }}
+                    />
                   </div>
 
-                  <div className="property-bottom">
-                    <h4 className="property-price">
-                      {formatPrice(property.priceValue || property.price)}
-                    </h4>
-                    <div className="property-buttons">
-                      <button className="enquiry-btn">Enquiry</button>
-                      <Link
-                        to={`/property-details/${property._id}`}
-                        className="view-more-btn"
-                      >
-                        View More
-                      </Link>
+                  <div className="property-card-content">
+                    <h3>{property.title}</h3>
+                    <p className="location">📍 {property.location}</p>
+
+                    <div className="property-features">
+                      <span>
+                        <Bed size={16} /> {property.bedrooms || 4} Bed
+                      </span>
+                      <span>
+                        <Bath size={16} /> {property.bathrooms || 2} Bath
+                      </span>
+                      <span>
+                        <Maximize size={16} /> {property.sqft || 1500} sqft
+                      </span>
+                    </div>
+
+                    <div className="property-bottom">
+                      <h4 className="property-price">
+                        {formatPrice(property.priceValue || property.price)}
+                      </h4>
+                      <div className="property-buttons">
+                        <button className="enquiry-btn">Enquiry</button>
+                        <span className="view-more-btn">View More</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
 
             {/* Pagination */}
@@ -299,7 +294,13 @@ const Property = () => {
                 >
                   <motion.div className="featured-item" whileHover={{ x: 5 }}>
                     <img
-                      src={getImageUrl(property.image)}
+                      src={
+                        property.images && property.images.length > 0
+                          ? getImageUrl(property.images[0])
+                          : property.image
+                            ? getImageUrl(property.image)
+                            : "http://localhost:5000/uploads/no-image.jpg"
+                      }
                       onError={(e) => (e.target.src = "/no-image.jpg")}
                       alt={property.title}
                     />

@@ -31,7 +31,24 @@ const BestProperties = () => {
   const filteredProperties =
     activeTab === "View All"
       ? properties
-      : properties.filter((property) => property.category === activeTab);
+      : properties.filter((property) => {
+          const backendValue =
+            property.category?.toLowerCase().trim() ||
+            property.type?.toLowerCase().trim();
+
+          const tabValue = activeTab.toLowerCase().trim();
+
+          // Land case handle
+          if (tabValue === "land or plot") {
+            return (
+              backendValue === "land" ||
+              backendValue === "plot" ||
+              backendValue === "land or plot"
+            );
+          }
+
+          return backendValue === tabValue;
+        });
 
   return (
     <section className="best-properties">
@@ -57,16 +74,32 @@ const BestProperties = () => {
               <motion.div
                 className="property-card"
                 key={property._id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.15,
+                  ease: "easeOut",
+                }}
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
+                }}
               >
                 <Link
                   to={`/property-details/${property._id}`}
                   className="image-wrapper"
                 >
-                  <img src={property.image} alt={property.title} />
+                  <img
+                    src={`http://localhost:5000/uploads/${property.images?.[0] || property.image}`}
+                    alt={property.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        "http://localhost:5000/uploads/no-image.jpg";
+                    }}
+                  />
                   <span className="badge">For Sale</span>
                 </Link>
 

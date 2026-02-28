@@ -10,7 +10,7 @@ const AdminLogin = () => {
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (token) {
-      navigate("/admin-enquiries");
+      navigate("/admin-dashboard", { replace: true });
     }
   }, [navigate]);
 
@@ -30,7 +30,7 @@ const AdminLogin = () => {
 
       if (data.success) {
         localStorage.setItem("adminToken", data.token);
-        navigate("/admin-enquiries");
+        navigate("/admin-dashboard");
       } else {
         alert(data.message || "Login Failed ❌");
       }
