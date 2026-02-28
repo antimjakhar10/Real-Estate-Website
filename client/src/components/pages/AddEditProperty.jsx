@@ -161,9 +161,9 @@ const AddEditProperty = () => {
 
     setLoading(true);
 
-    const formData = new FormData();
+   const formData = new FormData();
 
-    Object.keys(form).forEach((key) => {
+Object.keys(form).forEach((key) => {
   if (key === "amenities" || key === "nearby") {
     formData.append(key, JSON.stringify(form[key]));
   } else if (key === "images") {
@@ -175,10 +175,11 @@ const AddEditProperty = () => {
   }
 });
 
-    const url = id
-      ? `http://localhost:5000/api/properties/${id}`
-      : "http://localhost:5000/api/properties";
+// formData.append("createdBy", "Admin");
 
+const url = id
+  ? `http://localhost:5000/api/properties/${id}`
+  : "http://localhost:5000/api/properties/admin";
     const method = id ? "PUT" : "POST";
 
     await fetch(url, {

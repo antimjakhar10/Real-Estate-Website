@@ -10,23 +10,20 @@ const AdminCustomersList = () => {
   }, []);
 
   const fetchPending = async () => {
-    const token = localStorage.getItem("adminToken");
+  const token = localStorage.getItem("adminToken");
 
-    const res = await fetch(
-      "http://localhost:5000/api/properties/pending",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  const res = await fetch("http://localhost:5000/api/properties/customer", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    const data = await res.json();
-
-    if (data.properties) {
-      setProperties(data.properties);
-    }
-  };
+  const data = await res.json();
+  console.log("CUSTOMER API DATA:", data);
+  if (data.properties) {
+    setProperties(data.properties);
+  }
+};
 
   return (
     <div className="admin-customers-wrapper">
@@ -38,8 +35,50 @@ const AdminCustomersList = () => {
 
         <PropertyListLayout
           properties={properties}
-          showActions={false}
+          showActions={true}
           showApproval={true}
+          onEdit={(id) => (window.location.href = `/admin-edit-property/${id}`)}
+          onDelete={async (id) => {
+            const token = localStorage.getItem("adminToken");
+
+            await fetch(`http://localhost:5000/api/properties/${id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            fetchPending();
+          }}
+          onTogglePremium={async (id) => {
+            const token = localStorage.getItem("adminToken");
+
+            await fetch(
+              `http://localhost:5000/api/properties/toggle-premium/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              },
+            );
+
+            fetchPending();
+          }}
+          onUpdateApproval={async (id, status) => {
+            const token = localStorage.getItem("adminToken");
+
+            await fetch(`http://localhost:5000/api/properties/approve/${id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ status }),
+            });
+
+            fetchPending();
+          }}
         />
       </div>
     </div>

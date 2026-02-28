@@ -1,5 +1,7 @@
 const { togglePremium } = require("../controllers/propertyController");
 const auth = require("../middleware/auth");
+const { createPropertyAdmin } = require("../controllers/propertyController");
+
 
 const express = require("express");
 const router = express.Router();
@@ -10,7 +12,7 @@ const {
   getProperties,
   getAllPropertiesAdmin,
   createProperty,
-  getPendingProperties,
+  getCustomerProperties,
   updateApprovalStatus,
 } = require("../controllers/propertyController");
 
@@ -28,12 +30,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Routes
+
 router.post("/", upload.array("images", 10), createProperty);
+
+router.post(
+  "/admin",
+  upload.array("images", 10),
+  createPropertyAdmin
+);
+
 
 router.get("/admin/all", getAllPropertiesAdmin);
 
-router.get("/pending", getPendingProperties);
+router.get("/customer", getCustomerProperties);
 router.put("/approve/:id", updateApprovalStatus);
+router.put("/toggle-premium/:id", togglePremium);
 
 
 
@@ -75,7 +86,8 @@ router.put("/:id", upload.array("images", 10), async (req, res) => {
   }
 });
 
-router.put("/toggle-premium/:id", togglePremium);
+
+
 
 
 module.exports = router;

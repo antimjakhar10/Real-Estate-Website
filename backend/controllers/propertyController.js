@@ -5,12 +5,12 @@ exports.createProperty = async (req, res) => {
     let amenities = [];
 
     if (req.body.amenities) {
-  if (Array.isArray(req.body.amenities)) {
-    amenities = req.body.amenities;
-  } else {
-    amenities = [req.body.amenities];
-  }
-}
+      if (Array.isArray(req.body.amenities)) {
+        amenities = req.body.amenities;
+      } else {
+        amenities = JSON.parse(req.body.amenities);
+      }
+    }
 
     let imagePaths = [];
 
@@ -28,17 +28,12 @@ exports.createProperty = async (req, res) => {
       bedrooms: req.body.bedrooms,
       bathrooms: req.body.bathrooms,
       sqft: req.body.sqft,
-      yearBuilt: req.body.yearBuilt,
-      parking: req.body.parking,
-      elevator: req.body.elevator,
-      wifi: req.body.wifi,
-      pool: req.body.pool,
       description: req.body.description,
-      featured: req.body.featured,
-      amenities: amenities,
+      amenities,
       images: imagePaths,
-      approvalStatus: "Pending",
+
       createdBy: "Customer",
+      approvalStatus: "Pending",
     });
 
     await newProperty.save();
@@ -97,6 +92,7 @@ exports.getProperties = async (req, res) => {
     res.status(500).json({ error: "Error Fetching Properties ❌" });
   }
 };
+
 exports.updateProperty = async (req, res) => {
   try {
     let amenities = [];
@@ -134,10 +130,9 @@ exports.updateProperty = async (req, res) => {
 // ✅ ADMIN ONLY - NO PAGINATION
 exports.getAllPropertiesAdmin = async (req, res) => {
   try {
-    const properties = await Property.find().sort({
-      premium: -1,
-      createdAt: -1,
-    });
+    const properties = await Property.find({
+      createdBy: "Admin",
+    }).sort({ createdAt: -1 });
 
     res.json({
       success: true,
@@ -148,10 +143,10 @@ exports.getAllPropertiesAdmin = async (req, res) => {
   }
 };
 
-exports.getPendingProperties = async (req, res) => {
+exports.getCustomerProperties = async (req, res) => {
   try {
     const properties = await Property.find({
-      approvalStatus: "Pending",
+      createdBy: "Customer",
     }).sort({ createdAt: -1 });
 
     res.json({
@@ -201,5 +196,40 @@ exports.togglePremium = async (req, res) => {
     res.json({ message: "Premium status updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+exports.createPropertyAdmin = async (req, res) => {
+  try {
+    let amenities = [];
+
+    if (req.body.amenities) {
+      if (Array.isArray(req.body.amenities)) {
+        amenities = req.body.amenities;
+      } else {
+        amenities = [req.body.amenities];
+      }
+    }
+
+    let imagePaths = [];
+
+    if (req.files && req.files.length > 0) {
+      imagePaths = req.files.map((file) => file.filename);
+    }
+
+    const newProperty = new Property({
+      ...req.body,
+      amenities,
+      images: imagePaths,
+      approvalStatus: "Approved", // admin auto approve
+      createdBy: "Admin", // 🔥 force admin
+    });
+
+    await newProperty.save();
+
+    res.status(201).json({ message: "Admin Property Created ✅" });
+  } catch (error) {
+    res.status(500).json({ error: "Error Creating Property ❌" });
   }
 };
