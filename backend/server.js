@@ -19,6 +19,8 @@ app.use("/api/contact", contactRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.use("/api/blogs", require("./routes/blogRoutes"));
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -37,6 +39,7 @@ const enquiryRoutes = require("./routes/enquiry");
 
 app.use("/api/properties", propertyRoutes);
 app.use("/api/enquiry", enquiryRoutes);
+app.use("/api/blogs", require("./routes/blogRoutes"));
 
 // Server Start
 const PORT = process.env.PORT || 5000;

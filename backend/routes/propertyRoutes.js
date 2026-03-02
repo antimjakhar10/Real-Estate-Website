@@ -60,6 +60,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+const { deleteProperty, getPendingProperties } = require("../controllers/propertyController");
+router.delete("/:id", deleteProperty);
+router.get("/pending", getPendingProperties);
+
 router.put("/:id", upload.array("images", 10), async (req, res) => {
   try {
     const Property = require("../models/Property");

@@ -30,7 +30,7 @@ const AdminCustomersList = () => {
       <div className="admin-customers-container">
         <div className="admin-customers-header">
           <h2>👥 Customer Submitted Properties</h2>
-          <p>Pending approval properties</p>
+          <p>Customers Post Properties</p>
         </div>
 
         <PropertyListLayout

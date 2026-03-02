@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { useParams } from "react-router-dom";
-import { blogData } from "./Blogdata"
+
 import "./BlogDetails.css";
 
 const fadeUp = {
@@ -16,15 +16,29 @@ const fadeUp = {
   },
 };
 
-
-
 const BlogDetails = () => {
+  const [blog, setBlog] = useState(null);
   const { id } = useParams();
-const blog = blogData.find((item) => item.id === parseInt(id));
 
-if (!blog) {
-  return <h2 style={{ textAlign: "center" }}>Blog Not Found</h2>;
-}
+  useEffect(() => {
+    fetchSingleBlog();
+  }, [id]);
+
+  const fetchSingleBlog = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+      const data = await res.json();
+      setBlog(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ✅ Loading safety
+  if (!blog) {
+    return <h2 style={{ textAlign: "center", marginTop: "100px" }}>Loading...</h2>;
+  }
+
   return (
     <>
       <Navbar />
@@ -61,77 +75,74 @@ if (!blog) {
             show: { transition: { staggerChildren: 0.15 } },
           }}
         >
-
           {/* Main Featured Image */}
           <motion.img
             variants={fadeUp}
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
-            alt="Blog"
+            src={blog.image}
+            alt={blog.title}
             className="blogdetails-main-image"
           />
 
           {/* Meta Info */}
           <motion.div variants={fadeUp} className="blogdetails-meta">
-            <span>By Admin</span>
+            <span>By {blog.author}</span>
             <span>•</span>
-            <span>February 18, 2026</span>
+            <span>
+              {blog.createdAt &&
+                new Date(blog.createdAt).toDateString()}
+            </span>
             <span>•</span>
             <span>3 Comments</span>
           </motion.div>
 
           {/* Title */}
           <motion.h2 variants={fadeUp} className="blogdetails-title">
-            Modern Luxury Villa in the Heart of the City
+            {blog.title}
           </motion.h2>
 
-          {/* Paragraphs */}
+          {/* Content */}
           <motion.p variants={fadeUp}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula,
-            neque at volutpat cursus, nisl erat viverra elit, quis bibendum massa
-            urna at dolor. Integer sit amet odio nec justo efficitur bibendum.
+            {blog.content}
           </motion.p>
 
-          <motion.p variants={fadeUp}>
-            Donec facilisis velit vel est lacinia, vitae placerat risus interdum.
-            Nulla facilisi. Cras malesuada urna at mauris convallis, nec ultricies
-            libero facilisis.
-          </motion.p>
-
-          {/* Quote */}
+          {/* Quote (unchanged design part) */}
           <motion.blockquote variants={fadeUp}>
             Real estate cannot be lost or stolen, nor can it be carried away.
             Purchased with common sense and managed with care, it is one of the
             safest investments.
           </motion.blockquote>
 
-          <motion.p variants={fadeUp}>
-            Pellentesque habitant morbi tristique senectus et netus et malesuada
-            fames ac turpis egestas. Vivamus dignissim arcu non lorem tincidunt,
-            sed facilisis tortor fermentum.
-          </motion.p>
-
-          {/* Image Gallery */}
+          {/* Image Gallery (unchanged) */}
           <motion.div variants={fadeUp} className="blogdetails-gallery">
-            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688" alt="Gallery 1" />
-            <img src="https://images.unsplash.com/photo-1494526585095-c41746248156" alt="Gallery 2" />
-            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994" alt="Gallery 3" />
+            <img
+              src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+              alt="Gallery 1"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1494526585095-c41746248156"
+              alt="Gallery 2"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1568605114967-8130f3a36994"
+              alt="Gallery 3"
+            />
           </motion.div>
 
-          {/* Conclusion */}
+          {/* Conclusion (kept design part same) */}
           <motion.p variants={fadeUp}>
             Investing in premium real estate not only ensures financial growth
-            but also provides long-term security and lifestyle benefits. Choosing
-            the right property in the right location makes all the difference.
+            but also provides long-term security and lifestyle benefits.
+            Choosing the right property in the right location makes all the
+            difference.
           </motion.p>
 
-          {/* Tags Section */}
+          {/* Tags Section (unchanged) */}
           <motion.div variants={fadeUp} className="blogdetails-tags">
             <span>Tags:</span>
             <a href="#">Real Estate</a>
             <a href="#">Investment</a>
             <a href="#">Luxury Living</a>
           </motion.div>
-
         </motion.div>
       </section>
 

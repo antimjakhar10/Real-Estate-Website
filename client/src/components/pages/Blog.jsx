@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { FaUser, FaComments } from "react-icons/fa";
-import {blogData} from "./Blogdata";
+
 import "./Blog.css";
 
 const containerVariant = {
@@ -25,16 +25,29 @@ const fadeUp = {
   },
 };
 
-
-
 const Blog = () => {
+  const [blogs, setBlogs] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 6;
 
-  const totalPages = Math.ceil(blogData.length / ITEMS_PER_PAGE);
-
+  const totalPages = Math.ceil(blogs.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentBlogs = blogData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentBlogs = blogs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/blogs");
+      const data = await res.json();
+      setBlogs(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -69,37 +82,35 @@ const Blog = () => {
         >
           {currentBlogs.map((blog) => (
             <Link
-  to={`/blog-details/${blog.id}`}
-  style={{ textDecoration: "none", color: "inherit" }}
->
-  <motion.div
-    className="blog-card"
-    variants={fadeUp}
-    whileHover={{ y: -8 }}
-  >
-    <div className="blog-img">
-      <img src={blog.image} alt={blog.title} />
-      <span className="date-badge">{blog.date}</span>
-    </div>
+              to={`/blog-details/${blog._id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <motion.div
+                className="blog-card"
+                variants={fadeUp}
+                whileHover={{ y: -8 }}
+              >
+                <div className="blog-img">
+                 <img src={blog.image} alt={blog.title} />
+                  <span className="date-badge">{blog.date}</span>
+                </div>
 
-    <div className="blog-card-content">
-      <div className="blog-meta">
-        <span>
-          <FaUser /> {blog.author}
-        </span>
-        <span>
-          <FaComments /> {blog.comments}
-        </span>
-      </div>
+                <div className="blog-card-content">
+                  <div className="blog-meta">
+                    <span>
+                      <FaUser /> {blog.author}
+                    </span>
+                    <span>
+                      <FaComments /> {blog.comments}
+                    </span>
+                  </div>
 
-      <h3>{blog.title}</h3>
+                  <h3>{blog.title}</h3>
 
-      <button className="read-btn">
-        Read More
-      </button>
-    </div>
-  </motion.div>
-</Link>
+                  <button className="read-btn">Read More</button>
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </motion.div>
       </section>

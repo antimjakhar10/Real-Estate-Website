@@ -15,13 +15,27 @@ export default function PropertyGrid() {
 
   const fetchProperties = async () => {
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await axios.get(
         "http://localhost:5000/api/properties/admin/all",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log("API Response:", res.data);
 
-      setProperties(res.data.properties);
+      if (Array.isArray(res.data)) {
+        setProperties(res.data);
+      } else if (Array.isArray(res.data.properties)) {
+        setProperties(res.data.properties);
+      } else if (Array.isArray(res.data.data)) {
+        setProperties(res.data.data);
+      } else {
+        setProperties([]);
+      }
 
       setLoading(false);
     } catch (error) {
@@ -30,9 +44,15 @@ export default function PropertyGrid() {
     }
   };
 
-  const getImageUrl = (image) => {
-    if (!image || image.trim() === "") {
+  const getImageUrl = (images) => {
+    if (!images || !Array.isArray(images) || images.length === 0 || !images[0]) {
       return "http://localhost:5000/uploads/no-image.jpg";
+    }
+
+    const image = images[0];
+
+    if (typeof image !== 'string' || image.trim() === "") {
+        return "http://localhost:5000/uploads/no-image.jpg";
     }
 
     if (image.startsWith("http")) {
@@ -67,7 +87,7 @@ export default function PropertyGrid() {
         {properties.map((property) => (
           <div key={property._id} className="grid-card">
             <img
-              src={getImageUrl(property.image)}
+              src={getImageUrl(property.images)}
               alt={property.title}
               className="grid-image"
               onError={(e) => {

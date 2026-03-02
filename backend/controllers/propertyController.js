@@ -233,3 +233,34 @@ exports.createPropertyAdmin = async (req, res) => {
     res.status(500).json({ error: "Error Creating Property ❌" });
   }
 };
+
+exports.deleteProperty = async (req, res) => {
+  try {
+     const propertyId = req.params.id;
+     const deletedProperty = await Property.findByIdAndDelete(propertyId);
+     
+     if (!deletedProperty) {
+       return res.status(404).json({ message: "Property not found" });
+     }
+     
+     res.status(200).json({ success: true, message: "Property deleted successfully ✅" });
+  } catch (error) {
+     console.error("Delete Property Error:", error);
+     res.status(500).json({ success: false, message: "Error deleting property ❌" });
+  }
+};
+
+exports.getPendingProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      approvalStatus: "Pending",
+    }).sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      properties,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
