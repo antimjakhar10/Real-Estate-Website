@@ -10,7 +10,12 @@ module.exports = function (req, res, next) {
   try {
     const token = authHeader.replace("Bearer ", "");
 
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("TOKEN RECEIVED:", token);
+console.log("JWT SECRET:", process.env.JWT_SECRET);
+
+const verified = jwt.verify(token, process.env.JWT_SECRET);
+
+console.log("VERIFIED DATA:", verified);
 
     if (verified.role !== "admin") {
       return res.status(403).json({ message: "Not Authorized ❌" });

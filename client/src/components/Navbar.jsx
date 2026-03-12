@@ -128,7 +128,7 @@ const Navbar = ({ variant }) => {
       const token = localStorage.getItem("adminToken");
 
       if (token) {
-        navigate("/admin-enquiries");
+        navigate("/admin-dashboard");
       } else {
         navigate("/admin-login");
       }
@@ -152,7 +152,7 @@ const Navbar = ({ variant }) => {
               const token = localStorage.getItem("adminToken");
 
               if (token) {
-                navigate("/admin-enquiries"); // already logged in
+                navigate("/admin-dashboard"); // already logged in
               } else {
                 navigate("/admin-login"); // login page
               }

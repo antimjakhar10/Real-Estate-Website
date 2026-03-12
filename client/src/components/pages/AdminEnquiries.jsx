@@ -46,10 +46,12 @@ const AdminEnquiries = () => {
     const token = localStorage.getItem("adminToken");
 
     const res = await fetch("http://localhost:5000/api/enquiry", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+});
 
     if (!res.ok) {
       console.error("Access issue:", res.status);

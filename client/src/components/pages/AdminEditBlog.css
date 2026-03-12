@@ -1,0 +1,51 @@
+.admin-edit-blog-container {
+  padding: 25px;
+  max-width: 800px;
+}
+
+.admin-edit-blog-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.admin-edit-blog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-edit-blog-form input,
+.admin-edit-blog-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.admin-edit-blog-form input:focus,
+.admin-edit-blog-form textarea:focus {
+  border-color: #3b82f6;
+}
+
+.admin-edit-blog-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.blog-update-btn {
+  width: fit-content;
+  padding: 10px 20px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.blog-update-btn:hover {
+  background: #2563eb;
+}

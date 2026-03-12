@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import "./Hero.css";
 
-import SearchSection from "./SearchSection"; // Ensure path sahi ho
+import SearchSection from "./SearchSection"; 
 
 const Hero = () => {
   return (

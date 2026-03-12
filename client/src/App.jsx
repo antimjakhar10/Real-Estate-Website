@@ -28,6 +28,9 @@ import PropertyGrid from "./components/pages/PropertyGrid";
 import AdminCustomersList from "./components/pages/AdminCustomersList";
 import AdminCustomersGrid from "./components/pages/AdminCustomersGrid";
 import AdminContacts from "./components/pages/AdminContacts";
+import AdminBlogs from "./components/pages/AdminBlogs";
+import AdminAddBlog from "./components/pages/AdminAddBlog";
+import AdminEditBlog from "./components/pages/AdminEditBlog";
 
 const Home = () => (
   <>
@@ -77,6 +80,9 @@ function App() {
   <Route path="admin-edit-property/:id" element={<AddEditProperty />} />
   <Route path="/admin-customers-list" element={<AdminCustomersList />} />
 <Route path="/admin-customers-grid" element={<AdminCustomersGrid />} />
+<Route path="/admin-blogs" element={<AdminBlogs />} />
+<Route path="/admin-add-blog" element={<AdminAddBlog />} />
+<Route path="/admin-edit-blog/:id" element={<AdminEditBlog />} />
 </Route>
       
     </Routes>

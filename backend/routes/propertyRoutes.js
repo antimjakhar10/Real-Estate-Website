@@ -50,6 +50,10 @@ router.put("/toggle-premium/:id", togglePremium);
 
 router.get("/", getProperties);
 
+const { deleteProperty, getPendingProperties } = require("../controllers/propertyController");
+router.delete("/:id", deleteProperty);
+router.get("/pending", getPendingProperties);
+
 router.get("/:id", async (req, res) => {
   try {
     const Property = require("../models/Property");
@@ -59,10 +63,6 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "Property not found" });
   }
 });
-
-const { deleteProperty, getPendingProperties } = require("../controllers/propertyController");
-router.delete("/:id", deleteProperty);
-router.get("/pending", getPendingProperties);
 
 router.put("/:id", upload.array("images", 10), async (req, res) => {
   try {

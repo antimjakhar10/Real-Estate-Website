@@ -18,9 +18,9 @@ const Footer = () => {
       {/* --- TOP SECTION: INFO COLUMNS --- */}
       <div className="footer-top">
         <div className="footer-col about">
-          <h4><a href="/about">About Pillar</a></h4>
+          <h4><a href="/about">About Piller</a></h4>
           <p className="about-text">
-            Pillar is a luxury to the resilience, adaptability, Spacious modern villa living room with centrally placed swimming pool blending indooroutdoor.
+            Piller is a luxury to the resilience, adaptability, Spacious modern villa living room with centrally placed swimming pool blending indooroutdoor.
           </p>
           <div className="contact-details">
             <p><span>📞</span> +00 (123) 456 789 012</p>
@@ -63,7 +63,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-col map-col">
-          <h4>Pillar Location</h4>
+          <h4>Piller Location</h4>
           <div className="map-wrapper">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
@@ -88,7 +88,7 @@ const Footer = () => {
         </div>
 
         <div className="insta-branding">
-          <p className="insta-user-tag">@pillar on Instagram</p>
+          <p className="insta-user-tag">@piller on Instagram</p>
           <h3 className="gallery-title-main">Nice Gallery</h3>
         </div>
 
