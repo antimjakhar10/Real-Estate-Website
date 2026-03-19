@@ -11,10 +11,12 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://real-estate-website-ai2s.onrender.com"
+    "https://r3capital.in",
+    "https://www.r3capital.in"
   ],
   methods: ["GET","POST","PUT","DELETE"],
-  allowedHeaders: ["Content-Type","Authorization"]
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true
 }));
 app.use(express.json());
 
