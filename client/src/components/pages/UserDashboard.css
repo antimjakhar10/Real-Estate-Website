@@ -1,0 +1,113 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard-actions button {
+  padding: 10px 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.property-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.property-card {
+  padding: 15px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+  margin-top: 10px;
+}
+
+.status.pending {
+  background: orange;
+}
+
+.status.approved {
+  background: green;
+}
+
+.status.rejected {
+  background: red;
+}
+
+.card-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+
+.dashboard-main {
+  padding: 10px;
+}
+
+.dashboard-title {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* GRID */
+.dashboard-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* CARD */
+.stat-card {
+  flex: 1;
+  min-width: 220px;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+/* TEXT */
+.stat-info p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.stat-info h3 {
+  font-size: 22px;
+  color: #111827;
+}
+
+/* ICON */
+.stat-icon {
+  font-size: 30px;
+  background: #eff6ff;
+  padding: 10px;
+  border-radius: 10px;
+}

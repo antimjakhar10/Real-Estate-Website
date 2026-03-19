@@ -15,6 +15,7 @@ const AdminLayout = () => {
   const location = useLocation();
   const [openProperty, setOpenProperty] = useState(false);
   const [openCustomers, setOpenCustomers] = useState(false);
+  const [openUsers, setOpenUsers] = useState(false);
   const [openBlogs, setOpenBlogs] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -137,39 +138,68 @@ const AdminLayout = () => {
           )}
         </div>
 
-      {/* Blogs */}
-<div className="admin-section">
-  <div
-    className="admin-section-header"
-    onClick={() => setOpenBlogs(!openBlogs)}
-  >
-    <span>📝 Blogs</span>
-    <ChevronDown size={16} className={openBlogs ? "rotate" : ""} />
-  </div>
+        {/* Users */}
+        <div className="admin-section">
+          <div
+            className="admin-section-header"
+            onClick={() => setOpenUsers(!openUsers)}
+          >
+            <span>👤 Users</span>
+            <ChevronDown size={16} />
+          </div>
 
-  {openBlogs && (
-    <div className="admin-submenu">
-      <div
-        className={`admin-menu-item ${
-          isActive("/admin-blogs") ? "active" : ""
-        }`}
-        onClick={() => navigate("/admin-blogs")}
-      >
-        • Blog List
-      </div>
+          {openUsers && (
+            <div className="admin-submenu">
+              <div
+                className="admin-menu-item"
+                onClick={() => navigate("/admin-user-properties")}
+              >
+                • Properties
+              </div>
 
-      <div
-        className={`admin-menu-item ${
-          isActive("/admin-add-blog") ? "active" : ""
-        }`}
-        onClick={() => navigate("/admin-add-blog")}
-      >
-        <PlusSquare size={16} />
-        Add Blog
-      </div>
-    </div>
-  )}
-</div>
+              <div
+                className="admin-menu-item"
+                onClick={() => navigate("/admin-user-blogs")}
+              >
+                • Blogs
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Blogs */}
+        <div className="admin-section">
+          <div
+            className="admin-section-header"
+            onClick={() => setOpenBlogs(!openBlogs)}
+          >
+            <span>📝 Blogs</span>
+            <ChevronDown size={16} className={openBlogs ? "rotate" : ""} />
+          </div>
+
+          {openBlogs && (
+            <div className="admin-submenu">
+              <div
+                className={`admin-menu-item ${
+                  isActive("/admin-blogs") ? "active" : ""
+                }`}
+                onClick={() => navigate("/admin-blogs")}
+              >
+                • Blog List
+              </div>
+
+              <div
+                className={`admin-menu-item ${
+                  isActive("/admin-add-blog") ? "active" : ""
+                }`}
+                onClick={() => navigate("/admin-add-blog")}
+              >
+                <PlusSquare size={16} />
+                Add Blog
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Logout */}
         <div

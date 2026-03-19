@@ -31,6 +31,15 @@ import AdminContacts from "./components/pages/AdminContacts";
 import AdminBlogs from "./components/pages/AdminBlogs";
 import AdminAddBlog from "./components/pages/AdminAddBlog";
 import AdminEditBlog from "./components/pages/AdminEditBlog";
+import UserDashboard from "./components/pages/UserDashboard";
+import UserLogin from "./components/pages/UserLogin";
+import UserRegister from "./components/pages/UserRegister";
+import UserAddBlog from "./components/pages/UserAddBlog";
+import MyBlogs from "./components/pages/MyBlogs";
+import MyProperties from "./components/pages/MyProperties";
+import UserLayout from "./components/pages/UserLayout";
+import AdminUserProperties from "./components/pages/AdminUserProperties";
+import AdminUserBlogs from "./components/pages/AdminUserBlogs";
 
 const Home = () => (
   <>
@@ -58,33 +67,45 @@ function App() {
       <Route path="/about" element={<Aboutus />} />
       <Route path="/property" element={<Property />} />
 
-      {/* Dynamic route with property ID */}
-      <Route path="/property-details/:id" element={<Propertydetails />} />
+      <Route path="/user/login" element={<UserLogin />} />
+      <Route path="/user/register" element={<UserRegister />} />
+      <Route path="/" element={<UserLayout />}>
+        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/user/add-property" element={<AddEditProperty />} />
+        <Route path="/user/edit-property/:id" element={<AddEditProperty />} />
+        <Route path="/my-properties" element={<MyProperties />} />
+        <Route path="/user-add-blog" element={<UserAddBlog />} />
+        <Route path="/my-blogs" element={<MyBlogs />} />
+      </Route>
 
+      {/* Dynamic route with property ID */}
+      <Route path="/property-details/:slug" element={<Propertydetails />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog-details/:id" element={<BlogDetails />} />
 
       <Route path="/contact" element={<Contactus />} />
 
-     
-
       <Route path="/admin-login" element={<AdminLogin />} />
 
       <Route path="/" element={<AdminLayout />}>
-  <Route path="admin-dashboard" element={<AdminDashboard />} />
-  <Route path="admin-enquiries" element={<AdminEnquiries />} />
-  <Route path="/admin-contacts" element={<AdminContacts />} />
-  <Route path="admin-properties" element={<AdminProperties />} />
-  <Route path="admin-property-grid" element={<PropertyGrid />} />
-  <Route path="admin-add-property" element={<AddEditProperty />} />
-  <Route path="admin-edit-property/:id" element={<AddEditProperty />} />
-  <Route path="/admin-customers-list" element={<AdminCustomersList />} />
-<Route path="/admin-customers-grid" element={<AdminCustomersGrid />} />
-<Route path="/admin-blogs" element={<AdminBlogs />} />
-<Route path="/admin-add-blog" element={<AdminAddBlog />} />
-<Route path="/admin-edit-blog/:id" element={<AdminEditBlog />} />
-</Route>
-      
+        <Route path="admin-dashboard" element={<AdminDashboard />} />
+        <Route path="admin-enquiries" element={<AdminEnquiries />} />
+        <Route path="/admin-contacts" element={<AdminContacts />} />
+        <Route path="admin-properties" element={<AdminProperties />} />
+        <Route path="admin-property-grid" element={<PropertyGrid />} />
+        <Route path="admin-add-property" element={<AddEditProperty />} />
+        <Route path="admin-edit-property/:id" element={<AddEditProperty />} />
+        <Route path="/admin-customers-list" element={<AdminCustomersList />} />
+        <Route path="/admin-customers-grid" element={<AdminCustomersGrid />} />
+        <Route
+          path="/admin-user-properties"
+          element={<AdminUserProperties />}
+        />
+        <Route path="/admin-user-blogs" element={<AdminUserBlogs />} />
+        <Route path="/admin-blogs" element={<AdminBlogs />} />
+        <Route path="/admin-add-blog" element={<AdminAddBlog />} />
+        <Route path="/admin-edit-blog/:id" element={<AdminEditBlog />} />
+      </Route>
     </Routes>
   );
 }

@@ -42,10 +42,12 @@ app.get("/", (req, res) => {
 
 const propertyRoutes = require("./routes/propertyRoutes");
 const enquiryRoutes = require("./routes/enquiry");
+const userRoutes = require("./routes/userRoutes");
 
 app.use("/api/properties", propertyRoutes);
 app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/blogs", require("./routes/blogRoutes"));
+app.use("/api/users", userRoutes);
 
 // Server Start
 const PORT = process.env.PORT || 5000;

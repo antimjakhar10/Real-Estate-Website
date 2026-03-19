@@ -1,6 +1,9 @@
 const { togglePremium } = require("../controllers/propertyController");
 const auth = require("../middleware/auth");
 const { createPropertyAdmin } = require("../controllers/propertyController");
+const { getMyProperties } = require("../controllers/propertyController");
+const { getUserProperties } = require("../controllers/propertyController");
+const { getUserSubmittedProperties } = require("../controllers/propertyController");
 
 
 const express = require("express");
@@ -14,6 +17,7 @@ const {
   createProperty,
   getCustomerProperties,
   updateApprovalStatus,
+  updateProperty
 } = require("../controllers/propertyController");
 
 // 🔥 Proper Storage Config
@@ -54,43 +58,35 @@ const { deleteProperty, getPendingProperties } = require("../controllers/propert
 router.delete("/:id", deleteProperty);
 router.get("/pending", getPendingProperties);
 
-router.get("/:id", async (req, res) => {
-  try {
-    const Property = require("../models/Property");
-    const property = await Property.findById(req.params.id);
-    res.json(property);
-  } catch (err) {
-    res.status(500).json({ error: "Property not found" });
-  }
-});
+router.get("/my/:userId", getMyProperties);
+router.get("/user/:userId", getUserProperties);
+router.get("/admin/user-properties", getUserSubmittedProperties);
 
-router.put("/:id", upload.array("images", 10), async (req, res) => {
+router.get("/:idOrSlug", async (req, res) => {
   try {
     const Property = require("../models/Property");
 
-    const updateData = {
-      ...req.body,
-    };
+    let property;
 
-    // amenities JSON parse
-    if (req.body.amenities) {
-      updateData.amenities = JSON.parse(req.body.amenities);
+    // check if MongoDB ObjectId
+    if (req.params.idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
+      property = await Property.findById(req.params.idOrSlug);
+    } else {
+      property = await Property.findOne({ slug: req.params.idOrSlug });
     }
 
-    // image update only if new image uploaded
-   if (req.files && req.files.length > 0) {
-  updateData.images = req.files.map(file => file.filename);
-}
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
 
-    await Property.findByIdAndUpdate(req.params.id, updateData);
-
-    res.json({ success: true });
+    res.json(property);
   } catch (err) {
-    res.status(500).json({ error: "Update failed" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
 
+router.put("/:id", upload.array("images", 10), updateProperty);
 
 
 

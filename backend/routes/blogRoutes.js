@@ -7,7 +7,7 @@ const upload = require("../middleware/upload");
 // GET all blogs
 router.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
+    const blogs = await Blog.find({ approvalStatus: "Approved" }).sort({ createdAt: -1 });
     res.json(blogs);
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
@@ -29,8 +29,7 @@ router.get("/:id", async (req, res) => {
 // ✅ CREATE BLOG
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-
-    const { title, content } = req.body;
+    const { title, content, userId } = req.body;
 
     const image = req.file
       ? `http://localhost:5000/uploads/${req.file.filename}`
@@ -40,12 +39,13 @@ router.post("/", upload.single("image"), async (req, res) => {
       title,
       content,
       image,
+      createdBy: userId,       // 🔥 NEW
+      approvalStatus: "Pending" // 🔥 NEW
     });
 
     const savedBlog = await newBlog.save();
 
     res.status(201).json(savedBlog);
-
   } catch (error) {
     res.status(500).json({ message: "Error creating blog" });
   }
@@ -85,4 +85,40 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.put("/approve/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    await Blog.findByIdAndUpdate(req.params.id, {
+      approvalStatus: status,
+    });
+
+    res.json({ message: "Blog status updated" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating status" });
+  }
+});
+
+router.get("/user/:userId", async (req, res) => {
+  const blogs = await Blog.find({
+    createdBy: req.params.userId
+  }).sort({ createdAt: -1 });
+
+  res.json(blogs);
+});
+
+router.get("/admin/user-blogs", async (req, res) => {
+  try {
+    const blogs = await Blog.find({
+      createdBy: { $ne: null },
+    }).sort({ createdAt: -1 });
+
+    res.json(blogs);
+  } catch (err) {
+    console.log("BLOG ERROR 👉", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 module.exports = router;
+

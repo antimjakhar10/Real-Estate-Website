@@ -1,69 +1,84 @@
 const mongoose = require("mongoose");
 
-const propertySchema = new mongoose.Schema({
-  title: String,
-  location: String,
-  price: String,
-  priceValue: Number,
-  type: String,
-  category: String,
-  bedrooms: Number,
-  bathrooms: Number,
-  sqft: Number,
-  description: String,
-  yearBuilt: Number,
-  parking: Number,
-  elevator: Boolean,
-  wifi: Boolean,
-  pool: Boolean,
-  images: [String],
-  nearby: [String],
+const propertySchema = new mongoose.Schema(
+  {
+    title: String,
+    slug: {
+      type: String,
+      unique: true,
+    },
+    location: String,
+    price: String,
+    priceValue: Number,
+    type: String,
+    category: String,
+    bedrooms: {
+      type: Number,
+      default: 0,
+    },
 
-  featured: {
-  type: Boolean,
-  default: false
-},
+    bathrooms: {
+      type: Number,
+      default: 0,
+    },
 
-premium: {
-  type: Boolean,
-  default: false
-},
+    sqft: {
+      type: Number,
+      default: 0,
+    },
 
-approvalStatus: {
-  type: String,
-  enum: ["Pending", "Approved", "Rejected"],
-  default: "Pending",
-},
+    parking: {
+      type: Number,
+      default: 0,
+    },
+    elevator: Boolean,
+    wifi: Boolean,
+    pool: Boolean,
+    images: [String],
 
-createdBy: {
-  type: String,
-  enum: ["Admin", "Customer"],
-  default: "Customer",
-},
+    featured: {
+      type: Boolean,
+      default: false,
+    },
 
+    premium: {
+      type: Boolean,
+      default: false,
+    },
 
-  highlights: [
-    {
-      icon: String,
-      label: String,
-      value: String
-    }
-  ],
+    approvalStatus: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
 
-  amenities: {
-  type: [String],
-  default: []
-},
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
 
-  nearbyLocations: [
-    {
-      name: String,
-      dist: String,
-      icon: String
-    }
-  ]
-},
-{ timestamps: true }
-  );
+    highlights: [
+      {
+        icon: String,
+        label: String,
+        value: String,
+      },
+    ],
+
+    amenities: {
+      type: [String],
+      default: [],
+    },
+
+    nearbyLocations: [
+      {
+        name: String,
+        dist: String,
+        icon: String,
+      },
+    ],
+  },
+  { timestamps: true },
+);
 
 module.exports = mongoose.model("Property", propertySchema);

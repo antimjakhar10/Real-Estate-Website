@@ -1,8 +1,17 @@
 const Property = require("../models/Property");
 
+const generateSlug = (title) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+};
+
 exports.createProperty = async (req, res) => {
   try {
     let amenities = [];
+    let nearbyLocations = [];
 
     if (req.body.amenities) {
       if (Array.isArray(req.body.amenities)) {
@@ -12,27 +21,56 @@ exports.createProperty = async (req, res) => {
       }
     }
 
+    if (req.body.nearbyLocations) {
+      if (Array.isArray(req.body.nearbyLocations)) {
+        nearbyLocations = req.body.nearbyLocations.map((item) => {
+          try {
+            return JSON.parse(item);
+          } catch {
+            return { name: item, dist: "" };
+          }
+        });
+      } else {
+        try {
+          nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
+        } catch {
+          nearbyLocations = [{ name: req.body.nearbyLocations, dist: "" }];
+        }
+      }
+    }
+
     let imagePaths = [];
 
     if (req.files && req.files.length > 0) {
       imagePaths = req.files.map((file) => file.filename);
     }
 
+    let baseSlug = generateSlug(req.body.title);
+let slug = baseSlug;
+let count = 1;
+
+// duplicate slug avoid
+while (await Property.findOne({ slug })) {
+  slug = `${baseSlug}-${count++}`;
+}
+
     const newProperty = new Property({
       title: req.body.title,
+      slug,
       location: req.body.location,
       price: req.body.price,
       priceValue: Number(req.body.price),
       type: req.body.type,
-      category: req.body.category,
-      bedrooms: req.body.bedrooms,
-      bathrooms: req.body.bathrooms,
-      sqft: req.body.sqft,
+      bedrooms: req.body.bedrooms || 0,
+      bathrooms: req.body.bathrooms || 0,
+      sqft: req.body.sqft || 0,
+      parking: req.body.parking || 0,
       description: req.body.description,
       amenities,
+      nearbyLocations,
       images: imagePaths,
 
-      createdBy: "Customer",
+      createdBy: req.body.userId,
       approvalStatus: "Pending",
     });
 
@@ -96,6 +134,7 @@ exports.getProperties = async (req, res) => {
 exports.updateProperty = async (req, res) => {
   try {
     let amenities = [];
+    let nearbyLocations = [];
 
     if (req.body.amenities) {
       if (Array.isArray(req.body.amenities)) {
@@ -105,20 +144,37 @@ exports.updateProperty = async (req, res) => {
       }
     }
 
-    // ⚠️ IMPORTANT: image ko body se hata do
+    if (req.body.nearbyLocations) {
+      if (Array.isArray(req.body.nearbyLocations)) {
+        nearbyLocations = req.body.nearbyLocations.map((item) =>
+          JSON.parse(item),
+        );
+      } else {
+        nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
+      }
+    }
+
     const { image, ...rest } = req.body;
 
     const updateData = {
       ...rest,
       amenities,
+      nearbyLocations,
+      parking: Number(req.body.parking) || 0,
+      bedrooms: Number(req.body.bedrooms) || 0,
+      bathrooms: Number(req.body.bathrooms) || 0,
+      sqft: Number(req.body.sqft) || 0,
     };
 
-    // Agar new image upload hui ho tabhi update karo
     if (req.file) {
       updateData.image = req.file.filename;
     }
 
-    await Property.findByIdAndUpdate(req.params.id, updateData);
+    await Property.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateData },
+      { new: true },
+    );
 
     res.json({ message: "Property Updated Successfully ✅" });
   } catch (error) {
@@ -131,14 +187,12 @@ exports.updateProperty = async (req, res) => {
 exports.getAllPropertiesAdmin = async (req, res) => {
   try {
     const properties = await Property.find({
-      createdBy: "Admin",
+      createdBy: null, // 🔥 admin wali hi
     }).sort({ createdAt: -1 });
 
-    res.json({
-      success: true,
-      properties,
-    });
+    res.json({ properties });
   } catch (error) {
+    console.log("FETCH ADMIN ERROR 👉", error); // 🔥 ADD THIS
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -199,17 +253,14 @@ exports.togglePremium = async (req, res) => {
   }
 };
 
-
 exports.createPropertyAdmin = async (req, res) => {
   try {
     let amenities = [];
 
     if (req.body.amenities) {
-      if (Array.isArray(req.body.amenities)) {
-        amenities = req.body.amenities;
-      } else {
-        amenities = [req.body.amenities];
-      }
+      amenities = Array.isArray(req.body.amenities)
+        ? req.body.amenities
+        : [req.body.amenities];
     }
 
     let imagePaths = [];
@@ -218,35 +269,51 @@ exports.createPropertyAdmin = async (req, res) => {
       imagePaths = req.files.map((file) => file.filename);
     }
 
+    let baseSlug = generateSlug(req.body.title);
+    let slug = baseSlug;
+    let count = 1;
+
+    while (await Property.findOne({ slug })) {
+      slug = `${baseSlug}-${count++}`;
+    }
+
     const newProperty = new Property({
       ...req.body,
+      slug,
       amenities,
       images: imagePaths,
-      approvalStatus: "Approved", // admin auto approve
-      createdBy: "Admin", // 🔥 force admin
+      approvalStatus: "Approved",
+
+      // 🔥 FIX (IMPORTANT)
+      createdBy: null, // admin ke liye null rakh
     });
 
     await newProperty.save();
 
     res.status(201).json({ message: "Admin Property Created ✅" });
   } catch (error) {
+    console.log("ADMIN CREATE ERROR 👉", error); // 🔥 ADD THIS
     res.status(500).json({ error: "Error Creating Property ❌" });
   }
 };
 
 exports.deleteProperty = async (req, res) => {
   try {
-     const propertyId = req.params.id;
-     const deletedProperty = await Property.findByIdAndDelete(propertyId);
-     
-     if (!deletedProperty) {
-       return res.status(404).json({ message: "Property not found" });
-     }
-     
-     res.status(200).json({ success: true, message: "Property deleted successfully ✅" });
+    const propertyId = req.params.id;
+    const deletedProperty = await Property.findByIdAndDelete(propertyId);
+
+    if (!deletedProperty) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "Property deleted successfully ✅" });
   } catch (error) {
-     console.error("Delete Property Error:", error);
-     res.status(500).json({ success: false, message: "Error deleting property ❌" });
+    console.error("Delete Property Error:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error deleting property ❌" });
   }
 };
 
@@ -261,6 +328,42 @@ exports.getPendingProperties = async (req, res) => {
       properties,
     });
   } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getMyProperties = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const properties = await Property.find({
+      createdBy: userId,
+    }).sort({ createdAt: -1 });
+
+    res.json({ success: true, properties });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getUserProperties = async (req, res) => {
+  const properties = await Property.find({
+    createdBy: req.params.userId,
+  }).sort({ createdAt: -1 });
+
+  res.json(properties);
+};
+
+
+exports.getUserSubmittedProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      createdBy: { $ne: null }, // 🔥 only users
+    }).sort({ createdAt: -1 });
+
+    res.json({ properties });
+  } catch (error) {
+    console.log("USER PROPERTY ERROR 👉", error);
     res.status(500).json({ message: "Server Error" });
   }
 };

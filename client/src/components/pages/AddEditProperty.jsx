@@ -34,7 +34,7 @@ const AddEditProperty = () => {
     location: "",
     status: "",
     amenities: [],
-    nearby: [],
+    nearbyLocations: [],
     images: [],
   });
 
@@ -63,9 +63,11 @@ const AddEditProperty = () => {
     const data = await res.json();
 
     setForm({
-      ...data,
-      image: null,
-    });
+  ...data,
+  amenities: Array.isArray(data.amenities) ? data.amenities : [],
+  nearbyLocations: data.nearbyLocations || [],
+  images: [],
+});
 
     if (data.images && data.images.length > 0) {
       setImagePreviews(
@@ -104,16 +106,17 @@ const AddEditProperty = () => {
     if (checked) {
       setForm({
         ...form,
-        nearby: [...form.nearby, value],
+        nearbyLocations: [...form.nearbyLocations, { name: value, dist: "" }],
       });
     } else {
       setForm({
         ...form,
-        nearby: form.nearby.filter((item) => item !== value),
+        nearbyLocations: form.nearbyLocations.filter(
+          (item) => item.name !== value,
+        ),
       });
     }
   };
-
   const addNearby = () => {
     if (!newNearby.trim()) return;
 
@@ -161,26 +164,59 @@ const AddEditProperty = () => {
 
     setLoading(true);
 
-   const formData = new FormData();
+    const formData = new FormData();
 
-Object.keys(form).forEach((key) => {
-  if (key === "amenities" || key === "nearby") {
-    formData.append(key, JSON.stringify(form[key]));
-  } else if (key === "images") {
+   Object.keys(form).forEach((key) => {
+
+    if (!id && !isAdmin) {
+  formData.append("userId", user._id); // 🔥 IMPORTANT
+}
+
+  if (key === "amenities") {
+
+    form[key].forEach((item) => {
+      formData.append(key, item);
+    });
+
+  }
+
+  else if (key === "nearbyLocations") {
+
+    form.nearbyLocations.forEach((item) => {
+      formData.append("nearbyLocations", JSON.stringify(item));
+    });
+
+  }
+
+  else if (key === "images") {
+
     form.images.forEach((img) => {
       formData.append("images", img);
     });
-  } else {
-    formData.append(key, form[key]);
+
   }
+
+  else {
+
+    formData.append(key, form[key]);
+
+  }
+
 });
 
-// formData.append("createdBy", "Admin");
+    // formData.append("createdBy", "Admin");
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+const isAdmin = user?.role === "admin"; // agar role nahi hai to ignore
 
 const url = id
   ? `http://localhost:5000/api/properties/${id}`
-  : "http://localhost:5000/api/properties/admin";
-    const method = id ? "PUT" : "POST";
+  : isAdmin
+  ? "http://localhost:5000/api/properties/admin"
+  : "http://localhost:5000/api/properties"; // 🔥 USER API
+
+const method = id ? "PUT" : "POST";
 
     await fetch(url, {
       method,
@@ -188,7 +224,7 @@ const url = id
     });
 
     setLoading(false);
-    navigate("/admin-properties");
+    navigate(isAdmin ? "/admin-properties" : "/my-properties");
   };
 
   return (
@@ -399,13 +435,26 @@ const url = id
                       <input
                         type="checkbox"
                         value={place}
-                        checked={form.nearby.includes(place)}
+                       checked={form.nearbyLocations.some((item) => item.name === place)}
                         onChange={handleNearbyChange}
                       />
                       {place}
                     </label>
                   ))}
                 </div>
+
+                {form.nearbyLocations.map((item, index) => (
+                  <input
+                    key={index}
+                    placeholder={`Distance for ${item.name}`}
+                    value={item.dist}
+                    onChange={(e) => {
+                      const updated = [...form.nearbyLocations];
+                      updated[index].dist = e.target.value;
+                      setForm({ ...form, nearbyLocations: updated });
+                    }}
+                  />
+                ))}
 
                 <div className="add-row">
                   <input

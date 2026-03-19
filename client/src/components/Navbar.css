@@ -74,6 +74,12 @@
   font-weight: 500;
 }
 
+.logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
 
 /* ===== UPDATED DROPDOWN (Matches your Nav Links) ===== */
 

@@ -55,7 +55,7 @@ const LuxuryProperties = () => {
               }}
             >
               <Link
-                to={`/property-details/${property._id}`}
+                to={`/property-details/${property.slug ? property.slug : property._id}`}
                 className="image-wrapper"
               >
                 <img
@@ -72,7 +72,7 @@ const LuxuryProperties = () => {
 
               <div className="card-content">
                 <Link
-                  to={`/property-details/${property._id}`}
+                 to={`/property-details/${property.slug ? property.slug : property._id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <h3>{property.title}</h3>
@@ -97,7 +97,7 @@ const LuxuryProperties = () => {
 
                     {/* Dynamic Link with property ID */}
                     <Link
-                      to={`/property-details/${property._id}`}
+                      to={`/property-details/${property.slug ? property.slug : property._id}`}
                       className="view-btn-link"
                       style={{ whiteSpace: "nowrap" }}
                     >

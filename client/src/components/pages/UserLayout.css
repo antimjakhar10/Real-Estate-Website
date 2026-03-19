@@ -1,0 +1,50 @@
+.user-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: #cbd5f5;
+  margin-bottom: 12px;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: white;
+}
+
+/* MAIN */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background: #f1f5f9;
+}
+
+
+.logout-btn {
+  margin-top: 30px;
+  padding: 10px;
+  width: 100%;
+  background: #ef4444;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}

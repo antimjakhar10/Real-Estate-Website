@@ -12,6 +12,14 @@ const amenitiesList = [
   "Club House",
 ];
 
+const nearbyList = [
+  "School",
+  "Hospital",
+  "Metro Station",
+  "Shopping Mall",
+  "Park",
+];
+
 const PostProperty = () => {
   const [step, setStep] = useState(1);
 
@@ -53,8 +61,7 @@ const PostProperty = () => {
     }
   };
 
- const handleSubmit = async () => {
-
+  const handleSubmit = async () => {
     // ❌ Image check sirf submit pe
     if (!formData.images || formData.images.length === 0) {
       alert("Please upload at least one image ❌");
@@ -77,6 +84,16 @@ const PostProperty = () => {
       data.append("amenities", amenity);
     });
 
+   formData.nearby.forEach((place) => {
+  data.append(
+    "nearbyLocations",
+    JSON.stringify({
+      name: place,
+      dist: ""
+    })
+  );
+});
+
     for (let i = 0; i < formData.images.length; i++) {
       data.append("images", formData.images[i]);
     }
@@ -88,14 +105,14 @@ const PostProperty = () => {
       });
 
       const result = await res.json();
-console.log("SERVER RESPONSE:", result);
+      console.log("SERVER RESPONSE:", result);
 
-if (!res.ok) {
-  alert(result.message || "Server Error ❌");
-  return;
-}
+      if (!res.ok) {
+        alert(result.message || "Server Error ❌");
+        return;
+      }
 
-alert("Property Submitted Successfully ✅");
+      alert("Property Submitted Successfully ✅");
 
       setFormData({
         title: "",
@@ -108,7 +125,8 @@ alert("Property Submitted Successfully ✅");
         sqft: "",
         description: "",
         amenities: [],
-        images: [],
+nearby: [],
+images: [],
       });
 
       setStep(1);
@@ -200,21 +218,49 @@ alert("Property Submitted Successfully ✅");
           )}
 
           {step === 3 && (
-            <div className="form-step">
-              <h3>Select Amenities</h3>
-              <div className="amenities-grid">
-                {amenitiesList.map((item) => (
-                  <label key={item} className="amenity-item">
-                    <input
-                      type="checkbox"
-                      onChange={() => handleAmenityChange(item)}
-                    />
-                    {item}
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
+  <div className="form-step">
+
+    <h3>Select Amenities</h3>
+    <div className="amenities-grid">
+      {amenitiesList.map((item) => (
+        <label key={item} className="amenity-item">
+          <input
+            type="checkbox"
+            onChange={() => handleAmenityChange(item)}
+          />
+          {item}
+        </label>
+      ))}
+    </div>
+
+    <h3 style={{marginTop:"20px"}}>Nearby Locations</h3>
+
+    <div className="amenities-grid">
+      {nearbyList.map((item) => (
+        <label key={item} className="amenity-item">
+          <input
+            type="checkbox"
+            onChange={() => {
+              if (formData.nearby.includes(item)) {
+                setFormData({
+                  ...formData,
+                  nearby: formData.nearby.filter((n) => n !== item),
+                });
+              } else {
+                setFormData({
+                  ...formData,
+                  nearby: [...formData.nearby, item],
+                });
+              }
+            }}
+          />
+          {item}
+        </label>
+      ))}
+    </div>
+
+  </div>
+)}
 
           {step === 4 && (
             <div className="form-step">
@@ -267,21 +313,21 @@ alert("Property Submitted Successfully ✅");
             )}
             {step < 4 ? (
               <button
-  type="button"
-  onClick={(e) => {
-    e.preventDefault();
-    setStep(step + 1);
-  }}
-  className="next-btn"
->
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setStep(step + 1);
+                }}
+                className="next-btn"
+              >
                 Next
               </button>
             ) : (
               <button
-  type="button"
-  className="submit-btn"
-  onClick={handleSubmit}
->
+                type="button"
+                className="submit-btn"
+                onClick={handleSubmit}
+              >
                 Submit Property
               </button>
             )}

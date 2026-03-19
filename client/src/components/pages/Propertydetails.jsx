@@ -8,7 +8,7 @@ import "./PropertyDetails.css";
 
 const PropertyDetails = () => {
   // Find property by ID - convert id to number since URL params are strings
-  const { id } = useParams();
+
 
   const getImageUrl = (image) => {
     if (!image || image.trim() === "") {
@@ -42,21 +42,23 @@ const PropertyDetails = () => {
 
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
+  const { slug } = useParams();
 
-    fetch(`http://localhost:5000/api/properties/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("API Response:", data);
-        setPropertyData(data); // backend direct object bhej raha hai
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [id]);
+useEffect(() => {
+  setLoading(true);
+
+  fetch(`http://localhost:5000/api/properties/${slug}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("API Response:", data);
+      setPropertyData(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setLoading(false);
+    });
+}, [slug]);
 
   useEffect(() => {
     if (propertyData?.images?.length > 0) {
@@ -88,27 +90,19 @@ const PropertyDetails = () => {
   }));
 
   // Use highlights from property data or default
-  const highlights =
-    propertyData.highlights?.length > 0
-      ? propertyData.highlights
-      : [
-          { icon: "fa-tag", label: "ID NO.", value: "#N/A" },
-          { icon: "fa-house", label: "Type", value: "N/A" },
-          { icon: "fa-door-open", label: "Room", value: "0" },
-          { icon: "fa-bed", label: "Bedroom", value: "0" },
-          { icon: "fa-bath", label: "Bath", value: "0" },
-          { icon: "fa-seedling", label: "Big Yard", value: "0" },
-          {
-            icon: "fa-house-circle-check",
-            label: "Purpose",
-            value: "For Sale",
-          },
-          { icon: "fa-ruler-combined", label: "Sqft", value: "0" },
-          { icon: "fa-car", label: "Parking", value: propertyData.parking },
-          { icon: "fa-elevator", label: "Elevator", value: "No" },
-          { icon: "fa-wifi", label: "Wifi", value: "No" },
-          { icon: "fa-calendar-days", label: "Built in", value: "N/A" },
-        ];
+  const highlights = [
+  { icon: "fa-tag", label: "ID NO.", value: propertyData._id?.slice(-6) || "N/A" },
+  { icon: "fa-house", label: "Type", value: propertyData.type || "N/A" },
+  { icon: "fa-door-open", label: "Room", value: propertyData.bedrooms || 0 },
+  { icon: "fa-bed", label: "Bedroom", value: propertyData.bedrooms || 0 },
+  { icon: "fa-bath", label: "Bath", value: propertyData.bathrooms || 0 },
+  { icon: "fa-house-circle-check", label: "Purpose", value: propertyData.status || "For Sale" },
+  { icon: "fa-ruler-combined", label: "Sqft", value: propertyData.sqft || 0 },
+  { icon: "fa-car", label: "Parking", value: propertyData.parking || "No" },
+  { icon: "fa-elevator", label: "Elevator", value: "Yes" },
+  { icon: "fa-wifi", label: "Wifi", value: "Yes" },
+  { icon: "fa-calendar-days", label: "Built in", value: propertyData.yearBuilt || "N/A" },
+];
 
   // Use amenities from property data or default
   let amenities = [];
@@ -131,35 +125,21 @@ const PropertyDetails = () => {
   }
 
   // Use nearby locations from property data or default
-  const nearbyLocations =
-    propertyData.nearbyLocations?.length > 0
-      ? propertyData.nearbyLocations
-      : [
-          {
-            name: "HDFC Bank",
-            dist: "500m",
-            icon: "fa-building-columns",
-            color: "#3b82f6",
-          },
-          {
-            name: "City Hospital",
-            dist: "1.2km",
-            icon: "fa-hospital",
-            color: "#ef4444",
-          },
-          {
-            name: "Green Park",
-            dist: "300m",
-            icon: "fa-tree",
-            color: "#22c55e",
-          },
-          {
-            name: "St. Xavier School",
-            dist: "800m",
-            icon: "fa-school",
-            color: "#f59e0b",
-          },
-        ];
+
+// Use nearby locations from property data
+let nearbyLocations = [];
+
+if (Array.isArray(propertyData?.nearbyLocations)) {
+
+  nearbyLocations = propertyData.nearbyLocations
+    .filter((place) => place && place.name)
+    .map((place) => ({
+      name: place.name,
+      dist: place.dist || "",
+      icon: "fa-location-dot",
+    }));
+
+}
 
   const handleChange = (e) => {
     setFormData({
@@ -489,7 +469,7 @@ const PropertyDetails = () => {
                   </div>
                   <div>
                     <h5>{loc.name}</h5>
-                    <p>{loc.dist} away</p>
+                    <p>{loc.dist ? `${loc.dist} away` : ""}</p>
                   </div>
                 </div>
               ))}

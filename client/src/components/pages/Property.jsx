@@ -27,6 +27,8 @@ const fadeUp = {
 const Property = () => {
   const location = useLocation();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const { locationName } = useParams();
 
   const formattedLocation = locationName
@@ -138,6 +140,7 @@ const Property = () => {
         body: JSON.stringify({
           ...formData,
           propertyId: "",
+          
         }),
       });
 
@@ -200,7 +203,7 @@ const Property = () => {
             {sortedProperties.map((property) => (
               <Link
                 key={property._id}
-                to={`/property-details/${property._id}`}
+                to={`/property-details/${property.slug ? property.slug : property._id}`}
                 className="property-card-link"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
@@ -289,7 +292,7 @@ const Property = () => {
               {featuredProperties.map((property) => (
                 <Link
                   key={property._id}
-                  to={`/property-details/${property._id}`}
+                  to={`/property-details/${property.slug ? property.slug : property._id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <motion.div className="featured-item" whileHover={{ x: 5 }}>

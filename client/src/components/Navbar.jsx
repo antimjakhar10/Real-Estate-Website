@@ -7,6 +7,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import "./Navbar.css";
+import logo from "../assets/R3logo.jpg";
 
 const Navbar = ({ variant }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,9 +46,10 @@ const Navbar = ({ variant }) => {
 `}
       >
         <div className="logo">
-          <h2>PILLER</h2>
-          <p>Real Estate Solution</p>
-        </div>
+  <Link to="/">
+    <img src={logo} alt="logo" className="logo-img" />
+  </Link>
+</div>
 
         {/* Hamburger for mobile */}
         <div
