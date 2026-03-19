@@ -7,7 +7,7 @@ const MyProperties = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/properties/user/${user._id}`)
+    fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/user/${user._id}`)
       .then(res => res.json())
       .then(data => setProperties(data));
   }, []);

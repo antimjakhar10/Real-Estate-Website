@@ -75,7 +75,7 @@ const Property = () => {
 
   const getImageUrl = (image) => {
     if (!image || image.trim() === "") {
-      return "http://localhost:5000/uploads/no-image.jpg";
+      return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     }
 
     // Agar already full URL hai
@@ -85,16 +85,16 @@ const Property = () => {
 
     // Agar path me uploads/ already hai
     if (image.includes("uploads/")) {
-      return `http://localhost:5000/${image.replace(/\\/g, "/")}`;
+      return `https://real-estate-website-ai2s.onrender.com/${image.replace(/\\/g, "/")}`;
     }
 
     // Default case (sirf filename stored hai)
-    return `http://localhost:5000/uploads/${image}`;
+    return `https://real-estate-website-ai2s.onrender.com/uploads/${image}`;
   };
 
   useEffect(() => {
     fetch(
-      `http://localhost:5000/api/properties?page=${currentPage}&limit=6${
+      `https://real-estate-website-ai2s.onrender.com/api/properties?page=${currentPage}&limit=6${
         locationName
           ? `&location=${locationName}`
           : loc
@@ -114,7 +114,7 @@ const Property = () => {
   }, [type, range, loc]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/properties?featured=true&limit=4")
+    fetch("https://real-estate-website-ai2s.onrender.com/api/properties?featured=true&limit=4")
       .then((res) => res.json())
       .then((data) => {
         setFeaturedProperties(data.properties);
@@ -132,7 +132,7 @@ const Property = () => {
     setSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/enquiry", {
+      const response = await fetch("https://real-estate-website-ai2s.onrender.com/api/enquiry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -218,13 +218,13 @@ const Property = () => {
                           ? getImageUrl(property.images[0])
                           : property.image
                             ? getImageUrl(property.image)
-                            : "http://localhost:5000/uploads/no-image.jpg"
+                            : "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg"
                       }
                       alt={property.title}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src =
-                          "http://localhost:5000/uploads/no-image.jpg";
+                          "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                       }}
                     />
                   </div>
@@ -302,7 +302,7 @@ const Property = () => {
                           ? getImageUrl(property.images[0])
                           : property.image
                             ? getImageUrl(property.image)
-                            : "http://localhost:5000/uploads/no-image.jpg"
+                            : "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg"
                       }
                       onError={(e) => (e.target.src = "/no-image.jpg")}
                       alt={property.title}

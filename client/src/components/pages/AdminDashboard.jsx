@@ -26,7 +26,7 @@ const navigate = useNavigate();
 
   try {
     const propRes = await fetch(
-      "http://localhost:5000/api/properties/admin/all",
+      "https://real-estate-website-ai2s.onrender.com/api/properties/admin/all",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ const navigate = useNavigate();
     const props = await propRes.json();
 
     const enqRes = await fetch(
-      "http://localhost:5000/api/enquiry",
+      "https://real-estate-website-ai2s.onrender.com/api/enquiry",
       {
         headers: {
           Authorization: `Bearer ${token}`,

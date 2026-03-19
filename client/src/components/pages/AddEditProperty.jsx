@@ -59,7 +59,7 @@ const AddEditProperty = () => {
   }, [id]);
 
   const fetchProperty = async () => {
-    const res = await fetch(`http://localhost:5000/api/properties/${id}`);
+    const res = await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${id}`);
     const data = await res.json();
 
     setForm({
@@ -71,7 +71,7 @@ const AddEditProperty = () => {
 
     if (data.images && data.images.length > 0) {
       setImagePreviews(
-        data.images.map((img) => `http://localhost:5000/uploads/${img}`),
+        data.images.map((img) => `https://real-estate-website-ai2s.onrender.com/uploads/${img}`),
       );
     }
   };
@@ -211,10 +211,10 @@ const AddEditProperty = () => {
 const isAdmin = user?.role === "admin"; // agar role nahi hai to ignore
 
 const url = id
-  ? `http://localhost:5000/api/properties/${id}`
+  ? `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
   : isAdmin
-  ? "http://localhost:5000/api/properties/admin"
-  : "http://localhost:5000/api/properties"; // 🔥 USER API
+  ? "https://real-estate-website-ai2s.onrender.com/api/properties/admin"
+  : "https://real-estate-website-ai2s.onrender.com/api/properties"; // 🔥 USER API
 
 const method = id ? "PUT" : "POST";
 

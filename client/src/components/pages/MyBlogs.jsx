@@ -5,7 +5,7 @@ const MyBlogs = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/blogs/user/${user._id}`)
+    fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/user/${user._id}`)
       .then(res => res.json())
       .then(data => setBlogs(data));
   }, []);

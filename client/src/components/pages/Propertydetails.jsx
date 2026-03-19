@@ -12,7 +12,7 @@ const PropertyDetails = () => {
 
   const getImageUrl = (image) => {
     if (!image || image.trim() === "") {
-      return "http://localhost:5000/uploads/no-image.jpg";
+      return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     }
 
     if (image.startsWith("http")) {
@@ -20,10 +20,10 @@ const PropertyDetails = () => {
     }
 
     if (!image.includes("/")) {
-      return `http://localhost:5000/uploads/${image}`;
+      return `https://real-estate-website-ai2s.onrender.com/uploads/${image}`;
     }
 
-    return `http://localhost:5000/${image.replace(/\\/g, "/")}`;
+    return `https://real-estate-website-ai2s.onrender.com/${image.replace(/\\/g, "/")}`;
   };
 
   const [propertyData, setPropertyData] = useState(null);
@@ -47,7 +47,7 @@ const PropertyDetails = () => {
 useEffect(() => {
   setLoading(true);
 
-  fetch(`http://localhost:5000/api/properties/${slug}`)
+  fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${slug}`)
     .then((res) => res.json())
     .then((data) => {
       console.log("API Response:", data);
@@ -81,7 +81,7 @@ useEffect(() => {
       ? propertyData.images.map((img) => getImageUrl(img))
       : propertyData?.image
         ? [getImageUrl(propertyData.image)]
-        : ["http://localhost:5000/uploads/no-image.jpg"];
+        : ["https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg"];
 
   // Media items using property image
   const mediaItems = imagesArray.map((img) => ({
@@ -152,7 +152,7 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
     setSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/enquiry", {
+      const response = await fetch("https://real-estate-website-ai2s.onrender.com/api/enquiry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -231,7 +231,7 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src =
-                          "http://localhost:5000/uploads/no-image.jpg";
+                          "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                       }}
                     />
                   ))}
@@ -253,7 +253,7 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src =
-                            "http://localhost:5000/uploads/no-image.jpg";
+                            "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                         }}
                       />
                     ) : (
@@ -559,7 +559,7 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
                   alt="Prop"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "http://localhost:5000/uploads/no-image.jpg";
+                    e.target.src = "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                   }}
                 />
               </div>

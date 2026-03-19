@@ -13,7 +13,7 @@ const AdminProperties = () => {
   const fetchProperties = async () => {
     const token = localStorage.getItem("adminToken");
 
-    const res = await fetch("http://localhost:5000/api/properties/admin/all", {
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/properties/admin/all", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ const AdminProperties = () => {
   const handleDelete = async (id) => {
     const token = localStorage.getItem("adminToken");
 
-    await fetch(`http://localhost:5000/api/properties/${id}`, {
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ const handleTogglePremium = async (id) => {
     const token = localStorage.getItem("adminToken");
 
     const response = await fetch(
-      `http://localhost:5000/api/properties/toggle-premium/${id}`,
+      `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
       {
         method: "PUT",
         headers: {
@@ -81,7 +81,7 @@ const handleTogglePremium = async (id) => {
     const token = localStorage.getItem("adminToken");
 
     const response = await fetch(
-      `http://localhost:5000/api/properties/approve/${id}`, // 👈 CHANGE HERE
+      `https://real-estate-website-ai2s.onrender.com/api/properties/approve/${id}`, // 👈 CHANGE HERE
       {
         method: "PUT",
         headers: {

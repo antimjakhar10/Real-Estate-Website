@@ -4,14 +4,14 @@ import "./PropertyGridLayout.css";
 const PropertyGridLayout = ({ properties }) => {
   const getImageUrl = (images) => {
     if (!images || !Array.isArray(images) || images.length === 0 || !images[0]) {
-      return "http://localhost:5000/uploads/no-image.jpg";
+      return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     }
     const image = images[0];
-    if (typeof image !== 'string' || image.trim() === "") return "http://localhost:5000/uploads/no-image.jpg";
+    if (typeof image !== 'string' || image.trim() === "") return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     if (image.startsWith("http")) return image;
     return image.includes("/") 
-      ? `http://localhost:5000/${image.replace(/\\/g, "/")}`
-      : `http://localhost:5000/uploads/${image}`;
+      ? `https://real-estate-website-ai2s.onrender.com/${image.replace(/\\/g, "/")}`
+      : `https://real-estate-website-ai2s.onrender.com/uploads/${image}`;
   };
 
   return (

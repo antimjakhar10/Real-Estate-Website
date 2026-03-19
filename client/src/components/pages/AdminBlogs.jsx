@@ -7,7 +7,7 @@ const AdminBlogs = () => {
   const [blogs, setBlogs] = useState([]);
 
   const fetchBlogs = async () => {
-    const res = await fetch("http://localhost:5000/api/blogs");
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs");
     const data = await res.json();
     setBlogs(data);
   };
@@ -17,7 +17,7 @@ const AdminBlogs = () => {
   }, []);
 
   const updateStatus = async (id, status) => {
-  await fetch(`http://localhost:5000/api/blogs/approve/${id}`, {
+  await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/approve/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const AdminBlogs = () => {
     if (!window.confirm("Delete this blog?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const res = await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/${id}`, {
         method: "DELETE",
       });
 

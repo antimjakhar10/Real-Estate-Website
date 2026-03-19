@@ -11,7 +11,7 @@ const UserLogin = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const res = await fetch("http://localhost:5000/api/users/login", {
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

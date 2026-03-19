@@ -99,7 +99,7 @@ const PostProperty = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/properties", {
+      const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/properties", {
         method: "POST",
         body: data,
       });

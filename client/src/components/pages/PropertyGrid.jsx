@@ -17,7 +17,7 @@ export default function PropertyGrid() {
     try {
       const token = localStorage.getItem("adminToken");
       const res = await axios.get(
-        "http://localhost:5000/api/properties/admin/all",
+        "https://real-estate-website-ai2s.onrender.com/api/properties/admin/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,13 +46,13 @@ export default function PropertyGrid() {
 
   const getImageUrl = (images) => {
     if (!images || !Array.isArray(images) || images.length === 0 || !images[0]) {
-      return "http://localhost:5000/uploads/no-image.jpg";
+      return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     }
 
     const image = images[0];
 
     if (typeof image !== 'string' || image.trim() === "") {
-        return "http://localhost:5000/uploads/no-image.jpg";
+        return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
     }
 
     if (image.startsWith("http")) {
@@ -60,10 +60,10 @@ export default function PropertyGrid() {
     }
 
     if (!image.includes("/")) {
-      return `http://localhost:5000/uploads/${image}`;
+      return `https://real-estate-website-ai2s.onrender.com/uploads/${image}`;
     }
 
-    return `http://localhost:5000/${image.replace(/\\/g, "/")}`;
+    return `https://real-estate-website-ai2s.onrender.com/${image.replace(/\\/g, "/")}`;
   };
 
   if (loading) return <p>Loading properties...</p>;
@@ -92,7 +92,7 @@ export default function PropertyGrid() {
               className="grid-image"
               onError={(e) => {
                 if (!e.target.src.includes("no-image.jpg")) {
-                  e.target.src = "http://localhost:5000/uploads/no-image.jpg";
+                  e.target.src = "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                 }
               }}
             />

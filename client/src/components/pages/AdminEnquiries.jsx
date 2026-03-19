@@ -45,7 +45,7 @@ const AdminEnquiries = () => {
   try {
     const token = localStorage.getItem("adminToken");
 
-    const res = await fetch("http://localhost:5000/api/enquiry", {
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/enquiry", {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const AdminEnquiries = () => {
 };
 
   const handleDelete = async () => {
-    await fetch(`http://localhost:5000/api/enquiry/${deleteId}`, {
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/enquiry/${deleteId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
@@ -240,7 +240,7 @@ const totalPages = Math.ceil(filteredEnquiries.length / itemsPerPage);
                       const token = localStorage.getItem("adminToken");
 
                       await fetch(
-                        `http://localhost:5000/api/enquiry/${item._id}`,
+                        `https://real-estate-website-ai2s.onrender.com/api/enquiry/${item._id}`,
                         {
                           method: "PUT",
                           headers: {

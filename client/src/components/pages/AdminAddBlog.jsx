@@ -19,7 +19,7 @@ const AdminAddBlog = () => {
 
     try {
 
-      const res = await fetch("http://localhost:5000/api/blogs", {
+      const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs", {
         method: "POST",
         body: formData
       });

@@ -13,7 +13,7 @@ const AdminEditBlog = () => {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/blogs/${id}`)
+    fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/${id}`)
       .then((res) => res.json())
       .then((data) => setBlog(data));
   }, [id]);
@@ -28,7 +28,7 @@ const AdminEditBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch(`http://localhost:5000/api/blogs/${id}`, {
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

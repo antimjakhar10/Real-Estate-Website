@@ -18,7 +18,7 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/admin/auth/login", {
+      const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/admin/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -47,7 +47,7 @@ const Contact = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/contact",
+        "https://real-estate-website-ai2s.onrender.com/api/contact",
         formData,
       );
 

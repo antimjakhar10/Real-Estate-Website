@@ -12,7 +12,7 @@ const AdminCustomersGrid = () => {
   const fetchCustomerProperties = async () => {
     const token = localStorage.getItem("adminToken");
 
-    const res = await fetch("http://localhost:5000/api/properties/customer", {
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/properties/customer", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

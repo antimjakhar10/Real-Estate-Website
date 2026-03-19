@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 
-http.get('http://localhost:5000/api/properties/customer', (res) => {
+http.get('https://real-estate-website-ai2s.onrender.com/api/properties/customer', (res) => {
   let data = '';
   res.on('data', (chunk) => { data += chunk; });
   res.on('end', () => {

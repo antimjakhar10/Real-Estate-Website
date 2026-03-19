@@ -9,13 +9,13 @@ const AdminUserProperties = () => {
   }, []);
 
   const fetchData = async () => {
-    const res = await fetch("http://localhost:5000/api/properties/admin/user-properties");
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/properties/admin/user-properties");
     const data = await res.json();
     setProperties(data.properties || []);
   };
 
   const updateApproval = async (id, status) => {
-    await fetch(`http://localhost:5000/api/properties/approve/${id}`, {
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/approve/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

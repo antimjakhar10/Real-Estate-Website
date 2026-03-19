@@ -9,7 +9,10 @@ const app = express();
 
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://real-estate-website-ai2s.onrender.com"
+  ],
   methods: ["GET","POST","PUT","DELETE"],
   allowedHeaders: ["Content-Type","Authorization"]
 }));
@@ -46,7 +49,7 @@ const userRoutes = require("./routes/userRoutes");
 
 app.use("/api/properties", propertyRoutes);
 app.use("/api/enquiry", enquiryRoutes);
-app.use("/api/blogs", require("./routes/blogRoutes"));
+
 app.use("/api/users", userRoutes);
 
 // Server Start

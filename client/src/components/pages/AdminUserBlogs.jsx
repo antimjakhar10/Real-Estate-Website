@@ -8,13 +8,13 @@ const AdminUserBlogs = () => {
   }, []);
 
   const fetchBlogs = async () => {
-    const res = await fetch("http://localhost:5000/api/blogs/admin/user-blogs");
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs/admin/user-blogs");
     const data = await res.json();
     setBlogs(data);
   };
 
   const updateStatus = async (id, status) => {
-    await fetch(`http://localhost:5000/api/blogs/approve/${id}`, {
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/approve/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

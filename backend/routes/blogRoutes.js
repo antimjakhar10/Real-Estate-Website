@@ -32,7 +32,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     const { title, content, userId } = req.body;
 
     const image = req.file
-      ? `http://localhost:5000/uploads/${req.file.filename}`
+      ? `https://real-estate-website-ai2s.onrender.com/uploads/${req.file.filename}`
       : "";
 
     const newBlog = new Blog({

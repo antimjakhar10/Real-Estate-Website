@@ -8,7 +8,7 @@ const LuxuryProperties = () => {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/properties?featured=true&limit=4")
+    fetch("https://real-estate-website-ai2s.onrender.com/api/properties?featured=true&limit=4")
   .then(res => res.json())
     .then(data => {
       setProperties(data.properties || []);
@@ -59,12 +59,12 @@ const LuxuryProperties = () => {
                 className="image-wrapper"
               >
                 <img
-  src={`http://localhost:5000/uploads/${property.images?.[0] || property.image}`}
+  src={`https://real-estate-website-ai2s.onrender.com/uploads/${property.images?.[0] || property.image}`}
   alt={property.title}
   onError={(e) => {
     e.target.onerror = null;
     e.target.src =
-      "http://localhost:5000/uploads/no-image.jpg";
+      "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
   }}
 />
                 <span className="badge">For Sale</span>
