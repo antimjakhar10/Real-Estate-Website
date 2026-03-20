@@ -203,29 +203,24 @@ exports.updateProperty = async (req, res) => {
     if (req.body.title) updateData.title = req.body.title;
     if (req.body.location) updateData.location = req.body.location;
 
-    if (req.body.price) {
-      updateData.price = req.body.price;
-      updateData.priceValue = Number(req.body.price);
-    }
+    if (req.body.price !== undefined) {
+  updateData.price = req.body.price;
+  updateData.priceValue = toNumber(req.body.price); // 🔥 FIX
+}
 
     if (req.body.type) updateData.type = req.body.type;
     if (req.body.description) updateData.description = req.body.description;
 
-    updateData.bedrooms = isNaN(Number(req.body.bedrooms))
-  ? 0
-  : Number(req.body.bedrooms);
+    const toNumber = (val) => {
+  if (val === undefined || val === null || val === "") return 0;
+  const num = Number(val);
+  return isNaN(num) ? 0 : num;
+};
 
-updateData.bathrooms = isNaN(Number(req.body.bathrooms))
-  ? 0
-  : Number(req.body.bathrooms);
-
-updateData.sqft = isNaN(Number(req.body.sqft))
-  ? 0
-  : Number(req.body.sqft);
-
-updateData.parking = isNaN(Number(req.body.parking))
-  ? 0
-  : Number(req.body.parking);
+updateData.bedrooms = toNumber(req.body.bedrooms);
+updateData.bathrooms = toNumber(req.body.bathrooms);
+updateData.sqft = toNumber(req.body.sqft);
+updateData.parking = toNumber(req.body.parking);
 
     // 🔥 FINAL SAFE ASSIGN
     updateData.amenities =
@@ -240,8 +235,9 @@ updateData.parking = isNaN(Number(req.body.parking))
     }
 
     await Property.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
+  new: true,
+  runValidators: false, // 🔥 FINAL FIX
+});
 
     res.json({ message: "Property Updated Successfully ✅" });
   } catch (error) {
