@@ -45,7 +45,7 @@ const AdminProperties = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/admin-edit-property/${id}`);
+    navigate(`/admin/edit-property/${id}`);
   };
 
 const handleTogglePremium = async (id) => {
@@ -180,7 +180,7 @@ const handleTogglePremium = async (id) => {
           </button>
 
           <button
-            onClick={() => navigate("/admin-add-property")}
+            onClick={() => navigate("/admin/user/add-property")}
             style={{
               padding: "10px 18px",
               background: "#2563eb",

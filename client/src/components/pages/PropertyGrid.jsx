@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bed, Bath, Maximize2, Star } from "lucide-react";
+import { Bed, Bath, Maximize2 } from "lucide-react";
 import axios from "axios";
 import "./PropertyGrid.css";
 
@@ -16,6 +16,7 @@ export default function PropertyGrid() {
   const fetchProperties = async () => {
     try {
       const token = localStorage.getItem("adminToken");
+
       const res = await axios.get(
         "https://real-estate-website-ai2s.onrender.com/api/properties/admin/all",
         {
@@ -25,104 +26,88 @@ export default function PropertyGrid() {
         }
       );
 
-      console.log("API Response:", res.data);
+      console.log("API DATA:", res.data);
 
       if (Array.isArray(res.data)) {
         setProperties(res.data);
       } else if (Array.isArray(res.data.properties)) {
         setProperties(res.data.properties);
-      } else if (Array.isArray(res.data.data)) {
-        setProperties(res.data.data);
       } else {
         setProperties([]);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching properties:", error);
+      console.error(error);
       setLoading(false);
     }
   };
 
-  const getImageUrl = (images) => {
-    if (!images || !Array.isArray(images) || images.length === 0 || !images[0]) {
-      return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
+  const getImageUrl = (images, image) => {
+    let finalImage = null;
+
+    if (images && images.length > 0) {
+      finalImage = images[0];
+    } else if (image) {
+      finalImage = image;
     }
 
-    const image = images[0];
-
-    if (typeof image !== 'string' || image.trim() === "") {
-        return "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
+    if (!finalImage) {
+      return "https://dummyimage.com/300x200/cccccc/000000&text=No+Image";
     }
 
-    if (image.startsWith("http")) {
-      return image;
+    if (finalImage.startsWith("http")) return finalImage;
+
+    if (finalImage.includes("uploads")) {
+      return `https://real-estate-website-ai2s.onrender.com/${finalImage.replace(/^\/+/, "")}`;
     }
 
-    if (!image.includes("/")) {
-      return `https://real-estate-website-ai2s.onrender.com/uploads/${image}`;
-    }
-
-    return `https://real-estate-website-ai2s.onrender.com/${image.replace(/\\/g, "/")}`;
+    return `https://real-estate-website-ai2s.onrender.com/uploads/${finalImage}`;
   };
 
   if (loading) return <p>Loading properties...</p>;
 
   return (
-    <div className="admin-property-grid">
-      {/* Header */}
-      <div className="grid-header">
-        <h2>Property Grid</h2>
+    <div className="grid-container">
+      {properties.map((p) => (
+        <div key={p._id} className="grid-card">
 
-        <button
-          onClick={() => navigate("/admin-add-property")}
-          className="add-property-btn"
-        >
-          + Add Property
-        </button>
-      </div>
+          <img
+            src={getImageUrl(p.images, p.image)}
+            alt={p.title}
+            className="grid-image"
+            onError={(e) => {
+              e.target.src =
+                "https://dummyimage.com/300x200/cccccc/000000&text=No+Image";
+            }}
+          />
 
-      {/* Grid */}
-      <div className="grid-container">
-        {properties.map((property) => (
-          <div key={property._id} className="grid-card">
-            <img
-              src={getImageUrl(property.images)}
-              alt={property.title}
-              className="grid-image"
-              onError={(e) => {
-                if (!e.target.src.includes("no-image.jpg")) {
-                  e.target.src = "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
-                }
-              }}
-            />
+          <div className="grid-card-body">
+            <h3 className="grid-price">
+              ₹ {p.price ? Number(p.price).toLocaleString("en-IN") : "0"}
+            </h3>
 
-            <div className="grid-card-body">
-              <h3 className="grid-price">
-                ₹{property.price?.toLocaleString("en-IN")}
-              </h3>
+            <h4 className="grid-title">{p.title}</h4>
 
-              <h4 className="grid-title">{property.title}</h4>
+            <p className="grid-location">{p.location}</p>
 
-              <p className="grid-location">{property.location}</p>
+            <div className="grid-meta">
+              <span>
+                <Bed size={16} /> {p.bedrooms || 0}
+              </span>
 
-              <div className="grid-meta">
-                <span>
-                  <Bed size={16} /> {property.bedrooms}
-                </span>
+              <span>
+                <Bath size={16} /> {p.bathrooms || 0}
+              </span>
 
-                <span>
-                  <Bath size={16} /> {property.bathrooms}
-                </span>
-
-                <span>
-                  <Maximize2 size={16} /> {property.sqft} sqft
-                </span>
-              </div>
+              <span>
+                <Maximize2 size={16} /> {p.sqft || 0} sqft
+              </span>
             </div>
           </div>
-        ))}
-      </div>
+
+        </div>
+      ))}
     </div>
   );
 }

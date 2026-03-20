@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropertyListLayout from "./PropertyListLayout";
 import "./AdminCustomersList.css";
 
 const AdminCustomersList = () => {
+  const navigate = useNavigate();
+
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
@@ -37,7 +40,7 @@ const AdminCustomersList = () => {
           properties={properties}
           showActions={true}
           showApproval={true}
-          onEdit={(id) => (window.location.href = `/admin-edit-property/${id}`)}
+          onEdit={(id) => navigate(`/admin/edit-property/${id}`)}
           onDelete={async (id) => {
             const token = localStorage.getItem("adminToken");
 

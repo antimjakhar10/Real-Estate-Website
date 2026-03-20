@@ -12,21 +12,37 @@ const UserRegister = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    try {
+      console.log("Sending:", form);
 
-    const data = await res.json();
+      const res = await fetch(
+        "https://real-estate-website-ai2s.onrender.com/api/users/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        },
+      );
 
-    if (res.ok) {
-      alert("Registered Successfully ✅");
-      navigate("/user/login");
-    } else {
-      alert(data.message);
+      const data = await res.json();
+
+      console.log("Response:", data); // 🔥 DEBUG
+
+      if (res.ok) {
+        alert("Registered Successfully ✅");
+
+        // 🔥 ADD THIS
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        navigate("/user/dashboard");
+      } else {
+        alert(data.message || "Register failed ❌");
+      }
+    } catch (err) {
+      console.error("ERROR:", err);
+      alert("Server error 🚨");
     }
   };
 
@@ -54,8 +70,7 @@ const UserRegister = () => {
         <button onClick={handleSubmit}>Register</button>
 
         <p>
-          Already have an account?{" "}
-          <Link to="/user/login">Login</Link>
+          Already have an account? <Link to="/user/login">Login</Link>
         </p>
       </div>
     </div>

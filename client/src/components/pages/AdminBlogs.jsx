@@ -79,7 +79,7 @@ const AdminBlogs = () => {
                 <td className="action-buttons">
                   <button
                     className="edit-btn"
-                    onClick={() => navigate(`/admin-edit-blog/${blog._id}`)}
+                    onClick={() => navigate(`/admin/edit-blog/${blog._id}`)}
                   >
                     Edit
                   </button>

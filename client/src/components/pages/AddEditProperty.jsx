@@ -5,7 +5,9 @@ import "./AddEditProperty.css";
 const AddEditProperty = () => {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
+ const adminToken = localStorage.getItem("adminToken");
+const user = JSON.parse(localStorage.getItem("user"));
+
 const isAdmin = user?.role === "admin";
 
   const { id } = useParams();
@@ -68,11 +70,12 @@ const isAdmin = user?.role === "admin";
     const data = await res.json();
 
     setForm({
-      ...data,
-      amenities: Array.isArray(data.amenities) ? data.amenities : [],
-      nearbyLocations: data.nearbyLocations || [],
-      images: [],
-    });
+  ...data,
+  createdByRole: data.createdByRole, // 🔥 IMPORTANT
+  amenities: Array.isArray(data.amenities) ? data.amenities : [],
+  nearbyLocations: data.nearbyLocations || [],
+  images: [],
+});
 
     if (data.images && data.images.length > 0) {
       setImagePreviews(
@@ -174,9 +177,17 @@ const isAdmin = user?.role === "admin";
 
     const formData = new FormData();
 
-    if (!id && !isAdmin) {
-        formData.append("userId", user._id); // 🔥 IMPORTANT
-      }
+    // 🔥 ADD THIS
+if (isAdmin) {
+  formData.append("createdByRole", "admin");
+} else {
+  formData.append("createdByRole", "user");
+}
+
+// ✅ USER ID SEND KARNA HAI
+if (!isAdmin && user?._id) {
+  formData.append("createdBy", user?._id);
+}
 
     Object.keys(form).forEach((key) => {
 
@@ -212,7 +223,21 @@ const isAdmin = user?.role === "admin";
     });
 
     setLoading(false);
-    navigate(isAdmin ? "/admin-properties" : "/my-properties");
+   if (isAdmin) {
+  if (!id) {
+    navigate("/admin/properties");
+  } else {
+    if (form.createdByRole === "customer") {
+      navigate("/admin/customers-list");
+    } else if (form.createdByRole === "user") {
+      navigate("/admin/user-properties");
+    } else {
+      navigate("/admin/properties");
+    }
+  }
+} else {
+  navigate("/user/user/my-properties");
+}
   };
 
   return (

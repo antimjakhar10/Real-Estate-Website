@@ -17,11 +17,11 @@ const UserLayout = () => {
       <div className="sidebar">
         <h2>User Panel</h2>
 
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/user/dashboard">Dashboard</Link>
         <Link to="/user/add-property">Add Property</Link>
-        <Link to="/my-properties">My Properties</Link>
-        <Link to="/user-add-blog">Add Blog</Link>
-        <Link to="/my-blogs">My Blogs</Link>
+        <Link to="/user/user/my-properties">My Properties</Link>
+        <Link to="/user/user-add-blog">Add Blog</Link>
+        <Link to="/user/my-blogs">My Blogs</Link>
         <button className="logout-btn" onClick={handleLogout}>
   Logout
 </button>

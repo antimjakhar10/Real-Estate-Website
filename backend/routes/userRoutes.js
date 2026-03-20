@@ -11,4 +11,9 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/", getUsers);
 
+router.delete("/:id", async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.json({ message: "User deleted" });
+});
+
 module.exports = router;

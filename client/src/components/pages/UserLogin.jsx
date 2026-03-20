@@ -23,7 +23,8 @@ const UserLogin = () => {
 
     if (res.ok) {
       localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/dashboard");
+      localStorage.removeItem("adminToken");
+      navigate("/user/dashboard");
     } else {
       alert(data.message);
     }

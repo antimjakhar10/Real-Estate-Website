@@ -32,9 +32,9 @@ const AdminLayout = () => {
 
         <div
           className={`admin-menu-item ${
-            isActive("/admin-dashboard") ? "active" : ""
+            isActive("/admin/user/dashboard") ? "active" : ""
           }`}
-          onClick={() => navigate("/admin-dashboard")}
+          onClick={() => navigate("/admin/user/dashboard")}
         >
           <LayoutDashboard size={18} />
           Dashboard
@@ -42,9 +42,9 @@ const AdminLayout = () => {
 
         <div
           className={`admin-menu-item ${
-            isActive("/admin-enquiries") ? "active" : ""
+            isActive("/admin/enquiries") ? "active" : ""
           }`}
-          onClick={() => navigate("/admin-enquiries")}
+          onClick={() => navigate("/admin/enquiries")}
         >
           <Mail size={18} />
           Enquiries
@@ -52,9 +52,9 @@ const AdminLayout = () => {
 
         <div
           className={`admin-menu-item ${
-            isActive("/admin-contacts") ? "active" : ""
+            isActive("/admin/contacts") ? "active" : ""
           }`}
-          onClick={() => navigate("/admin-contacts")}
+          onClick={() => navigate("/admin/contacts")}
         >
           <Mail size={18} />
           Contact Messages
@@ -76,27 +76,27 @@ const AdminLayout = () => {
             <div className="admin-submenu">
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-properties") ? "active" : ""
+                  isActive("/admin/properties") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-properties")}
+                onClick={() => navigate("/admin/properties")}
               >
                 • List View
               </div>
 
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-property-grid") ? "active" : ""
+                  isActive("/admin/property-grid") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-property-grid")}
+                onClick={() => navigate("/admin/property-grid")}
               >
                 • Grid View
               </div>
 
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-add-property") ? "active" : ""
+                  isActive("/admin/user/add-property") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-add-property")}
+                onClick={() => navigate("/admin/user/add-property")}
               >
                 <PlusSquare size={16} />
                 Add Property
@@ -119,18 +119,18 @@ const AdminLayout = () => {
             <div className="admin-submenu">
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-customers-list") ? "active" : ""
+                  isActive("/admin/customers-list") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-customers-list")}
+                onClick={() => navigate("/admin/customers-list")}
               >
                 • List View
               </div>
 
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-customers-grid") ? "active" : ""
+                  isActive("/admin/customers-grid") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-customers-grid")}
+                onClick={() => navigate("/admin/customers-grid")}
               >
                 • Grid View
               </div>
@@ -150,16 +150,22 @@ const AdminLayout = () => {
 
           {openUsers && (
             <div className="admin-submenu">
+               <div
+                className="admin-menu-item"
+                onClick={() => navigate("/admin/users")}
+              >
+                • Users
+              </div>
               <div
                 className="admin-menu-item"
-                onClick={() => navigate("/admin-user-properties")}
+                onClick={() => navigate("/admin/user-properties")}
               >
                 • Properties
               </div>
 
               <div
                 className="admin-menu-item"
-                onClick={() => navigate("/admin-user-blogs")}
+                onClick={() => navigate("/admin/user-blogs")}
               >
                 • Blogs
               </div>
@@ -181,18 +187,18 @@ const AdminLayout = () => {
             <div className="admin-submenu">
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-blogs") ? "active" : ""
+                  isActive("/admin/blogs") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-blogs")}
+                onClick={() => navigate("/admin/blogs")}
               >
                 • Blog List
               </div>
 
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin-add-blog") ? "active" : ""
+                  isActive("/admin/add-blog") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin-add-blog")}
+                onClick={() => navigate("/admin/add-blog")}
               >
                 <PlusSquare size={16} />
                 Add Blog
@@ -206,7 +212,7 @@ const AdminLayout = () => {
           className="admin-logout"
           onClick={() => {
             localStorage.removeItem("adminToken");
-            navigate("/admin-login");
+            navigate("/admin/login");
           }}
         >
           <LogOut size={18} />

@@ -15,7 +15,7 @@ const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
 
   if (!token) {
-    navigate("/admin-login");
+    navigate("/admin/login");
   } else {
     fetchStats();
   }
@@ -61,7 +61,7 @@ const navigate = useNavigate();
 };
 
   return (
-    <div className="admin-dashboard">
+    <div className="admin/user/dashboard">
       <h2 className="dashboard-title">Dashboard</h2>
 
       <div className="dashboard-cards">

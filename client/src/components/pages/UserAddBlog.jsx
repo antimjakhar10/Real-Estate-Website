@@ -27,7 +27,7 @@ const UserAddBlog = () => {
 
     if (res.ok) {
       alert("Blog submitted for approval ✅");
-      navigate("/dashboard");
+      navigate("/user/dashboard");
     } else {
       alert("Error ❌");
     }

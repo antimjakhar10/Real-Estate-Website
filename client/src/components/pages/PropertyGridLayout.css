@@ -36,8 +36,8 @@
 /* Image Styling */
 .property-image-container {
   width: 100%;
-  height: 150px;
-  border-radius: 8px;
+  height: 180px;
+  border-radius: 10px;
   overflow: hidden;
   margin-bottom: 12px;
   background: #f1f5f9;
@@ -46,7 +46,8 @@
 .property-thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;   /* 🔥 MAIN FIX */
+  display: block;
 }
 
 /* Status colors */

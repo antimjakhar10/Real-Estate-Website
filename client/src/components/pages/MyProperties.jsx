@@ -7,10 +7,47 @@ const MyProperties = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/user/${user._id}`)
-      .then(res => res.json())
-      .then(data => setProperties(data));
-  }, []);
+  if (!user || !user._id) {
+    console.log("User not found ❌");
+    return;
+  }
+
+  fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/user/${user._id}`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("API failed");
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log("DATA:", data);
+      setProperties(data);
+    })
+    .catch(err => {
+      console.error("ERROR:", err);
+    });
+
+}, []);
+
+useEffect(() => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+
+if (!user?._id) {
+    console.log("User not found ❌");
+    return;
+  }
+
+  if (!storedUser || !storedUser._id) {
+    console.log("User not found ❌");
+    return;
+  }
+
+  fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/user/${storedUser._id}`)
+    .then(res => res.json())
+    .then(data => setProperties(data))
+    .catch(err => console.error(err));
+
+}, []);
 
   return (
     <div>
