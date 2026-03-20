@@ -71,7 +71,7 @@ exports.createProperty = async (req, res) => {
       images: imagePaths,
 
       createdBy: req.body.createdBy || null,
-createdByRole: req.body.createdByRole || "customer",
+      createdByRole: req.body.createdByRole || "customer",
       approvalStatus: "Pending",
     });
 
@@ -136,10 +136,16 @@ exports.updateProperty = async (req, res) => {
   try {
     console.log("BODY 👉", req.body);
 
+    // ❌ NEVER UPDATE THESE
+    delete req.body.createdBy;
+    delete req.body.createdByRole;
+    delete req.body.slug;
+    delete req.body.approvalStatus;
+
     let amenities = [];
     let nearbyLocations = [];
 
-    // ✅ amenities fix
+    // ✅ amenities parse
     if (req.body.amenities) {
       amenities = Array.isArray(req.body.amenities)
         ? req.body.amenities
@@ -173,32 +179,60 @@ exports.updateProperty = async (req, res) => {
 
     // ✅ images
     let imagePaths = [];
-
     if (req.files && req.files.length > 0) {
       imagePaths = req.files.map((file) => file.filename);
     }
 
-    // ✅ 🔥 ONLY SAFE FIELDS
-   const updateData = {};
+    // 🔥 FETCH EXISTING PROPERTY (IMPORTANT FIX)
+    const existingProperty = await Property.findById(req.params.id);
 
-if (req.body.title) updateData.title = req.body.title;
-if (req.body.location) updateData.location = req.body.location;
+    // 🔥 CLEAN OLD DATA
+    let cleanAmenities = Array.isArray(existingProperty.amenities)
+      ? existingProperty.amenities
+      : [];
 
-if (req.body.price) {
-  updateData.price = req.body.price;
-  updateData.priceValue = Number(req.body.price);
-}
+    let cleanNearby = Array.isArray(existingProperty.nearbyLocations)
+      ? existingProperty.nearbyLocations.filter(
+          (item) => typeof item === "object"
+        )
+      : [];
 
-if (req.body.type) updateData.type = req.body.type;
-if (req.body.description) updateData.description = req.body.description;
+    // ✅ SAFE UPDATE DATA
+    const updateData = {};
 
-updateData.bedrooms = Number(req.body.bedrooms) || 0;
-updateData.bathrooms = Number(req.body.bathrooms) || 0;
-updateData.sqft = Number(req.body.sqft) || 0;
-updateData.parking = Number(req.body.parking) || 0;
+    if (req.body.title) updateData.title = req.body.title;
+    if (req.body.location) updateData.location = req.body.location;
 
-updateData.amenities = amenities;
-updateData.nearbyLocations = nearbyLocations;
+    if (req.body.price) {
+      updateData.price = req.body.price;
+      updateData.priceValue = Number(req.body.price);
+    }
+
+    if (req.body.type) updateData.type = req.body.type;
+    if (req.body.description) updateData.description = req.body.description;
+
+    updateData.bedrooms = isNaN(Number(req.body.bedrooms))
+  ? 0
+  : Number(req.body.bedrooms);
+
+updateData.bathrooms = isNaN(Number(req.body.bathrooms))
+  ? 0
+  : Number(req.body.bathrooms);
+
+updateData.sqft = isNaN(Number(req.body.sqft))
+  ? 0
+  : Number(req.body.sqft);
+
+updateData.parking = isNaN(Number(req.body.parking))
+  ? 0
+  : Number(req.body.parking);
+
+    // 🔥 FINAL SAFE ASSIGN
+    updateData.amenities =
+      amenities.length > 0 ? amenities : cleanAmenities;
+
+    updateData.nearbyLocations =
+      nearbyLocations.length > 0 ? nearbyLocations : cleanNearby;
 
     // ✅ images only if uploaded
     if (imagePaths.length > 0) {
@@ -219,9 +253,9 @@ updateData.nearbyLocations = nearbyLocations;
 // ✅ ADMIN ONLY - NO PAGINATION
 exports.getAllPropertiesAdmin = async (req, res) => {
   try {
-   const properties = await Property.find({
-  createdByRole: "admin",
-}).sort({ createdAt: -1 });
+    const properties = await Property.find({
+      createdByRole: "admin",
+    }).sort({ createdAt: -1 });
 
     res.json({ properties });
   } catch (error) {
@@ -233,8 +267,8 @@ exports.getAllPropertiesAdmin = async (req, res) => {
 exports.getCustomerProperties = async (req, res) => {
   try {
     const properties = await Property.find({
-  createdByRole: "customer",
-}).sort({ createdAt: -1 });
+      createdByRole: "customer",
+    }).sort({ createdAt: -1 });
 
     res.json({
       success: true,
@@ -390,8 +424,8 @@ exports.getUserProperties = async (req, res) => {
 exports.getUserSubmittedProperties = async (req, res) => {
   try {
     const properties = await Property.find({
-  createdByRole: "user",
-}).sort({ createdAt: -1 });
+      createdByRole: "user",
+    }).sort({ createdAt: -1 });
 
     res.json({ properties });
   } catch (error) {
