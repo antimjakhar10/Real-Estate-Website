@@ -1,8 +1,8 @@
 /* Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 
 .testimonials-section {
-  font-family: 'Poppins', sans-serif;
+  font-family: inherit;
   padding: 50px 20px;
   background: linear-gradient(135deg, #FDE68A 0%, #FCA5A5 100%);
   text-align: center;

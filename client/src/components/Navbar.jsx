@@ -7,7 +7,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import "./Navbar.css";
-import logo from "../assets/R3logo.jpg";
+import logo from "../assets/R3developers.png";
 
 const Navbar = ({ variant }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -29,8 +29,8 @@ const Navbar = ({ variant }) => {
       {/* ===== TOPBAR ===== */}
       <div className={`topbar ${scrolled ? "hide" : ""}`}>
         <div className="top-left">
-          <span>✉ info@mail@example.com</span>
-          <span>📞 +00 (123) 456 789 00</span>
+          <span>✉ r3developers@gmailcom</span>
+          <span>📞 +91 8684031003</span>
         </div>
         <div className="top-right">
           <FaFacebookF /> <FaTwitter /> <FaLinkedinIn /> <FaWhatsapp />
@@ -46,10 +46,10 @@ const Navbar = ({ variant }) => {
 `}
       >
         <div className="logo">
-  <Link to="/">
-    <img src={logo} alt="logo" className="logo-img" />
-  </Link>
-</div>
+          <Link to="/">
+            <img src={logo} alt="logo" className="logo-img" />
+          </Link>
+        </div>
 
         {/* Hamburger for mobile */}
         <div
@@ -103,42 +103,42 @@ const Navbar = ({ variant }) => {
             </ul>
           </li>
           <li className="mobile-buttons">
-  <button
-    className="btn enquiry"
-    onClick={() => {
-      setMenuOpen(false);
-      navigate("/contact");
-    }}
-  >
-    Enquiry
-  </button>
+            <button
+              className="btn enquiry"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/contact");
+              }}
+            >
+              Enquiry
+            </button>
 
-  <button
-    className="btn post-property"
-    onClick={() => {
-      setMenuOpen(false);
-      navigate("/post-property");
-    }}
-  >
-    Post Free Property
-  </button>
+            <button
+              className="btn post-property"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/post-property");
+              }}
+            >
+              Post Free Property
+            </button>
 
-  <button
-    className="btn login"
-    onClick={() => {
-      setMenuOpen(false);
-      const token = localStorage.getItem("adminToken");
+            <button
+              className="btn login"
+              onClick={() => {
+                setMenuOpen(false);
+                const token = localStorage.getItem("adminToken");
 
-      if (token) {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/admin-login");
-      }
-    }}
-  >
-    Login
-  </button>
-</li>
+                if (token) {
+                  navigate("/admin-dashboard");
+                } else {
+                  navigate("/admin-login");
+                }
+              }}
+            >
+              Login
+            </button>
+          </li>
         </ul>
 
         {/* Right buttons */}

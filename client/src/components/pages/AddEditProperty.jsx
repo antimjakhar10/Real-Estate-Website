@@ -5,6 +5,9 @@ import "./AddEditProperty.css";
 const AddEditProperty = () => {
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user"));
+const isAdmin = user?.role === "admin";
+
   const { id } = useParams();
 
   const defaultFacilities = [
@@ -59,19 +62,24 @@ const AddEditProperty = () => {
   }, [id]);
 
   const fetchProperty = async () => {
-    const res = await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${id}`);
+    const res = await fetch(
+      `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`,
+    );
     const data = await res.json();
 
     setForm({
-  ...data,
-  amenities: Array.isArray(data.amenities) ? data.amenities : [],
-  nearbyLocations: data.nearbyLocations || [],
-  images: [],
-});
+      ...data,
+      amenities: Array.isArray(data.amenities) ? data.amenities : [],
+      nearbyLocations: data.nearbyLocations || [],
+      images: [],
+    });
 
     if (data.images && data.images.length > 0) {
       setImagePreviews(
-        data.images.map((img) => `https://real-estate-website-ai2s.onrender.com/uploads/${img}`),
+        data.images.map(
+          (img) =>
+            `https://real-estate-website-ai2s.onrender.com/uploads/${img}`,
+        ),
       );
     }
   };
@@ -166,57 +174,37 @@ const AddEditProperty = () => {
 
     const formData = new FormData();
 
-   Object.keys(form).forEach((key) => {
-
     if (!id && !isAdmin) {
-  formData.append("userId", user._id); // 🔥 IMPORTANT
-}
+        formData.append("userId", user._id); // 🔥 IMPORTANT
+      }
 
-  if (key === "amenities") {
+    Object.keys(form).forEach((key) => {
 
-    form[key].forEach((item) => {
-      formData.append(key, item);
+      if (key === "amenities") {
+        form[key].forEach((item) => {
+          formData.append(key, item);
+        });
+      } else if (key === "nearbyLocations") {
+        form.nearbyLocations.forEach((item) => {
+          formData.append("nearbyLocations", JSON.stringify(item));
+        });
+      } else if (key === "images") {
+        form.images.forEach((img) => {
+          formData.append("images", img);
+        });
+      } else {
+        formData.append(key, form[key]);
+      }
     });
 
-  }
 
-  else if (key === "nearbyLocations") {
+    const url = id
+      ? `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
+      : isAdmin
+        ? "https://real-estate-website-ai2s.onrender.com/api/properties/admin"
+        : "https://real-estate-website-ai2s.onrender.com/api/properties"; // 🔥 USER API
 
-    form.nearbyLocations.forEach((item) => {
-      formData.append("nearbyLocations", JSON.stringify(item));
-    });
-
-  }
-
-  else if (key === "images") {
-
-    form.images.forEach((img) => {
-      formData.append("images", img);
-    });
-
-  }
-
-  else {
-
-    formData.append(key, form[key]);
-
-  }
-
-});
-
-    // formData.append("createdBy", "Admin");
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-const isAdmin = user?.role === "admin"; // agar role nahi hai to ignore
-
-const url = id
-  ? `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
-  : isAdmin
-  ? "https://real-estate-website-ai2s.onrender.com/api/properties/admin"
-  : "https://real-estate-website-ai2s.onrender.com/api/properties"; // 🔥 USER API
-
-const method = id ? "PUT" : "POST";
+    const method = id ? "PUT" : "POST";
 
     await fetch(url, {
       method,
@@ -435,7 +423,9 @@ const method = id ? "PUT" : "POST";
                       <input
                         type="checkbox"
                         value={place}
-                       checked={form.nearbyLocations.some((item) => item.name === place)}
+                        checked={form.nearbyLocations.some(
+                          (item) => item.name === place,
+                        )}
                         onChange={handleNearbyChange}
                       />
                       {place}

@@ -62,8 +62,8 @@ const Contact = () => {
       });
     } catch (error) {
       console.log("Full Error:", error);
-  console.log("Response Data:", error.response?.data);
-  alert("Error sending message");
+      console.log("Response Data:", error.response?.data);
+      alert("Error sending message");
     }
   };
   return (
@@ -104,10 +104,8 @@ const Contact = () => {
               <i className="fa-solid fa-location-dot"></i>
             </div>
             <div className="info-content-text">
-              <h4>Mosque Address</h4>
-              <p>
-                123 Academic Way City, State, 1234, <br /> New York City.
-              </p>
+              <h4> Address</h4>
+              <p>Dwarka, Delhi</p>
             </div>
           </motion.div>
 
@@ -118,8 +116,7 @@ const Contact = () => {
             </div>
             <div className="info-content-text">
               <h4>Phone Number</h4>
-              <p>+011 (123) 234 567 890</p>
-              <p>+09 (456) 876 543 210</p>
+              <p>+91 8684031003</p>
             </div>
           </motion.div>
 
@@ -130,8 +127,7 @@ const Contact = () => {
             </div>
             <div className="info-content-text">
               <h4>Email Address</h4>
-              <p>info@examplemail.edu</p>
-              <p>admission@examplemail.edu</p>
+              <p>r3developers@gmail.com</p>
             </div>
           </motion.div>
         </motion.div>
@@ -227,7 +223,7 @@ const Contact = () => {
         transition={{ duration: 1 }}
       >
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3644.475489708761!2d89.2312686!3d24.0142994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fe9b0b4623714b%3A0x629631671048b624!2sPabna%20Zilla%20Stadium!5e0!3m2!1sen!2sbd!4v1708160000000!5m2!1sen!2sbd"
+          src="https://www.google.com/maps?q=Dwarka+Delhi&output=embed"
           width="100%"
           height="450"
           style={{ border: 0 }}

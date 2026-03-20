@@ -74,6 +74,7 @@
   text-align: left;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   will-change: transform;
+  padding-bottom: 5px;
 }
 
 .best-properties .property-card:hover {
@@ -150,7 +151,9 @@
   justify-content: space-between;
   margin-top: auto;
   padding-top: 12px;
+  gap: 10px; /* spacing between price & buttons */
 }
+
 
 .price {
   font-size: 18px;
@@ -159,10 +162,11 @@
 }
 
 .btn-group {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* WhatsApp aur Button ke beech ki duri */
-    flex-wrap: nowrap; /* Force karega ki elements ek hi line mein rahein */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;   /* push right side properly */
+  padding-right: 2px;  /* slight breathing from edge */
 }
 
 /* ---------- WHATSAPP BUTTON ---------- */

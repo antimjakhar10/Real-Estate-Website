@@ -55,6 +55,13 @@ const propertySchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      default: null,
+    },
+
+    createdByRole: {
+      type: String,
+      enum: ["admin", "customer", "user"],
+      required: true,
     },
 
     highlights: [

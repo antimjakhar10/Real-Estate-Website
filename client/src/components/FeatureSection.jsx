@@ -1,30 +1,33 @@
-import React from 'react';
-import './FeatureSection.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./FeatureSection.css";
 
 const FeatureSection = () => {
+  const navigate = useNavigate();
+
   const data = [
-    {
-      id: 1,
-      title: "Find your home",
-      desc: "Altus cedo tantillus video patrocinor valeo carus subseco vestrum credo virtus.",
-      btn: "Find A Home",
-      icon: "🏠" 
-    },
-    {
-      id: 2,
-      title: "Sell a Property",
-      desc: "Tantillus certe patrocinor video adipisci valeo carus. Subseco vestrum taedium.",
-      btn: "Sell A Home",
-      icon: "🤝"
-    },
-    {
-      id: 3,
-      title: "Rent a Home",
-      desc: "Velox surgo clarus tantillus confido carus video lumen cedo virtus spes decerno.",
-      btn: "Rent A Home",
-      icon: "🏘️"
-    }
-  ];
+  {
+    id: 1,
+    title: "Find your dream home",
+    desc: "Explore a wide range of verified properties including apartments, villas, and plots. Find the perfect home that suits your lifestyle and budget.",
+    btn: "Find A Home",
+    icon: "🏠" 
+  },
+  {
+    id: 2,
+    title: "Sell your property easily",
+    desc: "List your property with us and reach thousands of potential buyers. Get the best value with our trusted and hassle-free selling process.",
+    btn: "Sell A Property",
+    icon: "🤝"
+  },
+  {
+    id: 3,
+    title: "Rent a perfect home",
+    desc: "Browse rental properties in prime locations. Choose from affordable to luxury homes with flexible options tailored to your needs.",
+    btn: "Rent A Home",
+    icon: "🏘️"
+  }
+];
 
   return (
     <section className="feature-container">
@@ -35,8 +38,12 @@ const FeatureSection = () => {
         {/* Top Header Part */}
         <div className="header-flex">
           <div className="title-side">
-            <p className="subtitle"><span>—</span> Why Choose Us <span>—</span></p>
-            <h2 className="main-heading-trusted">Trusted by 100+ Million Buyers</h2>
+            <p className="subtitle">
+              <span>—</span> Why Choose Us <span>—</span>
+            </p>
+            <h2 className="main-heading-trusted">
+              Trusted by 100+ Million Buyers
+            </h2>
           </div>
 
           <div className="trust-side">
@@ -65,7 +72,12 @@ const FeatureSection = () => {
               </div>
               <h3>{item.title}</h3>
               <p>{item.desc}</p>
-              <button className="card-btn" >{item.btn}</button>
+              <button
+                className="card-btn"
+                onClick={() => navigate("/property")}
+              >
+                {item.btn}
+              </button>
             </div>
           ))}
         </div>

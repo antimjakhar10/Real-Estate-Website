@@ -43,6 +43,7 @@
 /* ===== NAVBAR ===== */
 .navbar {
   position: absolute;
+  height: 80px;
   top: 35px;
   left: 0;
   width: 100%;
@@ -50,7 +51,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
-  background: transparent;
+
+  background: transparent;   /* 👈 ADD THIS */
+
   transition: all 0.3s ease;
   z-index: 15;
 }
@@ -58,11 +61,39 @@
 .navbar.scrolled {
   position: fixed;
   top: 0;
-  background: rgba(0, 0, 0, 0.95);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  background: #81a787; /* 👈 dark premium */
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+}
+
+.navbar.scrolled .nav-links li a {
+  color: #111;
+}
+
+.navbar.scrolled .location-trigger {
+  color: #111;
+}
+
+.navbar.scrolled .hamburger span {
+  background: #111;
+}
+
+.navbar.scrolled .nav-buttons .btn {
+  background: #111;
+  color: #fff;
+  border: none;
+}
+
+.navbar.scrolled .nav-buttons .btn:hover {
+  background: #2fbf8f;
 }
 
 /* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .navbar .logo h2 {
   color: white;
   font-size: 30px;
@@ -75,9 +106,10 @@
 }
 
 .logo-img {
-  height: 50px;
+  height: 120px;
   width: auto;
   object-fit: contain;
+  filter: brightness(1.5) contrast(1.1);
 }
 
 

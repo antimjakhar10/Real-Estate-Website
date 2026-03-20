@@ -5,24 +5,24 @@ import './Testimonials.css';
 
 const testimonialsData = [
   {
-    text: "Amazing service! Highly recommend. The team was very professional and efficient.",
-    name: "Julia Era",
-    role: "Property Owner",
-    image: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?w=100",
+    text: "R3 Developers helped me find the perfect home in Dwarka. The entire process was smooth, transparent, and hassle-free.",
+    name: "Rahul Sharma",
+    role: "Home Buyer, Dwarka",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5
   },
   {
-    text: "Very satisfied with the quality and speed of work. Great experience overall.",
-    name: "Michael Brown",
-    role: "Investor",
-    image: "https://randomuser.me/api/portraits/men/52.jpg",
+    text: "I sold my property in Janakpuri through R3 Developers and got an excellent deal. Their team is professional and very supportive.",
+    name: "Neha Verma",
+    role: "Property Seller, Janakpuri",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
     rating: 5
   },
   {
-    text: "Exceeded my expectations. Friendly and efficient service, highly recommend Pillar.",
-    name: "Sophia Lee",
-    role: "Home Buyer",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
+    text: "I found a great rental option in Uttam Nagar within my budget. The team guided me at every step. Highly recommended service.",
+    name: "Amit Yadav",
+    role: "Tenant, Uttam Nagar",
+    image: "https://randomuser.me/api/portraits/men/65.jpg",
     rating: 5
   }
 ];

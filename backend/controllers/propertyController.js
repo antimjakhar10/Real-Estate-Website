@@ -46,13 +46,13 @@ exports.createProperty = async (req, res) => {
     }
 
     let baseSlug = generateSlug(req.body.title);
-let slug = baseSlug;
-let count = 1;
+    let slug = baseSlug;
+    let count = 1;
 
-// duplicate slug avoid
-while (await Property.findOne({ slug })) {
-  slug = `${baseSlug}-${count++}`;
-}
+    // duplicate slug avoid
+    while (await Property.findOne({ slug })) {
+      slug = `${baseSlug}-${count++}`;
+    }
 
     const newProperty = new Property({
       title: req.body.title,
@@ -70,7 +70,8 @@ while (await Property.findOne({ slug })) {
       nearbyLocations,
       images: imagePaths,
 
-      createdBy: req.body.userId,
+      createdBy: req.body.userId || null,
+      createdByRole: req.body.userId ? "user" : "customer",
       approvalStatus: "Pending",
     });
 
@@ -186,9 +187,9 @@ exports.updateProperty = async (req, res) => {
 // ✅ ADMIN ONLY - NO PAGINATION
 exports.getAllPropertiesAdmin = async (req, res) => {
   try {
-    const properties = await Property.find({
-      createdBy: null, // 🔥 admin wali hi
-    }).sort({ createdAt: -1 });
+   const properties = await Property.find({
+  createdByRole: "admin",
+}).sort({ createdAt: -1 });
 
     res.json({ properties });
   } catch (error) {
@@ -200,8 +201,8 @@ exports.getAllPropertiesAdmin = async (req, res) => {
 exports.getCustomerProperties = async (req, res) => {
   try {
     const properties = await Property.find({
-      createdBy: "Customer",
-    }).sort({ createdAt: -1 });
+  createdByRole: "customer",
+}).sort({ createdAt: -1 });
 
     res.json({
       success: true,
@@ -284,8 +285,8 @@ exports.createPropertyAdmin = async (req, res) => {
       images: imagePaths,
       approvalStatus: "Approved",
 
-      // 🔥 FIX (IMPORTANT)
-      createdBy: null, // admin ke liye null rakh
+      createdBy: null,
+      createdByRole: "admin",
     });
 
     await newProperty.save();
@@ -354,12 +355,11 @@ exports.getUserProperties = async (req, res) => {
   res.json(properties);
 };
 
-
 exports.getUserSubmittedProperties = async (req, res) => {
   try {
     const properties = await Property.find({
-      createdBy: { $ne: null }, // 🔥 only users
-    }).sort({ createdAt: -1 });
+  createdByRole: "user",
+}).sort({ createdAt: -1 });
 
     res.json({ properties });
   } catch (error) {

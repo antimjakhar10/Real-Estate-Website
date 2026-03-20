@@ -53,7 +53,7 @@
 }
 
 .card-content { 
-  padding: 15px; 
+  padding: 8px; 
   flex-grow: 1;           /* Content ko bacha hua space dene ke liye */
 }
 
@@ -77,9 +77,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
-  margin-top: auto;      /* Buttons ko humesha bottom par rakhega */
+  margin-top: auto;
+  padding-top: 12px;
+  gap: 5px; /* spacing between price & buttons */
 }
+
 
 .price {
   font-size: 15px;
