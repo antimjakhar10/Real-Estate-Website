@@ -184,7 +184,7 @@ if (!id) {
   if (isAdmin) {
     formData.append("createdByRole", "admin");
   } else {
-    formData.append("createdByRole", "user");
+    formData.append("createdByRole", "customer"); // 🔥 FIX
     if (user?._id) {
       formData.append("createdBy", user._id);
     }

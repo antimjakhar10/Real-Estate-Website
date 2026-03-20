@@ -179,20 +179,26 @@ exports.updateProperty = async (req, res) => {
     }
 
     // ✅ 🔥 ONLY SAFE FIELDS
-    const updateData = {
-      title: req.body.title,
-      location: req.body.location,
-      price: req.body.price,
-      priceValue: Number(req.body.price),
-      type: req.body.type,
-      bedrooms: Number(req.body.bedrooms) || 0,
-      bathrooms: Number(req.body.bathrooms) || 0,
-      sqft: Number(req.body.sqft) || 0,
-      parking: Number(req.body.parking) || 0,
-      description: req.body.description,
-      amenities,
-      nearbyLocations,
-    };
+   const updateData = {};
+
+if (req.body.title) updateData.title = req.body.title;
+if (req.body.location) updateData.location = req.body.location;
+
+if (req.body.price) {
+  updateData.price = req.body.price;
+  updateData.priceValue = Number(req.body.price);
+}
+
+if (req.body.type) updateData.type = req.body.type;
+if (req.body.description) updateData.description = req.body.description;
+
+updateData.bedrooms = Number(req.body.bedrooms) || 0;
+updateData.bathrooms = Number(req.body.bathrooms) || 0;
+updateData.sqft = Number(req.body.sqft) || 0;
+updateData.parking = Number(req.body.parking) || 0;
+
+updateData.amenities = amenities;
+updateData.nearbyLocations = nearbyLocations;
 
     // ✅ images only if uploaded
     if (imagePaths.length > 0) {
