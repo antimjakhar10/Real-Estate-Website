@@ -74,7 +74,7 @@ function App() {
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="add-property" element={<AddEditProperty />} />
         <Route path="edit-property/:id" element={<AddEditProperty />} />
-        <Route path="user/my-properties" element={<MyProperties />} />
+        <Route path="my-properties" element={<MyProperties />} />
         <Route path="user-add-blog" element={<UserAddBlog />} />
         <Route path="my-blogs" element={<MyBlogs />} />
       </Route>

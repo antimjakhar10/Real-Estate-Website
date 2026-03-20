@@ -70,8 +70,8 @@ exports.createProperty = async (req, res) => {
       nearbyLocations,
       images: imagePaths,
 
-      createdBy: req.body.userId || null,
-      createdByRole: req.body.userId ? "user" : "customer",
+      createdBy: req.body.createdBy || null,
+createdByRole: req.body.createdByRole || "customer",
       approvalStatus: "Pending",
     });
 

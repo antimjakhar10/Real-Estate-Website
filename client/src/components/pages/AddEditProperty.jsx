@@ -236,7 +236,7 @@ if (!isAdmin && user?._id) {
     }
   }
 } else {
-  navigate("/user/user/my-properties");
+  navigate("/user/my-properties");
 }
   };
 
