@@ -192,6 +192,8 @@ if (!id) {
 }
 
 Object.keys(form).forEach((key) => {
+  if (key === "status") return;
+  
   if (key === "amenities") {
     form[key].forEach((item) => {
       formData.append("amenities", item);

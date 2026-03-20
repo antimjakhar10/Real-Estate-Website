@@ -6,8 +6,9 @@ const AdminBlogs = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
 
+  // ✅ FIXED API
   const fetchBlogs = async () => {
-    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs");
+    const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs/admin/blogs");
     const data = await res.json();
     setBlogs(data);
   };
@@ -17,16 +18,16 @@ const AdminBlogs = () => {
   }, []);
 
   const updateStatus = async (id, status) => {
-  await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/approve/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ status }),
-  });
+    await fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/approve/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
 
-  fetchBlogs();
-};
+    fetchBlogs();
+  };
 
   const deleteBlog = async (id) => {
     if (!window.confirm("Delete this blog?")) return;
@@ -57,7 +58,6 @@ const AdminBlogs = () => {
               <th>Date</th>
               <th>Actions</th>
               <th>Status</th>
-              <th>Approval</th>
             </tr>
           </thead>
 
@@ -91,51 +91,17 @@ const AdminBlogs = () => {
                     Delete
                   </button>
                 </td>
-                <td>
-                  <span
-                    style={{
-                      padding: "4px 8px",
-                      borderRadius: "6px",
-                      color: "#fff",
-                      background:
-                        blog.approvalStatus === "Approved"
-                          ? "green"
-                          : blog.approvalStatus === "Rejected"
-                            ? "red"
-                            : "orange",
-                    }}
-                  >
-                    {blog.approvalStatus}
-                  </span>
-                </td>
 
                 <td>
-                  <button
-                    style={{
-                      background: "green",
-                      color: "white",
-                      padding: "5px 10px",
-                      borderRadius: "6px",
-                      border: "none",
-                    }}
-                    onClick={() => updateStatus(blog._id, "Approved")}
+                  <select
+                    value={blog.approvalStatus}
+                    onChange={(e) => updateStatus(blog._id, e.target.value)}
+                    className={`status-select ${blog.approvalStatus.toLowerCase()}`}
                   >
-                    Approve
-                  </button>
-
-                  <button
-                    style={{
-                      background: "red",
-                      color: "white",
-                      padding: "5px 10px",
-                      borderRadius: "6px",
-                      border: "none",
-                      marginLeft: "5px",
-                    }}
-                    onClick={() => updateStatus(blog._id, "Rejected")}
-                  >
-                    Reject
-                  </button>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
                 </td>
               </tr>
             ))}

@@ -17,6 +17,8 @@ const AdminAddBlog = () => {
     formData.append("content", content);
     formData.append("image", image);
 
+    formData.append("role", "admin");
+
     try {
 
       const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/blogs", {

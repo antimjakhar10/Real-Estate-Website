@@ -4,10 +4,15 @@ const Blog = require("../models/Blog");
 const upload = require("../middleware/upload");
 
 
-// GET all blogs
+// ===============================
+// 🌐 WEBSITE BLOGS (ONLY APPROVED)
+// ===============================
 router.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.find({ approvalStatus: "Approved" }).sort({ createdAt: -1 });
+    const blogs = await Blog.find({
+      approvalStatus: "Approved"
+    }).sort({ createdAt: -1 });
+
     res.json(blogs);
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
@@ -15,21 +20,12 @@ router.get("/", async (req, res) => {
 });
 
 
-// GET single blog
-router.get("/:id", async (req, res) => {
-  try {
-    const blog = await Blog.findById(req.params.id);
-    res.json(blog);
-  } catch (err) {
-    res.status(500).json({ message: "Server Error" });
-  }
-});
-
-
-// ✅ CREATE BLOG
+// ===============================
+// ✍️ CREATE BLOG
+// ===============================
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { title, content, userId } = req.body;
+    const { title, content, userId, role } = req.body;
 
     const image = req.file
       ? `https://real-estate-website-ai2s.onrender.com/uploads/${req.file.filename}`
@@ -39,8 +35,12 @@ router.post("/", upload.single("image"), async (req, res) => {
       title,
       content,
       image,
-      createdBy: userId,       // 🔥 NEW
-      approvalStatus: "Pending" // 🔥 NEW
+
+      // 🔥 IMPORTANT
+      createdBy: role === "admin" ? null : userId,
+
+      // 🔥 ADMIN = direct approved | USER = pending
+      approvalStatus: role === "admin" ? "Approved" : "Pending"
     });
 
     const savedBlog = await newBlog.save();
@@ -52,39 +52,53 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 
-// ✅ DELETE BLOG
-router.delete("/:id", async (req, res) => {
+// ===============================
+// 👩‍💼 ADMIN OWN BLOGS ONLY
+// ===============================
+router.get("/admin/blogs", async (req, res) => {
   try {
+    const blogs = await Blog.find({
+      createdBy: null   // 🔥 ONLY ADMIN BLOGS
+    }).sort({ createdAt: -1 });
 
-    await Blog.findByIdAndDelete(req.params.id);
-
-    res.json({ message: "Blog deleted" });
-
+    res.json(blogs);
   } catch (err) {
-    res.status(500).json({ message: "Error deleting blog" });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
 
-// ✅ UPDATE BLOG
-router.put("/:id", async (req, res) => {
+// ===============================
+// 👤 USER BLOGS (FOR APPROVAL)
+// ===============================
+router.get("/admin/user-blogs", async (req, res) => {
   try {
+    const blogs = await Blog.find({
+      createdBy: { $ne: null }   // 🔥 ONLY USER BLOGS
+    }).sort({ createdAt: -1 });
 
-    const { title, image, content } = req.body;
-
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { title, image, content },
-      { new: true }
-    );
-
-    res.json(updatedBlog);
-
+    res.json(blogs);
   } catch (err) {
-    res.status(500).json({ message: "Error updating blog" });
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
+
+// ===============================
+// 👤 USER OWN BLOGS
+// ===============================
+router.get("/user/:userId", async (req, res) => {
+  const blogs = await Blog.find({
+    createdBy: req.params.userId
+  }).sort({ createdAt: -1 });
+
+  res.json(blogs);
+});
+
+
+// ===============================
+// ✅ APPROVE / REJECT
+// ===============================
 router.put("/approve/:id", async (req, res) => {
   try {
     const { status } = req.body;
@@ -99,26 +113,49 @@ router.put("/approve/:id", async (req, res) => {
   }
 });
 
-router.get("/user/:userId", async (req, res) => {
-  const blogs = await Blog.find({
-    createdBy: req.params.userId
-  }).sort({ createdAt: -1 });
 
-  res.json(blogs);
+// ===============================
+// 🗑 DELETE BLOG
+// ===============================
+router.delete("/:id", async (req, res) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id);
+    res.json({ message: "Blog deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting blog" });
+  }
 });
 
-router.get("/admin/user-blogs", async (req, res) => {
-  try {
-    const blogs = await Blog.find({
-      createdBy: { $ne: null },
-    }).sort({ createdAt: -1 });
 
-    res.json(blogs);
+// ===============================
+// ✏️ UPDATE BLOG
+// ===============================
+router.put("/:id", async (req, res) => {
+  try {
+    const { title, image, content } = req.body;
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      { title, image, content },
+      { new: true }
+    );
+
+    res.json(updatedBlog);
   } catch (err) {
-    console.log("BLOG ERROR 👉", err);
+    res.status(500).json({ message: "Error updating blog" });
+  }
+});
+
+// ===============================
+// 📄 SINGLE BLOG
+// ===============================
+router.get("/:id", async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    res.json(blog);
+  } catch (err) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
 module.exports = router;
-

@@ -1019,6 +1019,95 @@
     margin-bottom: 15px;
   }
 
+  @media (max-width: 768px) {
+
+  .pd-highlights-section {
+    padding: 40px 15px;
+  }
+
+  .pd-highlights-card {
+    padding: 20px 15px;
+    border-radius: 18px;
+  }
+
+  /* GRID FIX */
+  .pd-highlights-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  /* ITEM CLEAN LOOK */
+  .highlight-item {
+    padding: 12px;
+    gap: 12px;
+    border-radius: 12px;
+    background: #f9fafb;
+  }
+
+  /* ICON SMALL + CENTER */
+  .highlight-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  /* TEXT FIX */
+  .highlight-text span {
+    font-size: 10px;
+  }
+
+  .highlight-text h4 {
+    font-size: 14px;
+  }
+
+  /* SALE TAG */
+  .sale-status-new {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+}
+
+.pd-nearby-card-new {
+    padding: 20px 15px;
+    border-radius: 18px;
+  }
+
+  .pd-nearby-card-new h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .nearby-item-new {
+    padding: 12px;
+    border-radius: 12px;
+    background: #f9fafb;
+    margin-bottom: 10px;
+  }
+
+  .nearby-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 13px;
+  }
+
+  .nearby-item-new h5 {
+    font-size: 14px;
+  }
+
+  .nearby-item-new p {
+    font-size: 12px;
+  }
+
+  .pd-highlights-wrapper {
+    gap: 20px;
+  }
+
+  .pd-main-heading {
+    font-size: 22px;
+  }
+
+
 }
 
 

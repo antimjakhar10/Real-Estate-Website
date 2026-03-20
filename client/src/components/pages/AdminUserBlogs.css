@@ -10,9 +10,9 @@
 
 .table-wrapper {
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 .admin-blogs-table {
@@ -39,6 +39,7 @@
   background: #f9fafb;
 }
 
+/* IMAGE */
 .blog-image {
   width: 70px;
   height: 50px;
@@ -46,68 +47,73 @@
   border-radius: 6px;
 }
 
+/* STATUS BADGE */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.approved {
+  background: #16a34a;
+}
+
+.status-badge.pending {
+  background: #f59e0b;
+}
+
+.status-badge.rejected {
+  background: #dc2626;
+}
+
+/* BUTTONS */
 .action-buttons {
   display: flex;
   gap: 8px;
 }
 
-.edit-btn {
-  background: #3b82f6;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background: #2563eb;
-}
-
-.delete-btn {
-  background: #ef4444;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background: #dc2626;
-}
-
-.status-select {
-  padding: 5px 9px;   
- 
-  border: none;
-  font-size: 12px;         /* 👈 font small */
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  min-width: 100px;        /* 👈 fixed width */
-  height: 28px;            /* 👈 height control */
-}
-
-/* COLORS */
-.status-select.approved {
+.approve-btn {
   background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.status-select.pending {
-  background: #f59e0b;
+.approve-btn:hover {
+  background: #15803d;
 }
 
-.status-select.rejected {
+.reject-btn {
   background: #dc2626;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-/* Remove ugly outline */
-.status-select:focus {
-  outline: none;
+.reject-btn:hover {
+  background: #b91c1c;
 }
 
-/* Dropdown arrow fix (optional clean look) */
-.status-select option {
-  color: black;
+/* 🔥 RESPONSIVE */
+@media (max-width: 768px) {
+  .admin-blogs-table th,
+  .admin-blogs-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .blog-image {
+    width: 50px;
+    height: 40px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
 }

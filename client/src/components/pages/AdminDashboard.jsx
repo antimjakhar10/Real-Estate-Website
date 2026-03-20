@@ -61,7 +61,7 @@ const navigate = useNavigate();
 };
 
   return (
-    <div className="admin/user/dashboard">
+    <div className="admin/dashboard">
       <h2 className="dashboard-title">Dashboard</h2>
 
       <div className="dashboard-cards">

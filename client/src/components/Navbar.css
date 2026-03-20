@@ -11,33 +11,59 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 50px;
+  padding: 8px 50px;
   font-size: 13px;
   position: absolute;
   top: 0;
   left: 0;
-  background: transparent;
-  color: white;
+  background: #2f7d5a;  /* 👈 glass look */
+  backdrop-filter: blur(8px);
+  color: #fff;
   z-index: 20;
-  transition:
-    all 0.3s ease,
-    opacity 0.5s ease;
+  transition: all 0.3s ease;
+  
 }
+
 .topbar.hide {
   opacity: 0;
   visibility: hidden;
 }
+
+/* Left */
+.top-left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
 .top-left span {
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
 }
+
+/* Right */
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .top-right svg {
-  margin-left: 15px;
   cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
 }
+
+.top-right svg:hover {
+  color: #2fbf8f;
+}
+
 .language {
-  margin-left: 20px;
-  border-left: 1px solid white;
-  padding-left: 15px;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  padding-left: 10px;
+  font-size: 13px;
 }
 
 /* ===== NAVBAR ===== */
@@ -499,15 +525,59 @@
   } /* hide buttons on tablet/mobile, visible in menu */
 }
 
+
+
 @media (max-width: 768px) {
   .topbar {
-    flex-direction: column;
-    padding: 5px 20px;
-    text-align: center;
+    padding: 6px 12px;
+    flex-direction: row;   /* 👈 IMPORTANT */
+    justify-content: space-between;
+    align-items: center;
   }
-  .top-left,
+
+  /* LEFT SIDE (EMAIL) */
+  .top-left {
+    flex-direction: row;
+    gap: 5px;
+  }
+
+  /* ONLY SHOW FIRST ITEM (EMAIL) */
+  .top-left span:last-child {
+    display: none;   /* hide phone from left */
+  }
+
+  /* RIGHT SIDE */
   .top-right {
-    margin: 3px 0;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  /* HIDE SOCIAL ICONS */
+  .top-right svg {
+    display: none;
+  }
+
+  /* SHOW PHONE ON RIGHT */
+  .top-right::before {
+    content: "+91 8684031003";  /* 👈 apna number */
+    font-size: 12px;
+  }
+
+  /* HIDE LANGUAGE */
+  .language {
+    display: none;
+  }
+
+  /* FONT FIX */
+  .top-left span {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .language {
+    font-size: 12px;
+    border: none;
+    padding: 0;
   }
 
   .navbar {

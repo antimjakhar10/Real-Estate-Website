@@ -32,9 +32,9 @@ const AdminLayout = () => {
 
         <div
           className={`admin-menu-item ${
-            isActive("/admin/user/dashboard") ? "active" : ""
+            isActive("/admin/dashboard") ? "active" : ""
           }`}
-          onClick={() => navigate("/admin/user/dashboard")}
+          onClick={() => navigate("/admin/dashboard")}
         >
           <LayoutDashboard size={18} />
           Dashboard

@@ -1,5 +1,5 @@
 .hero {
-  height: 70vh;
+  height: 80vh;
   width: 100%;
   position: relative;
   background: url('../assets/header_img.png') no-repeat center center/cover;
@@ -29,3 +29,32 @@
 .hero-search-wrapper .search-section {
   margin-top: 0; 
 }
+
+
+/* 📱 TABLET FIX */
+@media (max-width: 1024px) {
+
+  .hero {
+    height: 60vh;   /* 👈 reduce height */
+    background-position: center top; /* 👈 better focus */
+  }
+
+  .hero-search-wrapper {
+    margin-top: 40px; /* 👈 thoda niche lao */
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .hero {
+    height: 100vh;
+    background-position: center;
+  }
+
+  .hero-search-wrapper {
+    margin-top: 60px;
+  }
+
+}
+
