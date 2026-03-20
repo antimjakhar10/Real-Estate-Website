@@ -94,9 +94,9 @@ const AdminLayout = () => {
 
               <div
                 className={`admin-menu-item ${
-                  isActive("/admin/user/add-property") ? "active" : ""
+                  isActive("/admin/add-property") ? "active" : ""
                 }`}
-                onClick={() => navigate("/admin/user/add-property")}
+                onClick={() => navigate("/admin/add-property")}
               >
                 <PlusSquare size={16} />
                 Add Property

@@ -137,50 +137,67 @@ exports.updateProperty = async (req, res) => {
     let amenities = [];
     let nearbyLocations = [];
 
+    // ✅ amenities fix
     if (req.body.amenities) {
-      if (Array.isArray(req.body.amenities)) {
-        amenities = req.body.amenities;
-      } else if (typeof req.body.amenities === "string") {
-        amenities = JSON.parse(req.body.amenities);
-      }
+      amenities = Array.isArray(req.body.amenities)
+        ? req.body.amenities
+        : [req.body.amenities];
     }
 
+    // ✅ 🔥 SAFE nearbyLocations parsing
     if (req.body.nearbyLocations) {
       if (Array.isArray(req.body.nearbyLocations)) {
-        nearbyLocations = req.body.nearbyLocations.map((item) =>
-          JSON.parse(item),
-        );
+        nearbyLocations = req.body.nearbyLocations.map((item) => {
+          try {
+            return typeof item === "string" ? JSON.parse(item) : item;
+          } catch (err) {
+            return { name: item, dist: "" };
+          }
+        });
       } else {
-        nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
+        try {
+          nearbyLocations = [
+            typeof req.body.nearbyLocations === "string"
+              ? JSON.parse(req.body.nearbyLocations)
+              : req.body.nearbyLocations,
+          ];
+        } catch {
+          nearbyLocations = [
+            { name: req.body.nearbyLocations, dist: "" },
+          ];
+        }
       }
     }
 
-    const { image, ...rest } = req.body;
+    // ✅ images
+    let imagePaths = [];
+
+    if (req.files && req.files.length > 0) {
+      imagePaths = req.files.map((file) => file.filename);
+    }
 
     const updateData = {
-      ...rest,
+      ...req.body,
       amenities,
       nearbyLocations,
-      parking: Number(req.body.parking) || 0,
       bedrooms: Number(req.body.bedrooms) || 0,
       bathrooms: Number(req.body.bathrooms) || 0,
       sqft: Number(req.body.sqft) || 0,
+      parking: Number(req.body.parking) || 0,
     };
 
-    if (req.file) {
-      updateData.image = req.file.filename;
+    if (imagePaths.length > 0) {
+      updateData.images = imagePaths;
     }
 
-    await Property.findByIdAndUpdate(
-      req.params.id,
-      { $set: updateData },
-      { new: true },
-    );
+    await Property.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
 
     res.json({ message: "Property Updated Successfully ✅" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Update Failed ❌" });
+    console.log("UPDATE ERROR 👉", error);
+    res.status(500).json({ error: error.message }); // 🔥 IMPORTANT
   }
 };
 

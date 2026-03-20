@@ -5,10 +5,10 @@ import "./AddEditProperty.css";
 const AddEditProperty = () => {
   const navigate = useNavigate();
 
- const adminToken = localStorage.getItem("adminToken");
-const user = JSON.parse(localStorage.getItem("user"));
+  const adminToken = localStorage.getItem("adminToken");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-const isAdmin = user?.role === "admin";
+  const isAdmin = !!adminToken;
 
   const { id } = useParams();
 
@@ -70,12 +70,12 @@ const isAdmin = user?.role === "admin";
     const data = await res.json();
 
     setForm({
-  ...data,
-  createdByRole: data.createdByRole, // 🔥 IMPORTANT
-  amenities: Array.isArray(data.amenities) ? data.amenities : [],
-  nearbyLocations: data.nearbyLocations || [],
-  images: [],
-});
+      ...data,
+      createdByRole: data.createdByRole, // 🔥 IMPORTANT
+      amenities: Array.isArray(data.amenities) ? data.amenities : [],
+      nearbyLocations: data.nearbyLocations || [],
+      images: [],
+    });
 
     if (data.images && data.images.length > 0) {
       setImagePreviews(
@@ -166,79 +166,80 @@ const isAdmin = user?.role === "admin";
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!form.title || !form.price) {
-      alert("Title and Price required");
-      return;
-    }
+  if (!form.title || !form.price) {
+    alert("Title and Price required");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    const formData = new FormData();
+ 
 
-    // 🔥 ADD THIS
+  const formData = new FormData();
+
 if (isAdmin) {
   formData.append("createdByRole", "admin");
 } else {
   formData.append("createdByRole", "user");
+  if (user?._id) {
+    formData.append("createdBy", user._id);
+  }
 }
 
-// ✅ USER ID SEND KARNA HAI
-if (!isAdmin && user?._id) {
-  formData.append("createdBy", user?._id);
-}
-
-    Object.keys(form).forEach((key) => {
-
-      if (key === "amenities") {
-        form[key].forEach((item) => {
-          formData.append(key, item);
-        });
-      } else if (key === "nearbyLocations") {
-        form.nearbyLocations.forEach((item) => {
-          formData.append("nearbyLocations", JSON.stringify(item));
-        });
-      } else if (key === "images") {
-        form.images.forEach((img) => {
-          formData.append("images", img);
-        });
-      } else {
-        formData.append(key, form[key]);
-      }
+Object.keys(form).forEach((key) => {
+  if (key === "amenities") {
+    form[key].forEach((item) => {
+      formData.append("amenities", item);
     });
-
-
-    const url = id
-      ? `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
-      : isAdmin
-        ? "https://real-estate-website-ai2s.onrender.com/api/properties/admin"
-        : "https://real-estate-website-ai2s.onrender.com/api/properties"; // 🔥 USER API
-
-    const method = id ? "PUT" : "POST";
-
-    await fetch(url, {
-      method,
-      body: formData,
+  } else if (key === "nearbyLocations") {
+    form[key].forEach((item) => {
+      formData.append("nearbyLocations", JSON.stringify(item));
     });
+  } else if (key === "images") {
+    form[key].forEach((img) => {
+      formData.append("images", img);
+    });
+  } else {
+    formData.append(key, form[key]);
+  }
+});
 
+const bodyData = formData;
+
+  const url = id
+    ? `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
+    : isAdmin
+    ? "https://real-estate-website-ai2s.onrender.com/api/properties/admin"
+    : "https://real-estate-website-ai2s.onrender.com/api/properties";
+
+  const method = id ? "PUT" : "POST";
+
+  const res = await fetch(url, {
+  method,
+  body: bodyData,
+});
+
+  // ❌ ERROR CASE
+  if (!res.ok) {
+    alert("Error saving property ❌");
     setLoading(false);
-   if (isAdmin) {
-  if (!id) {
+    return;
+  }
+
+  // ✅ SUCCESS POPUP
+  alert(id ? "Property updated successfully ✅" : "Property submitted successfully ✅");
+
+  setLoading(false);
+
+  // ✅ REDIRECT
+  if (isAdmin) {
     navigate("/admin/properties");
   } else {
-    if (form.createdByRole === "customer") {
-      navigate("/admin/customers-list");
-    } else if (form.createdByRole === "user") {
-      navigate("/admin/user-properties");
-    } else {
-      navigate("/admin/properties");
-    }
+    navigate("/user/my-properties");
   }
-} else {
-  navigate("/user/my-properties");
-}
-  };
+};
 
   return (
     <form onSubmit={handleSubmit} className="add-property-form">
