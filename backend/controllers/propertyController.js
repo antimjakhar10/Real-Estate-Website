@@ -134,6 +134,8 @@ exports.getProperties = async (req, res) => {
 
 exports.updateProperty = async (req, res) => {
   try {
+    console.log("BODY 👉", req.body);
+
     let amenities = [];
     let nearbyLocations = [];
 
@@ -144,13 +146,13 @@ exports.updateProperty = async (req, res) => {
         : [req.body.amenities];
     }
 
-    // ✅ 🔥 SAFE nearbyLocations parsing
+    // ✅ nearby safe parse
     if (req.body.nearbyLocations) {
       if (Array.isArray(req.body.nearbyLocations)) {
         nearbyLocations = req.body.nearbyLocations.map((item) => {
           try {
             return typeof item === "string" ? JSON.parse(item) : item;
-          } catch (err) {
+          } catch {
             return { name: item, dist: "" };
           }
         });
@@ -176,16 +178,23 @@ exports.updateProperty = async (req, res) => {
       imagePaths = req.files.map((file) => file.filename);
     }
 
+    // ✅ 🔥 ONLY SAFE FIELDS
     const updateData = {
-      ...req.body,
-      amenities,
-      nearbyLocations,
+      title: req.body.title,
+      location: req.body.location,
+      price: req.body.price,
+      priceValue: Number(req.body.price),
+      type: req.body.type,
       bedrooms: Number(req.body.bedrooms) || 0,
       bathrooms: Number(req.body.bathrooms) || 0,
       sqft: Number(req.body.sqft) || 0,
       parking: Number(req.body.parking) || 0,
+      description: req.body.description,
+      amenities,
+      nearbyLocations,
     };
 
+    // ✅ images only if uploaded
     if (imagePaths.length > 0) {
       updateData.images = imagePaths;
     }
@@ -197,7 +206,7 @@ exports.updateProperty = async (req, res) => {
     res.json({ message: "Property Updated Successfully ✅" });
   } catch (error) {
     console.log("UPDATE ERROR 👉", error);
-    res.status(500).json({ error: error.message }); // 🔥 IMPORTANT
+    res.status(500).json({ error: error.message });
   }
 };
 

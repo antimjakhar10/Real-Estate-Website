@@ -179,12 +179,15 @@ const AddEditProperty = () => {
 
   const formData = new FormData();
 
-if (isAdmin) {
-  formData.append("createdByRole", "admin");
-} else {
-  formData.append("createdByRole", "user");
-  if (user?._id) {
-    formData.append("createdBy", user._id);
+// ✅ ONLY FOR ADD (NOT UPDATE)
+if (!id) {
+  if (isAdmin) {
+    formData.append("createdByRole", "admin");
+  } else {
+    formData.append("createdByRole", "user");
+    if (user?._id) {
+      formData.append("createdBy", user._id);
+    }
   }
 }
 
