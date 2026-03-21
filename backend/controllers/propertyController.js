@@ -211,11 +211,40 @@ exports.getUserProperties = async (req, res) => {
 
 exports.getProperties = async (req, res) => {
   try {
-    const properties = await Property.find({
-      approvalStatus: "Approved",
-    }).sort({ createdAt: -1 });
+    const { page = 1, limit = 6, location, type, range, featured } = req.query;
 
-    res.json({ properties });
+    const query = {
+      approvalStatus: "Approved",
+    };
+
+    // ✅ LOCATION FILTER (MAIN FIX)
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+
+    // ✅ TYPE FILTER
+    if (type) {
+      query.type = { $regex: type, $options: "i" };
+    }
+
+    // ✅ FEATURED FILTER
+    if (featured === "true") {
+      query.featured = true;
+    }
+
+    // ✅ GET DATA WITH PAGINATION + PREMIUM FIRST
+    const properties = await Property.find(query)
+      .sort({ premium: -1, createdAt: -1 }) // 🔥 premium top
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const total = await Property.countDocuments(query);
+
+    res.json({
+      properties,
+      totalPages: Math.ceil(total / limit),
+    });
+
   } catch (error) {
     console.log("GET ERROR 👉", error);
     res.status(500).json({ message: "Error fetching properties" });
@@ -244,22 +273,30 @@ exports.updateApprovalStatus = async (req, res) => {
 
 exports.togglePremium = async (req, res) => {
   try {
+    console.log("🔥 TOGGLE HIT ID:", req.params.id);
+
     const property = await Property.findById(req.params.id);
 
+    console.log("👉 PROPERTY:", property);
+
     if (!property) {
-      return res.status(404).json({ message: "Not found" });
+      return res.status(404).json({ message: "Property not found" });
     }
 
     property.premium = !property.premium;
 
     await property.save();
 
+    console.log("✅ UPDATED:", property.premium);
+
     res.json({
       message: "Premium toggled",
-      premium: property.premium, // 🔥 IMPORTANT
+      premium: property.premium,
     });
-  } catch (err) {
-    res.status(500).json({ message: "Error" });
+
+  } catch (error) {
+    console.log("❌ TOGGLE ERROR 👉", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

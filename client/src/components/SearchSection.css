@@ -23,6 +23,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 18px;
+  flex-wrap: nowrap;
 }
 
 .search-section .tab {
@@ -35,6 +36,7 @@
   cursor: pointer;
   font-size: 13px;
   transition: 0.3s ease;
+  width: auto !important; 
 }
 
 .search-section .tab.active {

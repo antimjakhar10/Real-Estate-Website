@@ -15,7 +15,7 @@ const BestProperties = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setProperties(data.properties);
+        setProperties((data.properties || []).slice(0, 8)); // 🔥 HARD LIMIT
       })
       .catch((err) => console.log(err));
   }, []);

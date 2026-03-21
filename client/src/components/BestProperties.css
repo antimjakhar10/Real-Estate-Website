@@ -19,8 +19,11 @@
 }
 
 /* ---------- FILTER BUTTONS ---------- */
+.best-properties button {
+  width: auto !important;
+}
 
-.filter-buttons-row {
+.best-properties .filter-buttons-row {
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -28,7 +31,7 @@
   flex-wrap: wrap;
 }
 
-.filter-btn {
+.best-properties .filter-btn {
   padding: 10px 22px;
   border: 1px solid #e0e0e0;
   background: white;
@@ -40,12 +43,12 @@
   transition: all 0.3s ease;
 }
 
-.filter-btn:hover {
+.best-properties .filter-btn:hover {
   border-color: #548e5d;
   color: #548e5d;
 }
 
-.filter-btn.active {
+.best-properties .filter-btn.active {
   background: linear-gradient(to right, #1e7f5c, #2fbf8f);
   color: white;
   border-color: transparent;

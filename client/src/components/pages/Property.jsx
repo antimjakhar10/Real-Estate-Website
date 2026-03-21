@@ -94,18 +94,23 @@ const Property = () => {
 
   useEffect(() => {
     fetch(
-      `https://real-estate-website-ai2s.onrender.com/api/properties?page=${currentPage}&limit=6${
-        locationName
-          ? `&location=${locationName}`
-          : loc
-            ? `&location=${loc}`
-            : ""
-      }${type ? `&type=${type}` : ""}${range ? `&range=${range}` : ""}`,
-    )
+  `https://real-estate-website-ai2s.onrender.com/api/properties?page=${currentPage}&limit=6${
+    locationName
+      ? `&location=${formattedLocation}`   // 🔥 yahi change
+      : loc
+        ? `&location=${loc}`
+        : ""
+  }${type ? `&type=${type}` : ""}${range ? `&range=${range}` : ""}`
+)
       .then((res) => res.json())
       .then((data) => {
-        setAllProperties(data.properties);
-        setTotalPages(data.totalPages);
+        const props = data.properties || [];
+
+        setAllProperties(props);
+
+        // 🔥 manual pagination fix
+        const total = Math.ceil(props.length / 6);
+        setTotalPages(total);
       });
   }, [currentPage, locationName, type, range, loc]);
 
@@ -114,10 +119,12 @@ const Property = () => {
   }, [type, range, loc]);
 
   useEffect(() => {
-    fetch("https://real-estate-website-ai2s.onrender.com/api/properties?featured=true&limit=4")
+    fetch(
+      "https://real-estate-website-ai2s.onrender.com/api/properties?featured=true&limit=4",
+    )
       .then((res) => res.json())
       .then((data) => {
-        setFeaturedProperties(data.properties);
+        setFeaturedProperties((data.properties || []).slice(0, 4));
       });
   }, []);
 
@@ -132,17 +139,19 @@ const Property = () => {
     setSubmitting(true);
 
     try {
-      const response = await fetch("https://real-estate-website-ai2s.onrender.com/api/enquiry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://real-estate-website-ai2s.onrender.com/api/enquiry",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            propertyId: "",
+          }),
         },
-        body: JSON.stringify({
-          ...formData,
-          propertyId: "",
-          
-        }),
-      });
+      );
 
       if (response.ok) {
         alert("Enquiry Sent Successfully ✅");
@@ -163,7 +172,9 @@ const Property = () => {
     setSubmitting(false);
   };
 
-  const sortedProperties = allProperties;
+  const sortedProperties = [...allProperties]
+  .sort((a, b) => b.premium - a.premium)   // 🔥 premium top
+  .slice((currentPage - 1) * 6, currentPage * 6); // 🔥 pagination
 
   return (
     <div className="property-page-main">

@@ -319,6 +319,7 @@
 }
 
 .search-input button {
+   width: auto !important;
   background: linear-gradient(to right, #1e7f5c, #2fbf8f);
   border: none;
   color: white;

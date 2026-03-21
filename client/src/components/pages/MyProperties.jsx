@@ -22,7 +22,7 @@ const MyProperties = () => {
     })
     .then(data => {
       console.log("DATA:", data);
-      setProperties(data || []);
+      setProperties(data.properties || []);
     })
     .catch(err => {
       console.error("ERROR:", err);
