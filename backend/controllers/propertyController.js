@@ -79,6 +79,46 @@ exports.createProperty = async (req, res) => {
   }
 };
 
+exports.createPropertyAdmin = async (req, res) => {
+  try {
+    const amenities = parseAmenities(req.body.amenities);
+    const nearbyLocations = parseNearby(req.body.nearbyLocations);
+
+    const imagePaths = req.files?.map((f) => f.filename) || [];
+
+    let baseSlug = generateSlug(req.body.title);
+    let slug = baseSlug;
+    let count = 1;
+
+    while (await Property.findOne({ slug })) {
+      slug = `${baseSlug}-${count++}`;
+    }
+
+    const newProperty = new Property({
+      ...req.body,
+      slug,
+      priceValue: toNumber(req.body.price),
+      bedrooms: toNumber(req.body.bedrooms),
+      bathrooms: toNumber(req.body.bathrooms),
+      sqft: toNumber(req.body.sqft),
+      parking: toNumber(req.body.parking),
+      amenities,
+      nearbyLocations,
+      images: imagePaths,
+      approvalStatus: "Approved",
+      createdBy: null,
+      createdByRole: "admin",
+    });
+
+    await newProperty.save();
+
+    res.status(201).json({ message: "Admin Property Created ✅" });
+  } catch (error) {
+    console.log("ADMIN CREATE ERROR 👉", error);
+    res.status(500).json({ error: "Create failed ❌" });
+  }
+};
+
 // ================= UPDATE =================
 exports.updateProperty = async (req, res) => {
   try {
@@ -143,6 +183,56 @@ exports.getUserSubmittedProperties = async (req, res) => {
     createdByRole: "user",
   }).sort({ createdAt: -1 });
   res.json({ properties });
+};
+
+exports.getMyProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      createdBy: req.params.userId,
+    }).sort({ createdAt: -1 });
+
+    res.json({ properties });
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
+  }
+};
+
+exports.getUserProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      createdBy: req.params.userId,
+    }).sort({ createdAt: -1 });
+
+    res.json({ properties });
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
+  }
+};
+
+exports.getProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      approvalStatus: "Approved",
+    }).sort({ createdAt: -1 });
+
+    res.json({ properties });
+  } catch (error) {
+    console.log("GET ERROR 👉", error);
+    res.status(500).json({ message: "Error fetching properties" });
+  }
+};
+
+exports.getPendingProperties = async (req, res) => {
+  try {
+    const properties = await Property.find({
+      approvalStatus: "Pending",
+    }).sort({ createdAt: -1 });
+
+    res.json({ properties });
+  } catch (error) {
+    console.log("PENDING ERROR 👉", error);
+    res.status(500).json({ message: "Error" });
+  }
 };
 
 exports.updateApprovalStatus = async (req, res) => {

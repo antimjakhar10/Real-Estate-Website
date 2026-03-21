@@ -1,79 +1,69 @@
-const { togglePremium } = require("../controllers/propertyController");
-const auth = require("../middleware/auth");
-const { createPropertyAdmin } = require("../controllers/propertyController");
-const { getMyProperties } = require("../controllers/propertyController");
-const { getUserProperties } = require("../controllers/propertyController");
-const { getUserSubmittedProperties } = require("../controllers/propertyController");
-const fs = require("fs");
-
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const {
   getProperties,
   getAllPropertiesAdmin,
   createProperty,
+  createPropertyAdmin,
   getCustomerProperties,
   updateApprovalStatus,
-  updateProperty
+  updateProperty,
+  deleteProperty,
+  getPendingProperties,
+  togglePremium,
+   getMyProperties,
+  getUserProperties,
+  getUserSubmittedProperties
 } = require("../controllers/propertyController");
 
-
+// upload folder
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
 
-// 🔥 Proper Storage Config
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueName);
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
 const upload = multer({ storage });
 
-// Routes
+// ================= ROUTES =================
 
+// create
 router.post("/", upload.array("images", 10), createProperty);
+router.post("/admin", upload.array("images", 10), createPropertyAdmin);
 
-router.post(
-  "/admin",
-  upload.array("images", 10),
-  createPropertyAdmin
-);
-
-
-router.get("/admin/all", getAllPropertiesAdmin);
-
-router.get("/customer", getCustomerProperties);
-router.put("/approve/:id", updateApprovalStatus);
-router.put("/toggle-premium/:id", togglePremium);
-
-
-
+// get
 router.get("/", getProperties);
-
-const { deleteProperty, getPendingProperties } = require("../controllers/propertyController");
-router.delete("/:id", deleteProperty);
+router.get("/admin/all", getAllPropertiesAdmin);
+router.get("/customer", getCustomerProperties);
 router.get("/pending", getPendingProperties);
-
 router.get("/my/:userId", getMyProperties);
 router.get("/user/:userId", getUserProperties);
 router.get("/admin/user-properties", getUserSubmittedProperties);
 
+// update
+router.put("/approve/:id", updateApprovalStatus);
+router.put("/toggle-premium/:id", togglePremium);
+router.put("/:id", upload.array("images", 10), updateProperty);
+
+// delete
+router.delete("/:id", deleteProperty);
+
+// single property
 router.get("/:idOrSlug", async (req, res) => {
   try {
     const Property = require("../models/Property");
 
     let property;
 
-    // check if MongoDB ObjectId
     if (req.params.idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
       property = await Property.findById(req.params.idOrSlug);
     } else {
@@ -89,10 +79,5 @@ router.get("/:idOrSlug", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-
-router.put("/:id", upload.array("images", 10), updateProperty);
-
-
 
 module.exports = router;
