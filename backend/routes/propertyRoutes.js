@@ -4,7 +4,7 @@ const { createPropertyAdmin } = require("../controllers/propertyController");
 const { getMyProperties } = require("../controllers/propertyController");
 const { getUserProperties } = require("../controllers/propertyController");
 const { getUserSubmittedProperties } = require("../controllers/propertyController");
-
+const fs = require("fs");
 
 const express = require("express");
 const router = express.Router();
@@ -19,6 +19,11 @@ const {
   updateApprovalStatus,
   updateProperty
 } = require("../controllers/propertyController");
+
+
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 // 🔥 Proper Storage Config
 const storage = multer.diskStorage({
