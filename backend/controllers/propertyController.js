@@ -275,14 +275,9 @@ const mongoose = require("mongoose");
 
 exports.togglePremium = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id;
 
-    console.log("🔥 ID RECEIVED:", id);
-
-    // ✅ VALIDATE OBJECT ID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid property ID" });
-    }
+    console.log("🔥 TOGGLE HIT ID:", id);
 
     const property = await Property.findById(id);
 
@@ -290,12 +285,19 @@ exports.togglePremium = async (req, res) => {
       return res.status(404).json({ message: "Property not found" });
     }
 
-    property.premium = property.premium === true ? false : true;
+    // ✅ FIX (IMPORTANT)
+    if (!Array.isArray(property.highlights)) {
+      property.highlights = [];
+    }
+
+    property.premium = !property.premium;
 
     await property.save();
 
+    console.log("✅ UPDATED:", property.premium);
+
     res.json({
-      message: "Premium toggled",
+      success: true,
       premium: property.premium,
     });
 

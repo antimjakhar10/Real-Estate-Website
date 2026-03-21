@@ -42,13 +42,16 @@ const propertySchema = new mongoose.Schema(
       required: true,
     },
 
-    highlights: [
-      {
-        icon: String,
-        label: String,
-        value: String,
-      },
-    ],
+   highlights: {
+  type: [
+    {
+      icon: String,
+      label: String,
+      value: String,
+    },
+  ],
+  default: [],   // ✅ VERY IMPORTANT
+},
 
     amenities: { type: [String], default: [] },
 
