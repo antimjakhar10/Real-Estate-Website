@@ -13,20 +13,23 @@ const AdminCustomersList = () => {
   }, []);
 
   const fetchPending = async () => {
-  const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("adminToken");
 
-  const res = await fetch("https://real-estate-website-ai2s.onrender.com/api/properties/customer", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    const res = await fetch(
+      "https://real-estate-website-ai2s.onrender.com/api/properties/customer",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
-  const data = await res.json();
-  console.log("CUSTOMER API DATA:", data);
-  if (data.properties) {
-    setProperties(data.properties);
-  }
-};
+    const data = await res.json();
+    console.log("CUSTOMER API DATA:", data);
+    if (data.properties) {
+      setProperties(data.properties);
+    }
+  };
 
   return (
     <div className="admin-customers-wrapper">
@@ -40,30 +43,18 @@ const AdminCustomersList = () => {
           properties={properties}
           showActions={true}
           showApproval={true}
-         onEdit={(id) =>
-  navigate(`/admin/edit-property/${id}`, {
-    state: { from: "customer" }
-  })
-}
+          onEdit={(id) =>
+            navigate(`/admin/edit-property/${id}`, {
+              state: { from: "customer" },
+            })
+          }
           onDelete={async (id) => {
             const token = localStorage.getItem("adminToken");
 
-            await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${id}`, {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            });
-
-            fetchPending();
-          }}
-          onTogglePremium={async (id) => {
-            const token = localStorage.getItem("adminToken");
-
             await fetch(
-              `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
+              `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`,
               {
-                method: "PUT",
+                method: "DELETE",
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -72,17 +63,41 @@ const AdminCustomersList = () => {
 
             fetchPending();
           }}
+          onTogglePremium={async (id) => {
+  const token = localStorage.getItem("adminToken");
+
+  const res = await fetch(
+    `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+
+  setProperties((prev) =>
+    prev.map((p) =>
+      p._id === id ? { ...p, premium: data.premium } : p
+    )
+  );
+}}
           onUpdateApproval={async (id, status) => {
             const token = localStorage.getItem("adminToken");
 
-            await fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/approve/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+            await fetch(
+              `https://real-estate-website-ai2s.onrender.com/api/properties/approve/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ status }),
               },
-              body: JSON.stringify({ status }),
-            });
+            );
 
             fetchPending();
           }}

@@ -271,23 +271,28 @@ exports.updateApprovalStatus = async (req, res) => {
   res.json({ message: "Status Updated" });
 };
 
+const mongoose = require("mongoose");
+
 exports.togglePremium = async (req, res) => {
   try {
-    console.log("🔥 TOGGLE HIT ID:", req.params.id);
+    const { id } = req.params;
 
-    const property = await Property.findById(req.params.id);
+    console.log("🔥 ID RECEIVED:", id);
 
-    console.log("👉 PROPERTY:", property);
+    // ✅ VALIDATE OBJECT ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid property ID" });
+    }
+
+    const property = await Property.findById(id);
 
     if (!property) {
       return res.status(404).json({ message: "Property not found" });
     }
 
-    property.premium = !property.premium;
+    property.premium = property.premium === true ? false : true;
 
     await property.save();
-
-    console.log("✅ UPDATED:", property.premium);
 
     res.json({
       message: "Premium toggled",
@@ -295,8 +300,8 @@ exports.togglePremium = async (req, res) => {
     });
 
   } catch (error) {
-    console.log("❌ TOGGLE ERROR 👉", error);
-    res.status(500).json({ message: "Server error" });
+    console.log("❌ TOGGLE ERROR 👉", error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 

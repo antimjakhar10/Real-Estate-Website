@@ -104,14 +104,9 @@ const Property = () => {
 )
       .then((res) => res.json())
       .then((data) => {
-        const props = data.properties || [];
-
-        setAllProperties(props);
-
-        // 🔥 manual pagination fix
-        const total = Math.ceil(props.length / 6);
-        setTotalPages(total);
-      });
+  setAllProperties(data.properties || []);
+  setTotalPages(data.totalPages || 1); // 🔥 backend use karo
+});
   }, [currentPage, locationName, type, range, loc]);
 
   useEffect(() => {
@@ -172,9 +167,9 @@ const Property = () => {
     setSubmitting(false);
   };
 
-  const sortedProperties = [...allProperties]
-  .sort((a, b) => b.premium - a.premium)   // 🔥 premium top
-  .slice((currentPage - 1) * 6, currentPage * 6); // 🔥 pagination
+const sortedProperties = [...allProperties].sort(
+  (a, b) => b.premium - a.premium
+);
 
   return (
     <div className="property-page-main">

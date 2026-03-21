@@ -100,8 +100,8 @@ const PropertyListLayout = ({
                       <button
                         className={`btn star ${p.premium ? "premium" : ""}`}
                         onClick={() => {
-  onTogglePremium(p._id);
-}}
+                          onTogglePremium(p._id);
+                        }}
                       >
                         <Star
                           size={16}

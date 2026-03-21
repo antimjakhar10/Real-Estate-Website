@@ -3,6 +3,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./UserAddProperty.css";
 
 const UserAddProperty = () => {
+  
+
+  const addFacility = () => {
+    if (!newFacility.trim()) return;
+    setFacilities([...facilities, newFacility]);
+    setNewFacility("");
+  };
+
+  const addNearby = () => {
+    if (!newNearby.trim()) return;
+
+    if (!nearbyOptions.includes(newNearby)) {
+      setNearbyOptions([...nearbyOptions, newNearby]);
+    }
+
+    setNewNearby("");
+  };
+
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = !!id;
@@ -36,7 +54,7 @@ const UserAddProperty = () => {
   const fetchProperty = async () => {
     try {
       const res = await fetch(
-        `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`
+        `https://real-estate-website-ai2s.onrender.com/api/properties/${id}`,
       );
       const data = await res.json();
 
@@ -59,8 +77,8 @@ const UserAddProperty = () => {
         setPreview(
           data.images.map(
             (img) =>
-              `https://real-estate-website-ai2s.onrender.com/uploads/${img}`
-          )
+              `https://real-estate-website-ai2s.onrender.com/uploads/${img}`,
+          ),
         );
       }
     } catch (err) {
@@ -131,7 +149,7 @@ const UserAddProperty = () => {
         {
           method: isEdit ? "PUT" : "POST",
           body: formData,
-        }
+        },
       );
 
       if (!res.ok) throw new Error("Failed");
@@ -145,11 +163,26 @@ const UserAddProperty = () => {
   };
 
   const amenitiesList = [
-    "Pool","Fireplace","Garage","Balcony","Garden","Terrace",
-    "View","Elevator","24/7 Security","Parking","Storage","Air Conditioning"
+    "Pool",
+    "Fireplace",
+    "Garage",
+    "Balcony",
+    "Garden",
+    "Terrace",
+    "View",
+    "Elevator",
+    "24/7 Security",
+    "Parking",
+    "Storage",
+    "Air Conditioning",
   ];
 
-  const nearbyList = ["School","Hospital","Metro Station","Mall","Park"];
+  const nearbyList = ["School", "Hospital", "Metro Station", "Mall", "Park"];
+
+  const [facilities, setFacilities] = useState(amenitiesList);
+  const [newFacility, setNewFacility] = useState("");
+  const [nearbyOptions, setNearbyOptions] = useState(nearbyList);
+  const [newNearby, setNewNearby] = useState("");
 
   return (
     <form className="user-property-form" onSubmit={handleSubmit}>
@@ -158,10 +191,8 @@ const UserAddProperty = () => {
       </h2>
 
       <div className="form-grid">
-
         {/* LEFT */}
         <div>
-
           {/* PROPERTY DETAILS */}
           <div className="form-card">
             <h3 className="card-title">Property Details</h3>
@@ -185,37 +216,57 @@ const UserAddProperty = () => {
 
               <div className="col">
                 <label>Price (₹)</label>
-                <input name="price" value={form.price} onChange={handleChange}/>
+                <input
+                  name="price"
+                  value={form.price}
+                  onChange={handleChange}
+                />
               </div>
             </div>
 
             <div className="row">
               <div className="col">
                 <label>Area (sq ft)</label>
-                <input name="sqft" value={form.sqft} onChange={handleChange}/>
+                <input name="sqft" value={form.sqft} onChange={handleChange} />
               </div>
 
               <div className="col">
                 <label>Bedrooms</label>
-                <input name="bedrooms" value={form.bedrooms} onChange={handleChange}/>
+                <input
+                  name="bedrooms"
+                  value={form.bedrooms}
+                  onChange={handleChange}
+                />
               </div>
             </div>
 
             <div className="row">
               <div className="col">
                 <label>Bathrooms</label>
-                <input name="bathrooms" value={form.bathrooms} onChange={handleChange}/>
+                <input
+                  name="bathrooms"
+                  value={form.bathrooms}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="col">
                 <label>Garage</label>
-                <input name="parking" value={form.parking} onChange={handleChange}/>
+                <input
+                  name="parking"
+                  value={form.parking}
+                  onChange={handleChange}
+                />
               </div>
             </div>
 
             <div className="form-group">
               <label>Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange}/>
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+              />
             </div>
           </div>
 
@@ -225,20 +276,46 @@ const UserAddProperty = () => {
 
             <div className="form-group">
               <label>Full Address</label>
-              <input name="location" value={form.location} onChange={handleChange}/>
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+              />
             </div>
           </div>
-
         </div>
 
         {/* RIGHT */}
         <div>
-
           {/* IMAGE */}
           <div className="form-card">
             <h3 className="card-title">Upload Image</h3>
 
-            <input type="file" multiple onChange={handleImage} />
+            <div
+              className="upload-box"
+              onClick={() => document.getElementById("imageInput").click()}
+            >
+              <input
+                id="imageInput"
+                type="file"
+                multiple
+                hidden
+                onChange={handleImage}
+              />
+
+              {preview.length > 0 ? (
+                <div className="multi-preview">
+                  {preview.map((img, i) => (
+                    <img key={i} src={img} className="preview-img" />
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <p>Click to Upload Property Image</p>
+                  <small>PNG, JPG up to 5MB</small>
+                </>
+              )}
+            </div>
 
             <div className="multi-preview">
               {preview.map((img, i) => (
@@ -252,8 +329,8 @@ const UserAddProperty = () => {
             <h3 className="card-title">Facilities</h3>
 
             <div className="checkbox-grid">
-              {amenitiesList.map((item) => (
-                <label key={item}>
+              {facilities.map((item, index) => (
+                <label key={index}>
                   <input
                     type="checkbox"
                     checked={form.amenities.includes(item)}
@@ -263,6 +340,17 @@ const UserAddProperty = () => {
                 </label>
               ))}
             </div>
+
+            <div className="add-row">
+              <input
+                value={newFacility}
+                onChange={(e) => setNewFacility(e.target.value)}
+                placeholder="Enter facility name"
+              />
+              <button type="button" onClick={addFacility}>
+                + Add
+              </button>
+            </div>
           </div>
 
           {/* NEARBY */}
@@ -270,21 +358,26 @@ const UserAddProperty = () => {
             <h3 className="card-title">Nearby Locations</h3>
 
             <div className="checkbox-grid">
-              {nearbyList.map((item) => (
-                <label key={item}>
+              {nearbyOptions.map((item, index) => (
+                <label key={index}>
                   <input
                     type="checkbox"
-                    checked={form.nearbyLocations.some(n => n.name === item)}
+                    checked={form.nearbyLocations.some((n) => n.name === item)}
                     onChange={(e) => {
                       if (e.target.checked) {
                         setForm({
                           ...form,
-                          nearbyLocations: [...form.nearbyLocations, { name: item, dist: "" }]
+                          nearbyLocations: [
+                            ...form.nearbyLocations,
+                            { name: item, dist: "" },
+                          ],
                         });
                       } else {
                         setForm({
                           ...form,
-                          nearbyLocations: form.nearbyLocations.filter(n => n.name !== item)
+                          nearbyLocations: form.nearbyLocations.filter(
+                            (n) => n.name !== item,
+                          ),
                         });
                       }
                     }}
@@ -306,15 +399,23 @@ const UserAddProperty = () => {
                 }}
               />
             ))}
+
+            <div className="add-row">
+              <input
+                value={newNearby}
+                onChange={(e) => setNewNearby(e.target.value)}
+                placeholder="Enter nearby place"
+              />
+              <button type="button" onClick={addNearby}>
+                + Add
+              </button>
+            </div>
           </div>
 
           {/* BUTTON */}
           <div className="form-card">
-            <button>
-              {isEdit ? "Update Property" : "Submit Property"}
-            </button>
+            <button className="submit-btn">{isEdit ? "Update Property" : "Submit Property"}</button>
           </div>
-
         </div>
       </div>
     </form>

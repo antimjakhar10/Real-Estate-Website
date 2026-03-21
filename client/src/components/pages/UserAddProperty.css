@@ -1,88 +1,125 @@
-/* MAIN WRAPPER */
+/* =========================
+   MAIN WRAPPER
+========================= */
 .user-property-form {
-  padding: 30px;
-  background: #f8fafc;
+  padding: 30px 20px;
+  background: #f1f5f9;
   min-height: 100vh;
 }
 
-/* TITLE */
+/* =========================
+   TITLE
+========================= */
 .form-title {
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 .form-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 25px;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 .form-card {
-  background: #fff;
+  background: #ffffff;
   padding: 25px;
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 25px;
 }
 
-/* INPUT */
-.form-card input,
-.form-card textarea,
-.form-card select {
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.user-property-form input,
+.user-property-form select,
+.user-property-form textarea {
   width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  margin-top: 6px;
   outline: none;
+  transition: 0.2s ease;
+  background: #fff;
 }
 
-/* ROW */
+.user-property-form input:focus,
+.user-property-form select:focus,
+.user-property-form textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================
+   ROW
+========================= */
 .row {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.row input {
+.col {
   flex: 1;
 }
 
-/* IMAGE */
+/* =========================
+   UPLOAD BOX
+========================= */
 .upload-box {
-  border: 2px dashed #ccc;
-  padding: 20px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 25px;
   text-align: center;
   cursor: pointer;
-  border-radius: 10px;
+  margin-bottom: 18px;
+  background: #f8fafc;
+  transition: 0.2s;
 }
 
-.preview-img {
-  width: 100%;
-  border-radius: 10px;
-  margin-top: 10px;
+.upload-box:hover {
+  background: #eef2ff;
+  border-color: #2563eb;
 }
 
-/* BUTTON */
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  background: #16a34a;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
+.upload-box p {
   font-weight: 600;
-  cursor: pointer;
+  color: #334155;
 }
 
-.checkbox-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.upload-box small {
+  font-size: 12px;
+  color: #94a3b8;
 }
 
+/* IMAGE PREVIEW */
 .multi-preview {
   display: flex;
   gap: 10px;
@@ -90,145 +127,98 @@
 }
 
 .preview-img {
-  width: 100px;
-  height: 80px;
+  width: 90px;
+  height: 70px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.form-card h3 {
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.input-group label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #374151;
-}
-
-.input-group input {
-  margin-top: 6px;
-}
-
-.submit-btn {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  transition: 0.3s;
-}
-
-.submit-btn:hover {
-  transform: scale(1.02);
-}
-
-.user-property-form {
-  padding: 30px;
-  background: #f8fafc;
-  min-height: 100vh;
-}
-
-.form-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-}
-
-.form-card {
-  background: #fff;
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-  border: 1px solid #f1f5f9;
-}
-
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #374151;
-  display: block;
-  margin-bottom: 5px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  font-size: 14px;
-}
-
-.row {
-  display: flex;
-  gap: 10px;
-}
-
-.col {
-  flex: 1;
-}
-
+/* =========================
+   CHECKBOX GRID
+========================= */
 .checkbox-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 25px;
 }
 
-.multi-preview {
+.checkbox-grid label {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 10px;
-}
-
-.preview-img {
-  width: 80px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #22c55e;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #16a34a;
+.checkbox-grid input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
 }
 
-/* RESPONSIVE */
+/* =========================
+   ADD ROW (IMPORTANT FIX)
+========================= */
+.add-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.add-row input {
+  flex: 1;
+  height: 38px;
+  margin-top: 0;
+}
+
+.add-row button {
+  height: 38px;
+  padding: 0 14px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-row button:hover {
+  background: #1e40af;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================= */
+.submit-btn {
+  width: 100%;
+  height: 55px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25);
+  transition: 0.2s;
+}
+
+.submit-btn:hover {
+  background: #059669;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 992px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
   .row {
     flex-direction: column;
   }
