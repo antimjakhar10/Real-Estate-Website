@@ -58,12 +58,18 @@ exports.createProperty = async (req, res) => {
       slug = `${baseSlug}-${count++}`;
     }
 
+    const safeNumber = (val) => {
+  if (!val || val === "") return 0;
+  const num = Number(val);
+  return isNaN(num) ? 0 : num;
+};
+
     const newProperty = new Property({
       title: req.body.title,
       slug,
       location: req.body.location,
       price: req.body.price,
-      priceValue: Number(req.body.price),
+priceValue: safeNumber(req.body.price),
       type: req.body.type,
       bedrooms: req.body.bedrooms || 0,
       bathrooms: req.body.bathrooms || 0,
@@ -75,7 +81,7 @@ exports.createProperty = async (req, res) => {
       images: imagePaths,
 
       createdBy: req.body.createdBy || null,
-      createdByRole: req.body.createdByRole || "customer",
+      createdByRole: req.body.createdByRole || "user",
       approvalStatus: "Pending",
     });
 
@@ -86,6 +92,10 @@ exports.createProperty = async (req, res) => {
     console.log(error);
     res.status(500).json({ error: "Error Creating Property ❌" });
   }
+
+  if (!req.body.title) {
+  return res.status(400).json({ error: "Title missing ❌" });
+}
 };
 
 exports.getProperties = async (req, res) => {

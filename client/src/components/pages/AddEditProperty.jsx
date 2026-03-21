@@ -179,6 +179,15 @@ const AddEditProperty = () => {
 
   const formData = new FormData();
 
+  // 🔥 FORCE FIX (IMPORTANT)
+if (!formData.get("createdByRole")) {
+  formData.append("createdByRole", isAdmin ? "admin" : "user");
+}
+
+if (!formData.get("createdBy") && user?._id) {
+  formData.append("createdBy", user._id);
+}
+
 // ✅ ONLY FOR ADD (NOT UPDATE)
 if (!id) {
   if (isAdmin) {
@@ -203,10 +212,12 @@ Object.keys(form).forEach((key) => {
       formData.append("nearbyLocations", JSON.stringify(item));
     });
   } else if (key === "images") {
-    form[key].forEach((img) => {
+  if (form.images && form.images.length > 0) {
+    form.images.forEach((img) => {
       formData.append("images", img);
     });
-  } else {
+  }
+}else {
     formData.append(key, form[key]);
   }
 });
@@ -232,6 +243,8 @@ const bodyData = formData;
     setLoading(false);
     return;
   }
+
+  console.log("FORM DATA 👉", [...formData]);
 
   // ✅ SUCCESS POPUP
   alert(id ? "Property updated successfully ✅" : "Property submitted successfully ✅");
