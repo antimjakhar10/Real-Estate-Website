@@ -28,17 +28,16 @@ exports.createProperty = async (req, res) => {
     if (req.body.nearbyLocations) {
   if (Array.isArray(req.body.nearbyLocations)) {
     nearbyLocations = req.body.nearbyLocations.map((item) => {
-      try {
-        return JSON.parse(item);
-      } catch {
-        return { name: item, dist: "" };
+      if (typeof item === "string") {
+        const [name, dist] = item.split("|");
+        return { name, dist };
       }
+      return item;
     });
   } else {
-    try {
-      nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
-    } catch {
-      nearbyLocations = [{ name: req.body.nearbyLocations, dist: "" }];
+    if (typeof req.body.nearbyLocations === "string") {
+      const [name, dist] = req.body.nearbyLocations.split("|");
+      nearbyLocations = [{ name, dist }];
     }
   }
 }

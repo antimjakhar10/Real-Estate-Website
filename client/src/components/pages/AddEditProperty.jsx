@@ -209,7 +209,7 @@ Object.keys(form).forEach((key) => {
     });
   } else if (key === "nearbyLocations") {
     form[key].forEach((item) => {
-      formData.append("nearbyLocations", JSON.stringify(item));
+      formData.append("nearbyLocations", item.name + "|" + item.dist);
     });
   } else if (key === "images") {
   if (form.images && form.images.length > 0) {
