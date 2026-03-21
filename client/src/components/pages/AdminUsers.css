@@ -1,0 +1,70 @@
+.admin-users-container {
+  padding: 20px;
+  background: #f3f4f6;
+}
+
+/* 🔥 WRAPPER */
+.table-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 🔥 SCROLL (MAIN SLIDER) */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 🔥 TABLE */
+.users-table {
+  min-width: 600px;       /* 👈 force scroll */
+  width: max-content;     /* 👈 IMPORTANT */
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* HEADER */
+.users-table th {
+  padding: 12px;
+  background: #0f172a;
+  color: #ffffff;
+  text-align: left;
+}
+
+/* BODY */
+.users-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* HOVER */
+.users-table tr:hover {
+  background: #f9fafb;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 🔥 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .admin-users-container {
+    padding: 15px;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+}

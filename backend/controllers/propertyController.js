@@ -275,35 +275,30 @@ const mongoose = require("mongoose");
 
 exports.togglePremium = async (req, res) => {
   try {
-    const id = req.params.id;
+    const updated = await Property.findByIdAndUpdate(
+      req.params.id,
+      [
+        {
+          $set: {
+            premium: { $not: "$premium" },
+          },
+        },
+      ],
+      { new: true }
+    );
 
-    console.log("🔥 TOGGLE HIT ID:", id);
-
-    const property = await Property.findById(id);
-
-    if (!property) {
+    if (!updated) {
       return res.status(404).json({ message: "Property not found" });
     }
 
-    // ✅ FIX (IMPORTANT)
-    if (!Array.isArray(property.highlights)) {
-      property.highlights = [];
-    }
-
-    property.premium = !property.premium;
-
-    await property.save();
-
-    console.log("✅ UPDATED:", property.premium);
-
     res.json({
-      success: true,
-      premium: property.premium,
+      message: "Premium toggled",
+      premium: updated.premium,
     });
 
   } catch (error) {
-    console.log("❌ TOGGLE ERROR 👉", error.message);
-    res.status(500).json({ message: error.message });
+    console.log("❌ TOGGLE ERROR 👉", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

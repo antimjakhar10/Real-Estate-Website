@@ -50,7 +50,8 @@ const AdminBlogs = () => {
       <h2 className="admin-blogs-title">All Blogs</h2>
 
       <div className="table-wrapper">
-        <table className="admin-blogs-table">
+        <div className="table-scroll">
+          <table className="admin-blogs-table">
           <thead>
             <tr>
               <th>Image</th>
@@ -107,6 +108,7 @@ const AdminBlogs = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

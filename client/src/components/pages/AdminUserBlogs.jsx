@@ -29,7 +29,8 @@ const AdminUserBlogs = () => {
       <h2 className="admin-blogs-title">User Blogs Approval</h2>
 
       <div className="table-wrapper">
-        <table className="admin-blogs-table">
+        <div className="table-scroll">
+          <table className="admin-blogs-table">
           <thead>
             <tr>
               <th>Image</th>
@@ -93,6 +94,7 @@ const AdminUserBlogs = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import "./MyBlogs.css";
 const MyBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  
 
   useEffect(() => {
     fetch(`https://real-estate-website-ai2s.onrender.com/api/blogs/user/${user._id}`)
@@ -16,7 +17,8 @@ const MyBlogs = () => {
       <h2 className="myblogs-title">My Blogs</h2>
 
       <div className="myblogs-table-wrapper">
-        <table className="myblogs-table">
+        <div className="table-scroll">
+          <table className="myblogs-table">
           <thead>
             <tr>
               <th>Title</th>
@@ -45,6 +47,7 @@ const MyBlogs = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

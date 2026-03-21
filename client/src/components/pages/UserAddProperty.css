@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 /* =========================
    MAIN WRAPPER
 ========================= */
@@ -54,6 +58,12 @@ label {
   font-size: 13px;
   font-weight: 600;
   color: #334155;
+}
+
+.user-property-form {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;   /* 👈 SIDE SHIFT FIX */
 }
 
 .user-property-form input,

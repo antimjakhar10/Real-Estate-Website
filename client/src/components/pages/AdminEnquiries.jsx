@@ -182,7 +182,8 @@ const totalPages = Math.ceil(filteredEnquiries.length / itemsPerPage);
 
       {/* Table */}
       <div className="table-wrapper">
-        <table className="enquiry-table">
+        <div className="table-scroll">
+          <table className="enquiry-table">
           <thead>
             <tr>
               <th>Name</th>
@@ -278,6 +279,7 @@ const totalPages = Math.ceil(filteredEnquiries.length / itemsPerPage);
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}

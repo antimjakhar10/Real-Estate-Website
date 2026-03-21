@@ -16,7 +16,8 @@
 }
 
 .admin-blogs-table {
-  width: 100%;
+  min-width: 800px;   /* 👈 columns ke hisaab se */
+  width: max-content; /* 👈 IMPORTANT */
   border-collapse: collapse;
 }
 
@@ -98,6 +99,13 @@
 
 .reject-btn:hover {
   background: #b91c1c;
+}
+
+/* 🔥 SCROLL WRAPPER */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* 🔥 RESPONSIVE */

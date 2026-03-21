@@ -44,22 +44,27 @@ const AdminUserProperties = () => {
     fetchData();
   };
 
-const togglePremium = async (id) => {
-  const res = await fetch(
-    `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
-    {
-      method: "PUT",
+  const togglePremium = async (id) => {
+    try {
+      const res = await fetch(
+        `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
+        { method: "PUT" },
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Toggle failed:", data);
+        return;
+      }
+
+      setProperties((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, premium: data.premium } : p)),
+      );
+    } catch (err) {
+      console.error("Frontend error:", err);
     }
-  );
-
-  const data = await res.json();
-
-  setProperties((prev) =>
-    prev.map((p) =>
-      p._id === id ? { ...p, premium: data.premium } : p
-    )
-  );
-};
+  };
 
   return (
     <div className="admin-user-properties">
@@ -72,7 +77,8 @@ const togglePremium = async (id) => {
       </div>
 
       <div className="table-container">
-        <table className="property-table">
+        <div className="table-scroll">
+          <table className="property-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -151,17 +157,18 @@ const togglePremium = async (id) => {
 
                     {/* PREMIUM */}
                     <button
-  className={`star-btn ${p.premium ? "active" : ""}`}
-  onClick={() => togglePremium(p._id)}
->
-  ⭐
-</button>
+                      className={`star-btn ${p.premium ? "active" : ""}`}
+                      onClick={() => togglePremium(p._id)}
+                    >
+                      ⭐
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

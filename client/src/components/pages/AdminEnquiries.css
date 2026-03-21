@@ -39,17 +39,34 @@
   border: 1px solid #ccc;
 }
 
+/* 🔥 IMPORTANT FIX */
 .table-wrapper {
+  width: 100%;
+  overflow-y: hidden;
+  display: block; /* smooth scroll mobile */
+}
+
+/* 🔥 INNER SCROLL (main kaam ye karega) */
+.table-scroll {
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .enquiry-table {
-  width: 100%;
   border-collapse: collapse;
   background: white;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  min-width: 1100px;   /* 👈 increase kar diya (columns jyada hai) */
+  width: max-content;
+}
+
+.admin-enquiries-container {
+  padding: 30px;
+  background: #f3f4f6;
+  overflow-x: visible;   /* 🔥 ADD THIS */
 }
 
 .enquiry-table th {
@@ -156,7 +173,22 @@
     flex-direction: column;
   }
 
-  .admin-enquiries-container {
-    padding: 20px;
+ .admin-enquiries-container {
+    padding: 15px;
+  }
+
+  .filter-row {
+    flex-direction: column;
+  }
+
+  .filter-row input,
+  .filter-row select {
+    width: 100%;
+  }
+
+  .enquiry-table th,
+  .enquiry-table td {
+    padding: 8px;
+    font-size: 12px;
   }
 }
