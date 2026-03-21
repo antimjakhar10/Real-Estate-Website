@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./AddEditProperty.css";
 
 const AddEditProperty = () => {
+  const location = useLocation();
+const from = location.state?.from;
+
   const navigate = useNavigate();
 
   const adminToken = localStorage.getItem("adminToken");
@@ -254,11 +258,15 @@ const bodyData = formData;
   setLoading(false);
 
   // ✅ REDIRECT
-  if (isAdmin) {
-    navigate("/admin/properties");
-  } else {
-    navigate("/user/my-properties");
-  }
+  if (from === "admin") {
+  navigate("/admin/properties");
+} else if (from === "customer") {
+  navigate("/admin/customers-list");
+} else if (from === "user") {
+  navigate("/admin/user-properties");
+} else {
+  navigate("/user/my-properties");
+}
 };
 
   return (

@@ -243,10 +243,24 @@ exports.updateApprovalStatus = async (req, res) => {
 };
 
 exports.togglePremium = async (req, res) => {
-  const property = await Property.findById(req.params.id);
-  property.premium = !property.premium;
-  await property.save();
-  res.json({ message: "Premium toggled" });
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    property.premium = !property.premium;
+
+    await property.save();
+
+    res.json({
+      message: "Premium toggled",
+      premium: property.premium, // 🔥 IMPORTANT
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error" });
+  }
 };
 
 exports.deleteProperty = async (req, res) => {

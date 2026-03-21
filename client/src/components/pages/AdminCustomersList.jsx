@@ -40,7 +40,11 @@ const AdminCustomersList = () => {
           properties={properties}
           showActions={true}
           showApproval={true}
-          onEdit={(id) => navigate(`/admin/edit-property/${id}`)}
+         onEdit={(id) =>
+  navigate(`/admin/edit-property/${id}`, {
+    state: { from: "customer" }
+  })
+}
           onDelete={async (id) => {
             const token = localStorage.getItem("adminToken");
 

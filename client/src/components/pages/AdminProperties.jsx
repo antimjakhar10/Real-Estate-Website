@@ -45,14 +45,16 @@ const AdminProperties = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/admin/edit-property/${id}`);
-  };
+  navigate(`/admin/edit-property/${id}`, {
+    state: { from: "admin" }
+  });
+};
 
 const handleTogglePremium = async (id) => {
   try {
     const token = localStorage.getItem("adminToken");
 
-    const response = await fetch(
+    const res = await fetch(
       `https://real-estate-website-ai2s.onrender.com/api/properties/toggle-premium/${id}`,
       {
         method: "PUT",
@@ -62,20 +64,23 @@ const handleTogglePremium = async (id) => {
       }
     );
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (!response.ok) {
-      alert(data.message);
-      return;
-    }
+    if (!res.ok) return;
 
-    alert("Premium status updated ✅");
-
-    fetchProperties(); // reload properly
-  } catch (error) {
-    console.error(error);
+    // ✅ USE BACKEND RESPONSE (NOT !p.premium)
+    setProperties((prev) =>
+      prev.map((p) =>
+        p._id === id ? { ...p, premium: data.premium } : p
+      )
+    );
+  } catch (err) {
+    console.log(err);
   }
 };
+
+
+
 
   const handleUpdateApproval = async (id, status) => {
     const token = localStorage.getItem("adminToken");
