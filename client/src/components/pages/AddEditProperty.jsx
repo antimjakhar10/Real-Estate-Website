@@ -201,7 +201,9 @@ if (!id) {
 }
 
 Object.keys(form).forEach((key) => {
-  if (key === "status") return;
+  if (key === "status") {
+    formData.append("approvalStatus", form.status); // 🔥 FIX
+  }
   
   if (key === "amenities") {
     form[key].forEach((item) => {
@@ -209,7 +211,7 @@ Object.keys(form).forEach((key) => {
     });
   } else if (key === "nearbyLocations") {
     form[key].forEach((item) => {
-      formData.append("nearbyLocations", item.name + "|" + item.dist);
+     formData.append("nearbyLocations", JSON.stringify(item));
     });
   } else if (key === "images") {
   if (form.images && form.images.length > 0) {

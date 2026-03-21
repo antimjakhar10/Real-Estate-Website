@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./MyProperties.css";
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -21,7 +22,7 @@ const MyProperties = () => {
     })
     .then(data => {
       console.log("DATA:", data);
-      setProperties(data.properties || []);
+      setProperties(data || []);
     })
     .catch(err => {
       console.error("ERROR:", err);
@@ -31,31 +32,63 @@ const MyProperties = () => {
 
 
   return (
-    <div>
-      <h2>My Properties</h2>
+  <div className="my-properties">
+    <h2>My Properties</h2>
 
+    <div className="property-list">
       {properties.map((p) => (
-        <div key={p._id} style={card}>
-          <h3>{p.title}</h3>
-          <p>{p.location}</p>
+        <div key={p._id} className="property-row">
+          
+          <div className="col title">
+            <h4>{p.title}</h4>
+            <p>{p.location}</p>
+          </div>
 
-          <span style={status(p.approvalStatus)}>
-            {p.approvalStatus}
-          </span>
+          <div className="col">
+            ₹ {p.price || "N/A"}
+          </div>
 
-          <div>
-            <button onClick={() => navigate(`/edit-property/${p._id}`)}>
+          <div className="col">
+            {p.type}
+          </div>
+
+          <div className="col">
+            <span
+              className={`status-badge ${
+                p.approvalStatus === "Approved"
+                  ? "status-approved"
+                  : p.approvalStatus === "Rejected"
+                  ? "status-rejected"
+                  : "status-pending"
+              }`}
+            >
+              {p.approvalStatus}
+            </span>
+          </div>
+
+          <div className="col actions">
+            <button
+              className="btn btn-edit"
+              onClick={() => navigate(`/user/edit-property/${p._id}`)}
+            >
               Edit
             </button>
 
-            <button onClick={() => navigate(`/property-details/${p.slug || p._id}`)}>
+            <button
+              className="btn btn-view"
+              onClick={() =>
+                navigate(`/property-details/${p.slug || p._id}`)
+              }
+            >
               View
             </button>
           </div>
+
         </div>
       ))}
     </div>
-  );
+  </div>
+);
 };
 
 const card = {

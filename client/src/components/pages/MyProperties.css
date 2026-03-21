@@ -1,0 +1,149 @@
+/* PAGE */
+.my-properties {
+  padding: 30px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* TITLE */
+.my-properties h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.property-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: 0.3s;
+  border: 1px solid #f1f5f9;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+}
+
+/* TITLE */
+.property-card h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+/* LOCATION */
+.property-location {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+/* STATUS */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.status-approved {
+  background: #16a34a;
+  color: #fff;
+}
+
+.status-rejected {
+  background: #dc2626;
+  color: #fff;
+}
+
+.status-pending {
+  background: #f59e0b;
+  color: #fff;
+}
+
+/* BUTTONS */
+.card-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-view {
+  background: #10b981;
+  color: #fff;
+}
+
+
+.property-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.property-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+  align-items: center;
+  background: #fff;
+  padding: 15px 18px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.property-row .title h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.property-row .title p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.col {
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .property-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .properties-grid {
+    grid-template-columns: 1fr;
+  }
+}

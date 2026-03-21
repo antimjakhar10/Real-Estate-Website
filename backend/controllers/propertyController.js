@@ -148,6 +148,8 @@ exports.getProperties = async (req, res) => {
 exports.updateProperty = async (req, res) => {
   try {
     console.log("BODY 👉", req.body);
+    console.log("UPDATE BODY 👉", req.body);
+console.log("UPDATE FILES 👉", req.files);
 
     // ❌ NEVER UPDATE THESE
     delete req.body.createdBy;

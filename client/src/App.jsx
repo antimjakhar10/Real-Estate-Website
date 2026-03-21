@@ -41,6 +41,7 @@ import UserLayout from "./components/pages/UserLayout";
 import AdminUserProperties from "./components/pages/AdminUserProperties";
 import AdminUserBlogs from "./components/pages/AdminUserBlogs";
 import AdminUsers from "./components/pages/AdminUsers";
+import UserAddProperty from "./components/pages/UserAddProperty";
 
 const Home = () => (
   <>
@@ -72,8 +73,8 @@ function App() {
       <Route path="/user/register" element={<UserRegister />} />
       <Route path="/user" element={<UserLayout />}>
         <Route path="dashboard" element={<UserDashboard />} />
-        <Route path="add-property" element={<AddEditProperty />} />
-        <Route path="edit-property/:id" element={<AddEditProperty />} />
+        <Route path="add-property" element={<UserAddProperty />} />
+        <Route path="edit-property/:id" element={<UserAddProperty />} />
         <Route path="my-properties" element={<MyProperties />} />
         <Route path="user-add-blog" element={<UserAddBlog />} />
         <Route path="my-blogs" element={<MyBlogs />} />
