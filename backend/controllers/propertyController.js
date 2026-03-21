@@ -9,35 +9,39 @@ const generateSlug = (title) => {
 };
 
 exports.createProperty = async (req, res) => {
+// ✅ DEBUG LOG ADD YAHI KARNA HAI
+    console.log("BODY 👉", req.body);
+    console.log("FILES 👉", req.files);
+
   try {
     let amenities = [];
     let nearbyLocations = [];
 
     if (req.body.amenities) {
-      if (Array.isArray(req.body.amenities)) {
-        amenities = req.body.amenities;
-      } else {
-        amenities = JSON.parse(req.body.amenities);
-      }
-    }
+  if (Array.isArray(req.body.amenities)) {
+    amenities = req.body.amenities;
+  } else {
+    amenities = [req.body.amenities]; // ✅ FIX (NO JSON.parse)
+  }
+}
 
     if (req.body.nearbyLocations) {
-      if (Array.isArray(req.body.nearbyLocations)) {
-        nearbyLocations = req.body.nearbyLocations.map((item) => {
-          try {
-            return JSON.parse(item);
-          } catch {
-            return { name: item, dist: "" };
-          }
-        });
-      } else {
-        try {
-          nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
-        } catch {
-          nearbyLocations = [{ name: req.body.nearbyLocations, dist: "" }];
-        }
+  if (Array.isArray(req.body.nearbyLocations)) {
+    nearbyLocations = req.body.nearbyLocations.map((item) => {
+      try {
+        return JSON.parse(item);
+      } catch {
+        return { name: item, dist: "" };
       }
+    });
+  } else {
+    try {
+      nearbyLocations = [JSON.parse(req.body.nearbyLocations)];
+    } catch {
+      nearbyLocations = [{ name: req.body.nearbyLocations, dist: "" }];
     }
+  }
+}
 
     let imagePaths = [];
 

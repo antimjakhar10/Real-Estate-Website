@@ -34,6 +34,7 @@ const PostProperty = () => {
     sqft: "",
     description: "",
     amenities: [],
+     nearby: [], 
     images: [],
   });
 
@@ -62,6 +63,7 @@ const PostProperty = () => {
   };
 
   const handleSubmit = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
     // ❌ Image check sirf submit pe
     if (!formData.images || formData.images.length === 0) {
       alert("Please upload at least one image ❌");
@@ -69,6 +71,10 @@ const PostProperty = () => {
     }
 
     const data = new FormData();
+    data.append("createdByRole", "customer"); // ✅ CUSTOMER FLOW
+if (user?._id) {
+  data.append("createdBy", user._id);
+}
 
     data.append("title", formData.title);
     data.append("category", formData.category);
@@ -84,15 +90,17 @@ const PostProperty = () => {
       data.append("amenities", amenity);
     });
 
-   formData.nearby.forEach((place) => {
-  data.append(
-    "nearbyLocations",
-    JSON.stringify({
-      name: place,
-      dist: ""
-    })
-  );
-});
+   if (formData.nearby && formData.nearby.length > 0) {
+  formData.nearby.forEach((place) => {
+    data.append(
+      "nearbyLocations",
+      JSON.stringify({
+        name: place,
+        dist: "",
+      })
+    );
+  });
+}
 
     for (let i = 0; i < formData.images.length; i++) {
       data.append("images", formData.images[i]);
