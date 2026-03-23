@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
@@ -8,7 +9,6 @@ import "./PropertyDetails.css";
 
 const PropertyDetails = () => {
   // Find property by ID - convert id to number since URL params are strings
-
 
   const getImageUrl = (image) => {
     if (!image || image.trim() === "") {
@@ -44,21 +44,23 @@ const PropertyDetails = () => {
 
   const { slug } = useParams();
 
-useEffect(() => {
-  setLoading(true);
+  useEffect(() => {
+    setLoading(true);
 
-  fetch(`https://real-estate-website-ai2s.onrender.com/api/properties/${slug}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("API Response:", data);
-      setPropertyData(data);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.log(err);
-      setLoading(false);
-    });
-}, [slug]);
+    fetch(
+      `https://real-estate-website-ai2s.onrender.com/api/properties/${slug}`,
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("API Response:", data);
+        setPropertyData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, [slug]);
 
   useEffect(() => {
     if (propertyData?.images?.length > 0) {
@@ -81,7 +83,9 @@ useEffect(() => {
       ? propertyData.images.map((img) => getImageUrl(img))
       : propertyData?.image
         ? [getImageUrl(propertyData.image)]
-        : ["https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg"];
+        : [
+            "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg",
+          ];
 
   // Media items using property image
   const mediaItems = imagesArray.map((img) => ({
@@ -91,18 +95,30 @@ useEffect(() => {
 
   // Use highlights from property data or default
   const highlights = [
-  { icon: "fa-tag", label: "ID NO.", value: propertyData._id?.slice(-6) || "N/A" },
-  { icon: "fa-house", label: "Type", value: propertyData.type || "N/A" },
-  { icon: "fa-door-open", label: "Room", value: propertyData.bedrooms || 0 },
-  { icon: "fa-bed", label: "Bedroom", value: propertyData.bedrooms || 0 },
-  { icon: "fa-bath", label: "Bath", value: propertyData.bathrooms || 0 },
-  { icon: "fa-house-circle-check", label: "Purpose", value: propertyData.status || "For Sale" },
-  { icon: "fa-ruler-combined", label: "Sqft", value: propertyData.sqft || 0 },
-  { icon: "fa-car", label: "Parking", value: propertyData.parking || "No" },
-  { icon: "fa-elevator", label: "Elevator", value: "Yes" },
-  { icon: "fa-wifi", label: "Wifi", value: "Yes" },
-  { icon: "fa-calendar-days", label: "Built in", value: propertyData.yearBuilt || "N/A" },
-];
+    {
+      icon: "fa-tag",
+      label: "ID NO.",
+      value: propertyData._id?.slice(-6) || "N/A",
+    },
+    { icon: "fa-house", label: "Type", value: propertyData.type || "N/A" },
+    { icon: "fa-door-open", label: "Room", value: propertyData.bedrooms || 0 },
+    { icon: "fa-bed", label: "Bedroom", value: propertyData.bedrooms || 0 },
+    { icon: "fa-bath", label: "Bath", value: propertyData.bathrooms || 0 },
+    {
+      icon: "fa-house-circle-check",
+      label: "Purpose",
+      value: propertyData.status || "For Sale",
+    },
+    { icon: "fa-ruler-combined", label: "Sqft", value: propertyData.sqft || 0 },
+    { icon: "fa-car", label: "Parking", value: propertyData.parking || "No" },
+    { icon: "fa-elevator", label: "Elevator", value: "Yes" },
+    { icon: "fa-wifi", label: "Wifi", value: "Yes" },
+    {
+      icon: "fa-calendar-days",
+      label: "Built in",
+      value: propertyData.yearBuilt || "N/A",
+    },
+  ];
 
   // Use amenities from property data or default
   let amenities = [];
@@ -126,20 +142,18 @@ useEffect(() => {
 
   // Use nearby locations from property data or default
 
-// Use nearby locations from property data
-let nearbyLocations = [];
+  // Use nearby locations from property data
+  let nearbyLocations = [];
 
-if (Array.isArray(propertyData?.nearbyLocations)) {
-
-  nearbyLocations = propertyData.nearbyLocations
-    .filter((place) => place && place.name)
-    .map((place) => ({
-      name: place.name,
-      dist: place.dist || "",
-      icon: "fa-location-dot",
-    }));
-
-}
+  if (Array.isArray(propertyData?.nearbyLocations)) {
+    nearbyLocations = propertyData.nearbyLocations
+      .filter((place) => place && place.name)
+      .map((place) => ({
+        name: place.name,
+        dist: place.dist || "",
+        icon: "fa-location-dot",
+      }));
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -152,16 +166,19 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
     setSubmitting(true);
 
     try {
-      const response = await fetch("https://real-estate-website-ai2s.onrender.com/api/enquiry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://real-estate-website-ai2s.onrender.com/api/enquiry",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            propertyId: propertyData._id,
+          }),
         },
-        body: JSON.stringify({
-          ...formData,
-          propertyId: propertyData._id,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -186,6 +203,24 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
 
   return (
     <div className="property-details-page">
+      <Helmet>
+        <title>
+          {propertyData?.seoTitle || propertyData?.title || "Property"}
+        </title>
+
+        <meta
+          name="description"
+          content={
+            propertyData?.seoDescription || propertyData?.description || ""
+          }
+        />
+
+        <meta
+          name="keywords"
+          content={propertyData?.seoKeywords || "real estate, property"}
+        />
+      </Helmet>
+
       <Navbar />
 
       {/* Hero Section */}
@@ -479,45 +514,45 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
       </section>
 
       {/* Gallery Section */}
-<div className="pd-modern-gallery-container">
-  <div className="pd-gallery-title-row">
-    <h2>From Amazing Gallery</h2>
-  </div>
+      <div className="pd-modern-gallery-container">
+        <div className="pd-gallery-title-row">
+          <h2>From Amazing Gallery</h2>
+        </div>
 
-  <div className="pd-asymmetric-grid">
-    {/* Main Big Image */}
-    <div className="pg-tile-new span-2">
-      <img
-        src={imagesArray[0]}
-        alt="Main View"
-        onClick={() => setPreviewImage(imagesArray[0])}
-      />
-      <div className="pg-badge">Main View</div>
-    </div>
+        <div className="pd-asymmetric-grid">
+          {/* Main Big Image */}
+          <div className="pg-tile-new span-2">
+            <img
+              src={imagesArray[0]}
+              alt="Main View"
+              onClick={() => setPreviewImage(imagesArray[0])}
+            />
+            <div className="pg-badge">Main View</div>
+          </div>
 
-    {/* Second Image (agar exist karti hai) */}
-    {imagesArray[1] && (
-      <div className="pg-tile-new">
-        <img
-          src={imagesArray[1]}
-          alt="Second View"
-          onClick={() => setPreviewImage(imagesArray[1])}
-        />
+          {/* Second Image (agar exist karti hai) */}
+          {imagesArray[1] && (
+            <div className="pg-tile-new">
+              <img
+                src={imagesArray[1]}
+                alt="Second View"
+                onClick={() => setPreviewImage(imagesArray[1])}
+              />
+            </div>
+          )}
+
+          {/* Baaki images agar aur bhi hain */}
+          {imagesArray.slice(2).map((img, index) => (
+            <div className="pg-tile-new" key={index}>
+              <img
+                src={img}
+                alt={`Gallery ${index}`}
+                onClick={() => setPreviewImage(img)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    )}
-
-    {/* Baaki images agar aur bhi hain */}
-    {imagesArray.slice(2).map((img, index) => (
-      <div className="pg-tile-new" key={index}>
-        <img
-          src={img}
-          alt={`Gallery ${index}`}
-          onClick={() => setPreviewImage(img)}
-        />
-      </div>
-    ))}
-  </div>
-</div>
 
       {/* Features & Amenities Section */}
       <div className="pd-amenities-card-wrapper">
@@ -559,7 +594,8 @@ if (Array.isArray(propertyData?.nearbyLocations)) {
                   alt="Prop"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
+                    e.target.src =
+                      "https://real-estate-website-ai2s.onrender.com/uploads/no-image.jpg";
                   }}
                 />
               </div>

@@ -58,6 +58,13 @@ exports.createProperty = async (req, res) => {
 
     const newProperty = new Property({
       ...req.body,
+
+      // 🔥 AUTO SEO (agar empty ho)
+      seoTitle: req.body.seoTitle || req.body.title,
+      seoDescription: req.body.seoDescription || req.body.description,
+      seoKeywords:
+        req.body.seoKeywords ||
+        `${req.body.title}, ${req.body.location}, property`,
       slug,
       priceValue: toNumber(req.body.price),
       bedrooms: toNumber(req.body.bedrooms),
@@ -96,6 +103,12 @@ exports.createPropertyAdmin = async (req, res) => {
 
     const newProperty = new Property({
       ...req.body,
+
+      seoTitle: req.body.seoTitle || req.body.title,
+      seoDescription: req.body.seoDescription || req.body.description,
+      seoKeywords:
+        req.body.seoKeywords ||
+        `${req.body.title}, ${req.body.location}, property`,
       slug,
       priceValue: toNumber(req.body.price),
       bedrooms: toNumber(req.body.bedrooms),
@@ -135,6 +148,15 @@ exports.updateProperty = async (req, res) => {
     const updateData = {
       title: req.body.title || property.title,
       location: req.body.location || property.location,
+      seoTitle: req.body.seoTitle || property.seoTitle || property.title,
+      seoDescription:
+        req.body.seoDescription ||
+        property.seoDescription ||
+        property.description,
+      seoKeywords:
+        req.body.seoKeywords ||
+        property.seoKeywords ||
+        `${property.title}, property`,
       price: req.body.price || property.price,
       priceValue: toNumber(req.body.price),
       type: req.body.type || property.type,
@@ -146,8 +168,9 @@ exports.updateProperty = async (req, res) => {
       parking: toNumber(req.body.parking),
 
       amenities: amenities.length ? amenities : property.amenities,
-      nearbyLocations:
-        nearbyLocations.length ? nearbyLocations : property.nearbyLocations,
+      nearbyLocations: nearbyLocations.length
+        ? nearbyLocations
+        : property.nearbyLocations,
 
       images: imagePaths.length ? imagePaths : property.images,
     };
@@ -244,7 +267,6 @@ exports.getProperties = async (req, res) => {
       properties,
       totalPages: Math.ceil(total / limit),
     });
-
   } catch (error) {
     console.log("GET ERROR 👉", error);
     res.status(500).json({ message: "Error fetching properties" });
@@ -284,7 +306,7 @@ exports.togglePremium = async (req, res) => {
           },
         },
       ],
-      { new: true }
+      { new: true },
     );
 
     if (!updated) {
@@ -295,7 +317,6 @@ exports.togglePremium = async (req, res) => {
       message: "Premium toggled",
       premium: updated.premium,
     });
-
   } catch (error) {
     console.log("❌ TOGGLE ERROR 👉", error);
     res.status(500).json({ message: "Server error" });

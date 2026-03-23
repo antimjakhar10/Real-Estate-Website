@@ -2,15 +2,16 @@
 
 
 .testimonials-section {
-  font-family: inherit;
+  font-family: 'Roboto', sans-serif;
   padding: 50px 20px;
-  background: linear-gradient(135deg, #FDE68A 0%, #FCA5A5 100%);
+  background: linear-gradient(135deg, #ececeb 0%, #fffcfc 100%);
   text-align: center;
   margin-bottom: 20px;
+  
 }
 
 .testimonial-header {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 .subtitle-red span {
@@ -24,6 +25,7 @@
   color: #111827;
   font-weight: 700;
   margin-top: 15px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .testimonial-cards {
@@ -83,6 +85,7 @@
   color: #4B5563;
   line-height: 1.5;
   margin: 15px 0 10px 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 .client-name {

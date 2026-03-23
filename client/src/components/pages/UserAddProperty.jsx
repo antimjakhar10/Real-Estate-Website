@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./UserAddProperty.css";
 
 const UserAddProperty = () => {
-  
-
   const addFacility = () => {
     if (!newFacility.trim()) return;
     setFacilities([...facilities, newFacility]);
@@ -37,6 +35,9 @@ const UserAddProperty = () => {
     parking: "",
     description: "",
     location: "",
+    seoTitle: "",
+    seoDescription: "",
+    seoKeywords: "",
     amenities: [],
     nearbyLocations: [],
     images: [],
@@ -68,6 +69,9 @@ const UserAddProperty = () => {
         parking: data.parking || "",
         description: data.description || "",
         location: data.location || "",
+        seoTitle: data.seoTitle || "",
+        seoDescription: data.seoDescription || "",
+        seoKeywords: data.seoKeywords || "",
         amenities: data.amenities || [],
         nearbyLocations: data.nearbyLocations || [],
         images: [],
@@ -268,6 +272,33 @@ const UserAddProperty = () => {
                 onChange={handleChange}
               />
             </div>
+
+            <div className="form-group">
+              <label>SEO Title</label>
+              <input
+                name="seoTitle"
+                value={form.seoTitle}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>SEO Description</label>
+              <textarea
+                name="seoDescription"
+                value={form.seoDescription}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>SEO Keywords</label>
+              <input
+                name="seoKeywords"
+                value={form.seoKeywords}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           {/* LOCATION */}
@@ -414,7 +445,9 @@ const UserAddProperty = () => {
 
           {/* BUTTON */}
           <div className="form-card">
-            <button className="submit-btn">{isEdit ? "Update Property" : "Submit Property"}</button>
+            <button className="submit-btn">
+              {isEdit ? "Update Property" : "Submit Property"}
+            </button>
           </div>
         </div>
       </div>

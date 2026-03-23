@@ -1,12 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import SearchSection from "./components/SearchSection";
 import BestProperties from "./components/BestProperties";
 import FeatureSection from "./components/FeatureSection";
 import LuxuryProperties from "./components/LuxuryProperties";
-import View360 from "./components/View360";
+// import View360 from "./components/View360";
 import Testimonials from "./components/Testimonials";
 import Footer from "./components/Footer";
 import Aboutus from "./components/pages/Aboutus";
@@ -51,7 +52,7 @@ const Home = () => (
     <BestProperties />
     <FeatureSection />
     <LuxuryProperties />
-    <View360 />
+    {/* <View360 /> */}
     <Testimonials />
     <Footer />
   </>
@@ -59,6 +60,7 @@ const Home = () => (
 
 function App() {
   return (
+    <HelmetProvider>
     <Routes>
       <Route path="/" element={<Home />} />
 
@@ -107,6 +109,7 @@ function App() {
         <Route path="edit-blog/:id" element={<AdminEditBlog />} />
       </Route>
     </Routes>
+    </HelmetProvider>
   );
 }
 

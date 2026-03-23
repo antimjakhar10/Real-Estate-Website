@@ -68,7 +68,7 @@
 
 /* ===== NAVBAR ===== */
 .navbar {
-  position: absolute;
+  position: fixed; 
   height: 80px;
   top: 35px;
   left: 0;
@@ -78,10 +78,11 @@
   align-items: center;
   padding: 15px 50px;
 
-  background: transparent;   /* 👈 ADD THIS */
+  background: transparent;  /* 👈 add this */
+  /* backdrop-filter: blur(6px); */
 
   transition: all 0.3s ease;
-  z-index: 15;
+  z-index: 9999; 
 }
 
 .navbar.scrolled {
@@ -347,7 +348,7 @@
     flex-direction: column;
     width: 100%;
     position: fixed;
-    top: 70px;
+    top: 80px;
     left: -100%;
     background: rgba(0, 0, 0, 0.95);
     padding: 40px 20px;
@@ -456,14 +457,16 @@
 
 
 /* ===== HAMBURGER ===== */
-.hamburger {
+.navbar .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-between;
   width: 25px;
   height: 20px;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 10001;   /* 👈 increase */
+  position: relative;
+  top: 0;
 }
 .hamburger span {
   display: block;

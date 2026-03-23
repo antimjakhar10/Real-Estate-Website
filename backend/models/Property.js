@@ -62,6 +62,11 @@ const propertySchema = new mongoose.Schema(
         icon: String,
       },
     ],
+
+    // 🔥 SEO Fields
+seoTitle: { type: String, default: "" },
+seoDescription: { type: String, default: "" },
+seoKeywords: { type: String, default: "" },
   },
   { timestamps: true }
 );

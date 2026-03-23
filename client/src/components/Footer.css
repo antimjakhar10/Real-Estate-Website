@@ -9,9 +9,9 @@
 /* 1. Top Section Columns */
 .footer-top {
   display: grid;
-  grid-template-columns: 1.2fr 0.7fr 0.7fr 0.7fr 1fr;
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: 1.3fr 1fr 1fr 1.2fr;  /* 👈 better balance */
+  gap: 40px;
+  align-items: flex-start;  /* 👈 alignment fix */
 }
 
 .footer-col h4 {
@@ -23,6 +23,21 @@
 .footer-col h4 a {
   color: white !important;
   text-decoration: none !important;
+}
+
+/* Links styling fix */
+.footer-col ul li a {
+  color: #aaa;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+  color: #2fbf8f;
+  transform: translateX(5px);
 }
 
 .about-text {
@@ -50,6 +65,11 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+/* map spacing */
+.map-wrapper {
+  margin-top: 10px;
 }
 
 .red-icon { color: #548e5d; font-size: 12px; }
@@ -144,4 +164,93 @@
   .footer-top { grid-template-columns: repeat(2, 1fr); gap: 40px; }
   .footer-middle-row { flex-direction: column; text-align: center; }
   .gallery-flex-row { justify-content: center; flex-wrap: wrap; }
+}
+
+/* ================= RESPONSIVE FIX (FINAL) ================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .footer-top {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .footer-col {
+    width: 100%;
+  }
+
+  .map-col iframe {
+    height: 180px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .footer-container {
+    padding: 60px 20px 30px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 👈 side by side */
+    gap: 25px;
+  }
+
+   /* About full width */
+  .footer-col.about {
+    grid-column: 1 / -1;
+  }
+
+  /* Map full width */
+  .map-col {
+    grid-column: 1 / -1;
+  }
+
+
+  .footer-col h4 {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  .footer-col ul li {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .about-text {
+    font-size: 13px;
+  }
+
+  .contact-details p {
+    font-size: 13px;
+  }
+
+  /* map fix */
+  .map-wrapper iframe {
+    height: 200px;
+  }
+
+  /* bottom row stack */
+  .footer-copyright-row {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .copy-text {
+    font-size: 13px;
+  }
+
+  /* social center */
+  .social-links-flex {
+    justify-content: center;
+  }
+
+  /* scroll button fix (overlap remove) */
+  .fixed-scroll-btn {
+    width: 45px;
+    height: 45px;
+    bottom: 20px;
+    right: 20px;
+  }
 }

@@ -17,7 +17,7 @@
 .contact-hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.60);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.323), rgba(5, 65, 40, 0.323), rgba(3, 51, 31, 0.552));
   display: flex;
   align-items: center;
   justify-content: center;

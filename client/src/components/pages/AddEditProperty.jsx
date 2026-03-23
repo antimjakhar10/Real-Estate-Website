@@ -41,6 +41,9 @@ const from = location.state?.from;
     parking: "",
     description: "",
     location: "",
+    seoTitle: "",
+  seoDescription: "",
+  seoKeywords: "",
     status: "",
     amenities: [],
     nearbyLocations: [],
@@ -75,6 +78,9 @@ const from = location.state?.from;
 
     setForm({
       ...data,
+      seoTitle: data.seoTitle || "",
+  seoDescription: data.seoDescription || "",
+  seoKeywords: data.seoKeywords || "",
       createdByRole: data.createdByRole, // 🔥 IMPORTANT
       amenities: Array.isArray(data.amenities) ? data.amenities : [],
       nearbyLocations: data.nearbyLocations || [],
@@ -374,6 +380,36 @@ const bodyData = formData;
                   rows="4"
                 />
               </div>
+
+              <div className="form-group">
+  <label>SEO Title</label>
+  <input
+    name="seoTitle"
+    value={form.seoTitle}
+    onChange={handleChange}
+    placeholder="Enter SEO title"
+  />
+</div>
+
+<div className="form-group">
+  <label>SEO Description</label>
+  <textarea
+    name="seoDescription"
+    value={form.seoDescription}
+    onChange={handleChange}
+    placeholder="Enter SEO description"
+  />
+</div>
+
+<div className="form-group">
+  <label>SEO Keywords</label>
+  <input
+    name="seoKeywords"
+    value={form.seoKeywords}
+    onChange={handleChange}
+    placeholder="keyword1, keyword2"
+  />
+</div>
             </div>
 
             {/* LOCATION */}

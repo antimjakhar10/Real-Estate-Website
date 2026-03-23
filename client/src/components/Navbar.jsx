@@ -29,8 +29,8 @@ const Navbar = ({ variant }) => {
       {/* ===== TOPBAR ===== */}
       <div className={`topbar ${scrolled ? "hide" : ""}`}>
         <div className="top-left">
-          <span>✉ r3developers@gmailcom</span>
-          <span>📞 +91 8684031003</span>
+          <span>✉ r3capitaldevelopers@gmailcom</span>
+          {/* <span>📞 +91 8684031003</span> */}
         </div>
         <div className="top-right">
           <FaFacebookF /> <FaTwitter /> <FaLinkedinIn /> <FaWhatsapp />
